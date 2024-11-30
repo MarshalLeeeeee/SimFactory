@@ -6,17 +6,11 @@
 #include <Windows.h>
 #include <wrl/client.h>
 
-// #include <DirectXMath.h>
-// #include <DirectXPackedVector.h>
-// #include <DirectXColors.h>
-
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
-// #pragma comment(lib, "dxguid.lib")
-// #pragma comment(lib, "winmm.lib")
 
 #include <string>
 
