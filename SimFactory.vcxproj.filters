@@ -13,66 +13,90 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\App">
+      <UniqueIdentifier>{6fea5d2d-d73a-4f77-bf67-80a6b7d7934e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\App">
+      <UniqueIdentifier>{d0c9b234-2f63-44ee-b44c-f814ea68e4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderObj">
+      <UniqueIdentifier>{89530e00-424c-46bc-9171-a2bb04b4156c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderObj">
+      <UniqueIdentifier>{96d350fa-1364-47aa-801e-ba5eeb897e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Case">
+      <UniqueIdentifier>{fe3ab045-5afd-4593-8eb7-e6b81b20c346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Case">
+      <UniqueIdentifier>{a8ebc58d-8ba3-49a4-8f04-0801f35dd087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Util">
+      <UniqueIdentifier>{c3539caf-612c-455b-821a-3126d19585a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util">
+      <UniqueIdentifier>{5707dbe0-efee-4ee4-adc6-9f9250b06d6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App\DxApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="App\SimApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObj\RenderObj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObj\RenderTriangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\GraphicsUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\SimUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Case\FadingTriangleCase.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="App\DxApp.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="App\SimApp.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObj\RenderObj.h">
+      <Filter>Header Files\RenderObj</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObj\RenderTriangle.h">
+      <Filter>Header Files\RenderObj</Filter>
     </ClInclude>
     <ClInclude Include="Case\SimCase.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Case</Filter>
+    </ClInclude>
+    <ClInclude Include="Case\FadingTriangleCase.h">
+      <Filter>Header Files\Case</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\GraphicsUtil.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\SimUtil.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App\DxApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="App\SimApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObj\RenderObj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObj\RenderTriangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\GraphicsUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\SimUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Constant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Case\FadingTriangleCase.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="App\DxApp.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="App\SimApp.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObj\RenderObj.cpp">
+      <Filter>Source Files\RenderObj</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObj\RenderTriangle.cpp">
+      <Filter>Source Files\RenderObj</Filter>
     </ClCompile>
     <ClCompile Include="Case\SimCase.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Case</Filter>
+    </ClCompile>
+    <ClCompile Include="Case\FadingTriangleCase.cpp">
+      <Filter>Source Files\Case</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\GraphicsUtil.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\SimUtil.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
