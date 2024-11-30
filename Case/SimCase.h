@@ -18,7 +18,7 @@ public:
 	void render(ComPtr<ID3D11DeviceContext> devCon);
 
 protected:
-	virtual void do_update(ComPtr<ID3D11Device> dev, double simTime, double frameTime) = 0;
+	virtual void do_update(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 
 	void addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
 	void removeRenderObj(std::string uuid);

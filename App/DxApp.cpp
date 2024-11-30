@@ -1,5 +1,6 @@
 #include "DxApp.h"
 #include "GraphicsUtil.h"
+#include "SimUtil.h"
 
 namespace {
 	DxApp* thisptr = nullptr;
@@ -12,11 +13,12 @@ LRESULT CALLBACK mainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 DxApp::DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
 	dev(nullptr), devCon(nullptr),
 	swChain(nullptr), rt(nullptr),
-	hInstance(hInstance), lpCmdLine(lpCmdLine),
+	hInstance(hInstance), 
 	nCmdShow(nCmdShow), hWindow(nullptr),
 	w(w), h(h),
 	vsHLSL(vsHLSL), psHLSL(psHLSL) {
 	thisptr = this;
+	unparseLpCmdLine(lpCmdLine, cmdArgs);
 }
 
 DxApp::~DxApp() {}

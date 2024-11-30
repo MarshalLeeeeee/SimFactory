@@ -13,6 +13,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #include <string>
+#include <vector>
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -42,7 +43,7 @@ protected:
 	ComPtr<ID3D11PixelShader> ps;
 
 	HINSTANCE hInstance;
-	LPSTR lpCmdLine;
+	std::vector<std::string> cmdArgs;
 	int nCmdShow;
 	HWND hWindow;
 	int w; // width of window

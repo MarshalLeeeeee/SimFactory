@@ -1,4 +1,5 @@
 #include "SimApp.h"
+#include "SimUtil.h"
 #include "FadingTriangleCase.h"
 
 SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
@@ -18,6 +19,6 @@ void SimApp::render() {
 }
 
 bool SimApp::initApp() {
-	pSimCase = std::make_shared<FadingTriangleCase>();
+	pSimCase = createSimCase(cmdArgs);
 	return true;
 }

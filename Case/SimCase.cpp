@@ -15,6 +15,8 @@ void SimCase::update(ComPtr<ID3D11Device> dev) {
 	updateTime = currTime;
 }
 
+void SimCase::do_update(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {}
+
 void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) {
 	for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
 		itr->second->render(devCon);
