@@ -14,12 +14,31 @@ void FadingTriangleCase::do_update(ComPtr<ID3D11Device> dev, double simTime, dou
 			uuid = GenerateRenderObjUUID();
 			if (renderObjs.find(uuid) == renderObjs.end()) break;
 		}
-		std::shared_ptr<RenderTriangle> pTriangle = std::make_shared<RenderTriangle>(uuid, 10.0);
+		DirectX::XMFLOAT3 ps[3] = {
+			{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) },
+			{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) },
+			{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) },
+		};
+		DirectX::XMFLOAT4 cs[3] = {
+			{ DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+		};
+		std::shared_ptr<RenderTriangle> pTriangle = std::make_shared<RenderTriangle>(uuid, ps, cs);
 		addRenderObj(pTriangle, dev);
 	}
 	else {
+		double diff = simTime - static_cast<int>(simTime / PERIOD) * PERIOD;
+		double absDiff = std::abs(diff - PERIOD * 0.5);
+		double result = absDiff / PERIOD * 2.0;
+		float c = static_cast<float>(result);
+		DirectX::XMFLOAT4 cs[3] = {
+			{ DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) },
+		};
 		for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
-			itr->second->update(simTime, frameTime);
+			itr->second->updateColor(cs);
 		}
 	}
 }

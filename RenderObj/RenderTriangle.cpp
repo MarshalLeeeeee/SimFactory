@@ -1,8 +1,11 @@
 #include "RenderTriangle.h"
 #include "GraphicsUtil.h"
 
-RenderTriangle::RenderTriangle(std::string uuid, double period) :
-	RenderObj(uuid), period(10.0), c(1.0) {}
+RenderTriangle::RenderTriangle(std::string uuid, DirectX::XMFLOAT3* ps, DirectX::XMFLOAT4* cs) :
+	RenderObj(uuid) {
+    updatePos(ps);
+    updateColor(cs);
+}
 
 RenderTriangle::~RenderTriangle() {}
 
@@ -14,11 +17,6 @@ bool RenderTriangle::init(ComPtr<ID3D11Device> dev) {
 
 bool RenderTriangle::initDx(ComPtr<ID3D11Device> dev) {
 
-    /*VertexPosColor vertices[8];
-    vertices[0] = { DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) };
-    vertices[1] = { DirectX::XMFLOAT3(0.45f, -0.5, 0.0f),  DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) };
-    vertices[2] = { DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f),   DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) };*/
-    
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
     bd.Usage = D3D11_USAGE_DYNAMIC; // write access access by CPU and GPU
@@ -32,17 +30,13 @@ bool RenderTriangle::initDx(ComPtr<ID3D11Device> dev) {
     return true;
 }
 
-void RenderTriangle::update(double simTime, double frameTime) {
-    updateC(simTime);
-}
-
-void RenderTriangle::render(ComPtr<ID3D11DeviceContext> devCon) {
+void RenderTriangle::render(ComPtr<ID3D11DeviceContext> devCon) const {
     if (!renderReady) return;
 
     VertexPosColor vertices[3];
-    vertices[0] = { DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) };
-    vertices[1] = { DirectX::XMFLOAT3(0.45f, -0.5, 0.0f),  DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) };
-    vertices[2] = { DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f),   DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) };
+    for (int i = 0; i < 3; ++i) {
+        vertices[i] = { poses[i], colors[i] };
+    }
 
     // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
@@ -56,9 +50,14 @@ void RenderTriangle::render(ComPtr<ID3D11DeviceContext> devCon) {
     devCon->Draw(3, 0);
 }
 
-void RenderTriangle::updateC(double simTime) {
-    double diff = simTime - static_cast<int>(simTime / period) * period;
-    double absDiff = std::abs(diff - period * 0.5);
-    double result = absDiff / period * 2.0;
-    c = static_cast<float>(result);
+void RenderTriangle::updatePos(DirectX::XMFLOAT3 *ps) {
+    poses[0] = ps[0];
+    poses[1] = ps[1];
+    poses[2] = ps[2];
+}
+
+void RenderTriangle::updateColor(DirectX::XMFLOAT4 *cs) {
+    colors[0] = cs[0];
+    colors[1] = cs[1];
+    colors[2] = cs[2];
 }

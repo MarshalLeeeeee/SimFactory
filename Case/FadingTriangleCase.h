@@ -5,6 +5,8 @@
 
 #include "SimCase.h"
 
+#define PERIOD 10.0
+
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
