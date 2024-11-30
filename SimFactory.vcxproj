@@ -94,10 +94,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath);$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)</ExecutablePath>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath);$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)</ExecutablePath>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
