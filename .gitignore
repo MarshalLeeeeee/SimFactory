@@ -30,3 +30,41 @@
 *.exe
 *.out
 *.app
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Oo]bj/
+[Bb]in/
+[Ll]og/
+[Ll]ogs/
+[Tt]est[Rr]esults/
+*.ilk
+*.pdb
+*.idb
+*.ipch/
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.suo
+*.sln.docstates
+
+# Others
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.jfmproj
+*.pfx
+*.publish.xml
+*.publishproj
+*.map
+*.cache
+*.log
+*.dmp
+
+# Config
+.vs/
+.vscode/
