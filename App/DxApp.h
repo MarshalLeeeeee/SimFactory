@@ -24,7 +24,7 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 class DxApp {
 public:
-	DxApp(HINSTANCE hInstance, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL);
+	DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL);
 	virtual ~DxApp();
 
 	int run();
@@ -48,6 +48,7 @@ protected:
 	ComPtr<ID3D11PixelShader> ps;
 
 	HINSTANCE hInstance;
+	LPSTR lpCmdLine;
 	int nCmdShow;
 	HWND hWindow;
 	int w; // width of window

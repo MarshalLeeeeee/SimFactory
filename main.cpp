@@ -10,6 +10,7 @@ int WINAPI WinMain(
 ) {
     SimApp app(
         hInstance,
+        lpCmdLine,
         nCmdShow,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,

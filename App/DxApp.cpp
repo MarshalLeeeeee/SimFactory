@@ -9,10 +9,11 @@ LRESULT CALLBACK mainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 	return thisptr->wndProc(hwnd, msg, wParam, lParam);
 }
 
-DxApp::DxApp(HINSTANCE hInstance, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
+DxApp::DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
 	dev(nullptr), devCon(nullptr),
 	swChain(nullptr), rt(nullptr),
-	hInstance(hInstance), nCmdShow(nCmdShow), hWindow(nullptr),
+	hInstance(hInstance), lpCmdLine(lpCmdLine),
+	nCmdShow(nCmdShow), hWindow(nullptr),
 	w(w), h(h),
 	vsHLSL(vsHLSL), psHLSL(psHLSL) {
 	thisptr = this;

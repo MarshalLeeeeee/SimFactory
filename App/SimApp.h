@@ -9,7 +9,7 @@
 
 class SimApp : public DxApp {
 public:
-	SimApp(HINSTANCE hInstance, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL);
+	SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL);
 	virtual ~SimApp();
 
 	void update();

@@ -1,8 +1,8 @@
 #include "SimApp.h"
 #include "FadingTriangleCase.h"
 
-SimApp::SimApp(HINSTANCE hInstance, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
-	DxApp(hInstance, nCmdShow, w, h, vsHLSL, psHLSL) {}
+SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
+	DxApp(hInstance, lpCmdLine, nCmdShow, w, h, vsHLSL, psHLSL) {}
 
 SimApp::~SimApp() {}
 
