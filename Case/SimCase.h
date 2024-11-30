@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __SIMWORLD_H__
-#define __SIMWORLD_H__
+#ifndef __SIMCASE_H__
+#define __SIMCASE_H__
 
 #include "RenderObj.h"
 
@@ -9,15 +9,17 @@
 #include <unordered_map>
 #include <chrono>
 
-class SimWorld {
+class SimCase {
 public:
-	SimWorld();
-	virtual ~SimWorld();
+	SimCase();
+	virtual ~SimCase();
 
 	void update(ComPtr<ID3D11Device> dev);
 	void render(ComPtr<ID3D11DeviceContext> devCon);
 
-private:
+protected:
+	virtual void do_update(ComPtr<ID3D11Device> dev, double simTime, double frameTime) = 0;
+
 	void addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
 	void removeRenderObj(std::string uuid);
 

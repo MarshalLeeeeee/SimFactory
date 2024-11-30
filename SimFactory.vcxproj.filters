@@ -33,10 +33,13 @@
     <ClInclude Include="Util\SimUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="World\SimWorld.h">
+    <ClInclude Include="Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Constant.h">
+    <ClInclude Include="Case\FadingTriangleCase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Case\SimCase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,13 +62,16 @@
     <ClCompile Include="Util\SimUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="World\SimWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Constant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Case\FadingTriangleCase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Case\SimCase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

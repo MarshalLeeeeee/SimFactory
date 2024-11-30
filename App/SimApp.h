@@ -4,7 +4,8 @@
 #define __SIMAPP_H_
 
 #include "DxApp.h"
-#include "SimWorld.h"
+#include "SimCase.h"
+#include <memory>
 
 class SimApp : public DxApp {
 public:
@@ -14,8 +15,10 @@ public:
 	void update();
 	void render();
 
-private:
-	SimWorld simWorld;
+protected:
+	bool initApp();
+
+	std::shared_ptr<SimCase> pSimCase;
 };
 
 #endif
