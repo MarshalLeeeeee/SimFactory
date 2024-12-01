@@ -2,12 +2,10 @@
 #include "RenderTriangle.h"
 #include "SimUtil.h"
 
-FadingTriangleCase::FadingTriangle::FadingTriangle(ComPtr<ID3D11Device> dev, SimCase* pSimCase) :
-	SimEntity(dev, pSimCase) {
-	initRenderObj(dev);
-}
+FadingTriangleCase::FadingTriangle::FadingTriangle(SimCase* pSimCase) :
+	SimEntity(pSimCase) {}
 
-void FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
+bool FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
 	DirectX::XMFLOAT3 ps[3] = {
 		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) },
 		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) },
@@ -18,10 +16,14 @@ void FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev)
 		{ DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
 	};
-	pSimCase->addRenderObj(
+	return pSimCase->addRenderObj(
 		std::make_shared<RenderTriangle>(uuid, ps, cs),
 		dev
 	);
+}
+
+bool FadingTriangleCase::FadingTriangle::initEntity() {
+	return true;
 }
 
 FadingTriangleCase::FadingTriangle::~FadingTriangle() {}
@@ -45,8 +47,8 @@ FadingTriangleCase::FadingTriangleCase() :
 FadingTriangleCase::~FadingTriangleCase() {}
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
-	if (renderObjs.empty()) {
-		addEntity(std::make_shared<FadingTriangle>(dev, this));
+	if (entities.empty()) {
+		addEntity(std::make_shared<FadingTriangle>(this), dev);
 	}
 	else {
 		updateEntities(simTime, frameTime);

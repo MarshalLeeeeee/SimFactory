@@ -17,14 +17,14 @@ public:
 	virtual ~SimCase();
 
 	void update(ComPtr<ID3D11Device> dev);
-	void render(ComPtr<ID3D11DeviceContext> devCon);
+	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 
-	void addEntity(std::shared_ptr<SimEntity> pSimEntity);
+	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
 	void removeEntity(std::string uuid);
 	bool hasEntity(std::string uuid) const;
 	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
 
-	void addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
+	bool addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
 	void removeRenderObj(std::string uuid);
 	bool hasRenderObj(std::string uuid) const;
 	std::shared_ptr<RenderObj> getRenderObj(std::string uuid) const;

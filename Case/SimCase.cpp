@@ -23,15 +23,18 @@ void SimCase::updateEntities(double simTime, double frameTime) {
 	}
 }
 
-void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) {
+void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
 		itr->second->render(devCon);
 	}
 }
 
-void SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity) {
+bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
+	if (!pSimEntity->init(dev)) return false;
 	std::string uuid = pSimEntity->getUUID();
+	if (hasEntity(uuid)) return false;
 	entities[uuid] = pSimEntity;
+	return true;
 }
 
 void SimCase::removeEntity(std::string uuid) {
@@ -47,12 +50,12 @@ std::shared_ptr<SimEntity> SimCase::getEntity(std::string uuid) const {
 	else return entities.at(uuid);
 }
 
-void SimCase::addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev) {
+bool SimCase::addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev) {
 	std::string uuid = pRenderObj->getUUID();
+	if (hasRenderObj(uuid)) return false;
+	if (!pRenderObj->init(dev)) return false;
 	renderObjs[uuid] = pRenderObj;
-	if (!renderObjs[uuid]->init(dev)) {
-		removeRenderObj(uuid);
-	}
+	return true;
 }
 
 void SimCase::removeRenderObj(std::string uuid) {

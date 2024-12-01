@@ -21,11 +21,12 @@ private:
 
     class FadingTriangle : public SimEntity {
     public:
-        FadingTriangle(ComPtr<ID3D11Device> dev, SimCase* pSimCase);
+        FadingTriangle(SimCase* pSimCase);
         virtual ~FadingTriangle();
 
     protected:
-        void initRenderObj(ComPtr<ID3D11Device> dev);
+        bool initRenderObj(ComPtr<ID3D11Device> dev);
+        bool initEntity();
         void updateRenderObj(std::shared_ptr<RenderObj>, double simTime, double frameTime);
     };
     std::shared_ptr<FadingTriangle> fadingTriangle;

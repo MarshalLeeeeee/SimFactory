@@ -1,12 +1,19 @@
 #include "SimEntity.h"
 #include "SimUtil.h"
 
-SimEntity::SimEntity(ComPtr<ID3D11Device> dev, SimCase* pSimCase) :
-	pSimCase(pSimCase) {
-	initUUID();
+SimEntity::SimEntity(SimCase* pSimCase) :
+	pSimCase(pSimCase) {}
+
+SimEntity::~SimEntity() {
+	pSimCase->removeRenderObj(uuid);
 }
 
-SimEntity::~SimEntity() {}
+bool SimEntity::init(ComPtr<ID3D11Device> dev) {
+	if (!initUUID()) return false;
+	if (!initRenderObj(dev)) return false;
+	if (!initEntity()) return false;
+	return true;
+}
 
 void SimEntity::update(double simTime, double frameTime) {
 	std::shared_ptr<RenderObj> ro = pSimCase->getRenderObj(uuid);
@@ -15,13 +22,16 @@ void SimEntity::update(double simTime, double frameTime) {
     updateRenderObj(ro, simTime, frameTime);
 }
 
-void SimEntity::initUUID() {
+bool SimEntity::initUUID() {
 	std::string _uuid;
-	while (true) {
+	for (int i = 0; i < 50; ++i) {
 		_uuid = GenerateRenderObjUUID();
-		if (!pSimCase->hasRenderObj(_uuid)) break;
+		if (!pSimCase->hasRenderObj(_uuid)) {
+			uuid = _uuid;
+			return true;
+		}
 	}
-	uuid = _uuid;
+	return false;
 }
 
 std::string SimEntity::getUUID() const {
