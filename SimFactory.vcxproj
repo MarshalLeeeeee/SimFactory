@@ -24,6 +24,7 @@
     <ClInclude Include="Case\FadingTriangleCase.h" />
     <ClInclude Include="Case\SimCase.h" />
     <ClInclude Include="Constant.h" />
+    <ClInclude Include="Entity\SimEntity.h" />
     <ClInclude Include="RenderObj\RenderObj.h" />
     <ClInclude Include="RenderObj\RenderTriangle.h" />
     <ClInclude Include="Util\GraphicsUtil.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="Case\FadingTriangleCase.cpp" />
     <ClCompile Include="Case\SimCase.cpp" />
     <ClCompile Include="Constant.cpp" />
+    <ClCompile Include="Entity\SimEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObj\RenderObj.cpp" />
     <ClCompile Include="RenderObj\RenderTriangle.cpp" />
@@ -133,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{5707dbe0-efee-4ee4-adc6-9f9250b06d6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{80c81163-c0aa-4fa1-bab0-578a701c87ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{061bfe75-12ff-4b37-9f5e-37ea262b7c03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constant.h">
@@ -65,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="Util\SimUtil.h">
       <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\SimEntity.h">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Util\SimUtil.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\SimEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

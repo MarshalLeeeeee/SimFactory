@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <chrono>
 
+class SimEntity;
+
 class SimCase {
 public:
 	SimCase();
@@ -17,16 +19,27 @@ public:
 	void update(ComPtr<ID3D11Device> dev);
 	void render(ComPtr<ID3D11DeviceContext> devCon);
 
-protected:
-	virtual void do_update(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
+	void addEntity(std::shared_ptr<SimEntity> pSimEntity);
+	void removeEntity(std::string uuid);
+	bool hasEntity(std::string uuid) const;
+	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
 
 	void addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
 	void removeRenderObj(std::string uuid);
+	bool hasRenderObj(std::string uuid) const;
+	std::shared_ptr<RenderObj> getRenderObj(std::string uuid) const;
+
+protected:
+	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
+	void updateEntities(double simTime, double frameTime);
 
 	std::unordered_map<std::string, std::shared_ptr<RenderObj>> renderObjs;
+	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
 
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 	std::chrono::time_point<std::chrono::high_resolution_clock> updateTime;
 };
+
+#include "SimEntity.h"
 
 #endif
