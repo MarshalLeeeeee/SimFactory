@@ -19,7 +19,7 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 class DxApp {
 public:
-	DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL);
+	DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
 	virtual ~DxApp();
 
 	int run();

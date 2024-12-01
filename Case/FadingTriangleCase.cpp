@@ -46,6 +46,22 @@ FadingTriangleCase::FadingTriangleCase() :
 
 FadingTriangleCase::~FadingTriangleCase() {}
 
+int FadingTriangleCase::getScreenWidth() const {
+	return 1280;
+};
+
+int FadingTriangleCase::getScreenHeight() const {
+	return 960;
+};
+
+const WCHAR* FadingTriangleCase::getVsHLSL() const {
+	return L"vs.hlsl";
+};
+
+const WCHAR* FadingTriangleCase::getPsHLSL() const {
+	return L"ps.hlsl";
+};
+
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
 	if (entities.empty()) {
 		addEntity(std::make_shared<FadingTriangle>(this), dev);

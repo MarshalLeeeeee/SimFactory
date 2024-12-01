@@ -2,8 +2,8 @@
 #include "SimUtil.h"
 #include "FadingTriangleCase.h"
 
-SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
-	DxApp(hInstance, lpCmdLine, nCmdShow, w, h, vsHLSL, psHLSL) {}
+SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
+	DxApp(hInstance, lpCmdLine, nCmdShow) {}
 
 SimApp::~SimApp() {}
 
@@ -20,5 +20,9 @@ void SimApp::render() {
 
 bool SimApp::initApp() {
 	pSimCase = createSimCase(cmdArgs);
+	w = pSimCase->getScreenWidth();
+	h = pSimCase->getScreenHeight();
+	vsHLSL = std::wstring(pSimCase->getVsHLSL());
+	psHLSL = std::wstring(pSimCase->getPsHLSL());
 	return true;
 }

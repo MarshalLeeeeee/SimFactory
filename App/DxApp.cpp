@@ -10,13 +10,11 @@ LRESULT CALLBACK mainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 	return thisptr->wndProc(hwnd, msg, wParam, lParam);
 }
 
-DxApp::DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow, int w, int h, const WCHAR* vsHLSL, const WCHAR* psHLSL) :
+DxApp::DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
 	dev(nullptr), devCon(nullptr),
 	swChain(nullptr), rt(nullptr),
 	hInstance(hInstance), 
-	nCmdShow(nCmdShow), hWindow(nullptr),
-	w(w), h(h),
-	vsHLSL(vsHLSL), psHLSL(psHLSL) {
+	nCmdShow(nCmdShow), hWindow(nullptr) {
 	thisptr = this;
 	unparseLpCmdLine(lpCmdLine, cmdArgs);
 }
@@ -41,10 +39,10 @@ int DxApp::run() {
 }
 
 bool DxApp::init() {
+	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
 	if (!initPipeline()) return false;
-	if (!initApp()) return false;
 	return true;
 }
 
