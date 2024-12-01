@@ -29,7 +29,6 @@ private:
         bool initEntity();
         void updateRenderObj(std::shared_ptr<RenderObj>, double simTime, double frameTime);
     };
-    std::shared_ptr<FadingTriangle> fadingTriangle;
 };
 
 #endif

@@ -42,7 +42,7 @@ void FadingTriangleCase::FadingTriangle::updateRenderObj(std::shared_ptr<RenderO
 }
 
 FadingTriangleCase::FadingTriangleCase() :
-    SimCase(), fadingTriangle(nullptr){}
+    SimCase() {}
 
 FadingTriangleCase::~FadingTriangleCase() {}
 
