@@ -42,7 +42,7 @@ bool DxApp::init() {
 	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
-	if (!initPipeline()) return false;
+	// if (!initPipeline()) return false;
 	return true;
 }
 

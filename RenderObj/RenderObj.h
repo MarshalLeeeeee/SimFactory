@@ -14,26 +14,38 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 #include <string>
+#include <memory>
+
+#include "TypeUtil.h"
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 class RenderObj {
 public:
-	RenderObj(std::string uuid);
+	RenderObj(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology);
 	virtual ~RenderObj();
 
-	virtual bool init(ComPtr<ID3D11Device> dev) = 0;
-	virtual void render(ComPtr<ID3D11DeviceContext> devCon) const = 0;
-
-	virtual void updatePos(DirectX::XMFLOAT3* ps) = 0;
-	virtual void updateColor(DirectX::XMFLOAT4* cs) = 0;
+	bool init(ComPtr<ID3D11Device> dev);
+	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 
 	std::string getUUID() const;
 
+	virtual void updateField(uint32_t i, std::string fieldName, const Any& anyValue) = 0;
+
 protected:
-	ComPtr<ID3D11Buffer> vBuffer;
+	bool initShader(ComPtr<ID3D11Device> dev);
+	virtual bool initLayout(ComPtr<ID3D11Device> dev, ComPtr<ID3DBlob> blob) = 0;
+	virtual bool initBuffer(ComPtr<ID3D11Device> dev) = 0;
+	virtual void doRender(ComPtr<ID3D11DeviceContext> devCon) const = 0;
+
+	ComPtr<ID3D11InputLayout> vLayout;
+	ComPtr<ID3D11VertexShader> vs;
+	ComPtr<ID3D11PixelShader> ps;
+
 	std::string uuid;
-	bool renderReady;
+	std::wstring vsHLSL;
+	std::wstring psHLSL;
+	D3D_PRIMITIVE_TOPOLOGY primitiveTopology;
 };
 
 #endif

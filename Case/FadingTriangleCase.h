@@ -5,7 +5,8 @@
 
 #include "SimCase.h"
 #include "SimEntity.h"
-#include "RenderTriangle.h"
+#include "RenderObj.h"
+#include "RenderGeometry.h"
 
 #include <memory>
 

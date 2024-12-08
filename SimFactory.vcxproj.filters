@@ -57,9 +57,6 @@
     <ClInclude Include="RenderObj\RenderObj.h">
       <Filter>Header Files\RenderObj</Filter>
     </ClInclude>
-    <ClInclude Include="RenderObj\RenderTriangle.h">
-      <Filter>Header Files\RenderObj</Filter>
-    </ClInclude>
     <ClInclude Include="Case\SimCase.h">
       <Filter>Header Files\Case</Filter>
     </ClInclude>
@@ -74,6 +71,12 @@
     </ClInclude>
     <ClInclude Include="Entity\SimEntity.h">
       <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObj\RenderGeometry.h">
+      <Filter>Header Files\RenderObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\TypeUtil.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +95,6 @@
     <ClCompile Include="RenderObj\RenderObj.cpp">
       <Filter>Source Files\RenderObj</Filter>
     </ClCompile>
-    <ClCompile Include="RenderObj\RenderTriangle.cpp">
-      <Filter>Source Files\RenderObj</Filter>
-    </ClCompile>
     <ClCompile Include="Case\SimCase.cpp">
       <Filter>Source Files\Case</Filter>
     </ClCompile>
@@ -109,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="Entity\SimEntity.cpp">
       <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObj\RenderGeometry.cpp">
+      <Filter>Source Files\RenderObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\TypeUtil.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

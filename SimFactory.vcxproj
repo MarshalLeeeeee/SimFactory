@@ -25,10 +25,11 @@
     <ClInclude Include="Case\SimCase.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Entity\SimEntity.h" />
+    <ClInclude Include="RenderObj\RenderGeometry.h" />
     <ClInclude Include="RenderObj\RenderObj.h" />
-    <ClInclude Include="RenderObj\RenderTriangle.h" />
     <ClInclude Include="Util\GraphicsUtil.h" />
     <ClInclude Include="Util\SimUtil.h" />
+    <ClInclude Include="Util\TypeUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\DxApp.cpp" />
@@ -38,10 +39,11 @@
     <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Entity\SimEntity.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderObj\RenderGeometry.cpp" />
     <ClCompile Include="RenderObj\RenderObj.cpp" />
-    <ClCompile Include="RenderObj\RenderTriangle.cpp" />
     <ClCompile Include="Util\GraphicsUtil.cpp" />
     <ClCompile Include="Util\SimUtil.cpp" />
+    <ClCompile Include="Util\TypeUtil.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

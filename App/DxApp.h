@@ -23,7 +23,7 @@ public:
 	virtual ~DxApp();
 
 	int run();
-	virtual bool init();
+	bool init();
 	virtual void update() = 0;
 	virtual void render() = 0;
 	LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
