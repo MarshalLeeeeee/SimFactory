@@ -37,9 +37,6 @@ protected:
 	ComPtr<ID3D11DeviceContext> devCon;
 	ComPtr<IDXGISwapChain> swChain;
 	ComPtr<ID3D11RenderTargetView> rt;
-	ComPtr<ID3D11InputLayout> vLayout;
-	ComPtr<ID3D11VertexShader> vs;
-	ComPtr<ID3D11PixelShader> ps;
 
 	HINSTANCE hInstance;
 	std::vector<std::string> cmdArgs;
