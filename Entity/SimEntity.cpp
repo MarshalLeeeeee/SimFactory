@@ -19,7 +19,8 @@ void SimEntity::update(double simTime, double frameTime) {
 	std::shared_ptr<RenderObj> ro = pSimCase->getRenderObj(uuid);
 	if (!ro) return;
 
-    updateRenderObj(ro, simTime, frameTime);
+    updateProperty(simTime, frameTime);
+    updateRenderObj(ro);
 }
 
 bool SimEntity::initUUID() {

@@ -24,7 +24,8 @@ protected:
     bool initUUID();
     virtual bool initRenderObj(ComPtr<ID3D11Device> dev) = 0;
     virtual bool initEntity() = 0;
-    virtual void updateRenderObj(std::shared_ptr<RenderObj> ro, double simTime, double frameTime) = 0;
+    virtual void updateProperty(double simTime, double frameTime) = 0;
+    virtual void updateRenderObj(std::shared_ptr<RenderObj> ro) = 0;
 
     std::string uuid;
     SimCase* pSimCase;

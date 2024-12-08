@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#define PERIOD 10.0
+#define PERIOD 2.0
 
 class FadingTriangleCase : public SimCase {
 public:
@@ -31,7 +31,10 @@ private:
     protected:
         bool initRenderObj(ComPtr<ID3D11Device> dev);
         bool initEntity();
-        void updateRenderObj(std::shared_ptr<RenderObj>, double simTime, double frameTime);
+        void updateProperty(double simTime, double frameTime);
+        void updateRenderObj(std::shared_ptr<RenderObj>);
+
+        float c;
     };
 };
 
