@@ -42,7 +42,6 @@ bool DxApp::init() {
 	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
-	// if (!initPipeline()) return false;
 	return true;
 }
 
@@ -147,51 +146,6 @@ bool DxApp::initDx() {
 	viewport.Width = w;
 	viewport.Height = h;
 	devCon->RSSetViewports(1, &viewport);
-
-	return true;
-}
-
-bool DxApp::initPipeline() {
-	ComPtr<ID3DBlob> blob;
-
-	// Compile and create vertex shader
-	if (FAILED(CreateShaderFromFile(vsHLSL.c_str(), "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()))) {
-		MessageBox(0, L"Compile vertex shader failed...", 0, 0);
-		return false;
-	}
-	if (FAILED(dev->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, vs.GetAddressOf()))) {
-		MessageBox(0, L"Create vertex shader failed...", 0, 0);
-		return false;
-	}
-	
-
-	// Load vertex layout
-	D3D11_INPUT_ELEMENT_DESC ied[] =
-	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
-	if (FAILED(dev->CreateInputLayout(ied, ARRAYSIZE(ied),
-		blob->GetBufferPointer(), blob->GetBufferSize(), vLayout.GetAddressOf()))) {
-		MessageBox(0, L"Set input layout failed...", 0, 0);
-		return false;
-	}
-
-	// Compile and create pixel shader
-	if (FAILED(CreateShaderFromFile(psHLSL.c_str(), "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()))) {
-		MessageBox(0, L"Compile pixel shader failed...", 0, 0);
-		return false;
-	}
-	if (FAILED(dev->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, ps.GetAddressOf()))) {
-		MessageBox(0, L"Create pixel shader failed...", 0, 0);
-		return false;
-	}
-
-	// Set everything
-	devCon->VSSetShader(vs.Get(), nullptr, 0);
-	devCon->PSSetShader(ps.Get(), nullptr, 0);
-	devCon->IASetInputLayout(vLayout.Get());
-	devCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	return true;
 }

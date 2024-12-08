@@ -14,8 +14,8 @@ bool FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev)
 	return pSimCase->addRenderObj(
 		std::make_shared<RenderGeometry<VertexPosColor>>(
 			uuid,
-			pSimCase->getVsHLSL(),
-			pSimCase->getPsHLSL(),
+			L"vs.hlsl",
+			L"ps.hlsl",
 			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
 			vertices,
 			3
@@ -56,14 +56,6 @@ int FadingTriangleCase::getScreenWidth() const {
 
 int FadingTriangleCase::getScreenHeight() const {
 	return 960;
-};
-
-const WCHAR* FadingTriangleCase::getVsHLSL() const {
-	return L"vs.hlsl";
-};
-
-const WCHAR* FadingTriangleCase::getPsHLSL() const {
-	return L"ps.hlsl";
 };
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {

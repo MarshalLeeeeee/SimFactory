@@ -31,7 +31,6 @@ public:
 protected:
 	bool initWindow();
 	bool initDx();
-	bool initPipeline();
 	virtual bool initApp() = 0;
 
 	ComPtr<ID3D11Device> dev;
@@ -48,8 +47,6 @@ protected:
 	HWND hWindow;
 	int w; // width of window
 	int h; // height of window
-	std::wstring vsHLSL;
-	std::wstring psHLSL;
 };
 
 #endif

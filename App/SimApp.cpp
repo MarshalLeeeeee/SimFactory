@@ -22,7 +22,5 @@ bool SimApp::initApp() {
 	pSimCase = createSimCase(cmdArgs);
 	w = pSimCase->getScreenWidth();
 	h = pSimCase->getScreenHeight();
-	vsHLSL = std::wstring(pSimCase->getVsHLSL());
-	psHLSL = std::wstring(pSimCase->getPsHLSL());
 	return true;
 }

@@ -21,8 +21,6 @@ public:
 
 	virtual int getScreenWidth() const;
     virtual int getScreenHeight() const;
-    virtual const WCHAR* getVsHLSL() const;
-    virtual const WCHAR* getPsHLSL() const;
 
 	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
 	void removeEntity(std::string uuid);

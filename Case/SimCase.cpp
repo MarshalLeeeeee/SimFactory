@@ -15,14 +15,6 @@ int SimCase::getScreenHeight() const {
 	return 600;
 };
 
-const WCHAR* SimCase::getVsHLSL() const {
-	return L"vs.hlsl";
-};
-
-const WCHAR* SimCase::getPsHLSL() const {
-	return L"ps.hlsl";
-};
-
 void SimCase::update(ComPtr<ID3D11Device> dev) {
 	auto currTime = std::chrono::high_resolution_clock::now();
     double simTime = static_cast<std::chrono::duration<double>>(currTime - startTime).count();

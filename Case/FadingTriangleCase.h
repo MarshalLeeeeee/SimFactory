@@ -19,8 +19,6 @@ public:
 
     int getScreenWidth() const;
     int getScreenHeight() const;
-    const WCHAR* getVsHLSL() const;
-    const WCHAR* getPsHLSL() const;
 
 private:
     void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
