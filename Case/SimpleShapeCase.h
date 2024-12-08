@@ -9,6 +9,6 @@ class SimpleShapeCase : public SimCase {
 public:
     SimpleShapeCase();
     virtual ~SimpleShapeCase();
-}
+};
 
 #endif
