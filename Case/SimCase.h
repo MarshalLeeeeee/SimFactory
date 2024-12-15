@@ -23,7 +23,7 @@ public:
     virtual int getScreenHeight() const;
 
 	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
-	void removeEntity(std::string uuid);
+	bool removeEntity(std::string uuid);
 	bool hasEntity(std::string uuid) const;
 	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
 

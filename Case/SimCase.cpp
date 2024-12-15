@@ -45,8 +45,14 @@ bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Devi
 	return true;
 }
 
-void SimCase::removeEntity(std::string uuid) {
-	entities.erase(uuid);
+bool SimCase::removeEntity(std::string uuid) {
+	if (hasEntity(uuid)) {
+		entities.erase(uuid);
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool SimCase::hasEntity(std::string uuid) const {
