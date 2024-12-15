@@ -12,11 +12,12 @@ public:
 	SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
 	virtual ~SimApp();
 
-	void update() ;
-	void render() ;
+	void update();
+	void render();
 
 protected:
-	bool initApp() ;
+	bool initApp();
+	bool initSim();
 
 	std::shared_ptr<SimCase> pSimCase;
 };

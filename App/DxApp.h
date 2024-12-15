@@ -32,6 +32,7 @@ protected:
 	bool initWindow();
 	bool initDx();
 	virtual bool initApp() = 0;
+	virtual bool initSim() = 0;
 
 	ComPtr<ID3D11Device> dev;
 	ComPtr<ID3D11DeviceContext> devCon;

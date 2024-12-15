@@ -10,8 +10,6 @@
 
 #include <memory>
 
-#define PERIOD 2.0
-
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
@@ -20,9 +18,18 @@ public:
     int getScreenWidth() const;
     int getScreenHeight() const;
 
+    float getPeriod() const;
+
 private:
+    bool needUI() const;
     void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 
+    std::string sliderUUID;
+    std::string checkboxUUID;
+
+    float period;
+
+private:
     class FadingTriangle : public SimEntity {
     public:
         FadingTriangle(SimCase* pSimCase);

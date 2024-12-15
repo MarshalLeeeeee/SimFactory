@@ -1,6 +1,7 @@
 #include "FadingTriangleCase.h"
 #include "SimUtil.h"
 #include "TypeUtil.h"
+#include "UIWidget.h"
 
 FadingTriangleCase::FadingTriangle::FadingTriangle(SimCase* pSimCase) :
 	SimEntity(pSimCase), c(0.0f) {}
@@ -36,9 +37,10 @@ bool FadingTriangleCase::FadingTriangle::initEntity() {
 FadingTriangleCase::FadingTriangle::~FadingTriangle() {}
 
 void FadingTriangleCase::FadingTriangle::updateProperty(double simTime, double frameTime) {
-	double diff = simTime - static_cast<int>(simTime / PERIOD) * PERIOD;
-	double absDiff = std::abs(diff - PERIOD * 0.5);
-	double result = absDiff / PERIOD * 2.0;
+	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
+	double diff = simTime - static_cast<int>(simTime / period) * period;
+	double absDiff = std::abs(diff - period * 0.5);
+	double result = absDiff / period * 2.0;
 	c = static_cast<float>(result);
 }
 
@@ -55,19 +57,37 @@ void FadingTriangleCase::FadingTriangle::updateRenderObj(std::shared_ptr<RenderO
 	
 
 FadingTriangleCase::FadingTriangleCase() :
-    SimCase() {}
+    SimCase(), period(1.0f) {}
 
 FadingTriangleCase::~FadingTriangleCase() {}
 
 int FadingTriangleCase::getScreenWidth() const {
 	return 1280;
-};
+}
 
 int FadingTriangleCase::getScreenHeight() const {
 	return 960;
-};
+}
+
+bool FadingTriangleCase::needUI() const {
+	return true;
+}
+
+float FadingTriangleCase::getPeriod() const {
+	return period;
+}
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
+	/*if (sliderUUID.empty()) {
+		sliderUUID = GenerateRenderObjUUID();
+		pUI->addUIWidget(std::make_shared<UISliderFloat>(sliderUUID, "Slider", 0.0, 10.0));
+	}
+	else {
+		Any a;
+		pUI->getUIWidget(sliderUUID)->getValue(a);
+		period = a.get<float>();
+	}*/
+
 	if (entities.empty()) {
 		addEntity(std::make_shared<FadingTriangle>(this), dev);
 	}

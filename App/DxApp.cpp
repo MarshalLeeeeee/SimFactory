@@ -42,6 +42,7 @@ bool DxApp::init() {
 	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
+	if (!initSim()) return false;
 	return true;
 }
 

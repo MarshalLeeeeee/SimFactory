@@ -27,6 +27,16 @@
     <ClInclude Include="Entity\SimEntity.h" />
     <ClInclude Include="RenderObj\RenderGeometry.h" />
     <ClInclude Include="RenderObj\RenderObj.h" />
+    <ClInclude Include="UI\imconfig.h" />
+    <ClInclude Include="UI\imgui.h" />
+    <ClInclude Include="UI\imgui_impl_dx11.h" />
+    <ClInclude Include="UI\imgui_impl_win32.h" />
+    <ClInclude Include="UI\imgui_internal.h" />
+    <ClInclude Include="UI\imstb_rectpack.h" />
+    <ClInclude Include="UI\imstb_textedit.h" />
+    <ClInclude Include="UI\imstb_truetype.h" />
+    <ClInclude Include="UI\UI.h" />
+    <ClInclude Include="UI\UIWidget.h" />
     <ClInclude Include="Util\GraphicsUtil.h" />
     <ClInclude Include="Util\SimUtil.h" />
     <ClInclude Include="Util\TypeUtil.h" />
@@ -41,6 +51,15 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObj\RenderGeometry.cpp" />
     <ClCompile Include="RenderObj\RenderObj.cpp" />
+    <ClCompile Include="UI\imgui.cpp" />
+    <ClCompile Include="UI\imgui_demo.cpp" />
+    <ClCompile Include="UI\imgui_draw.cpp" />
+    <ClCompile Include="UI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="UI\imgui_impl_win32.cpp" />
+    <ClCompile Include="UI\imgui_tables.cpp" />
+    <ClCompile Include="UI\imgui_widgets.cpp" />
+    <ClCompile Include="UI\UI.cpp" />
+    <ClCompile Include="UI\UIWidget.cpp" />
     <ClCompile Include="Util\GraphicsUtil.cpp" />
     <ClCompile Include="Util\SimUtil.cpp" />
     <ClCompile Include="Util\TypeUtil.cpp" />
@@ -137,7 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity;$(ProjectDir)UI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,7 +175,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)App;$(ProjectDir)RenderObj;$(ProjectDir)Util;$(ProjectDir)Case;$(ProjectDir)Entity;$(ProjectDir)UI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

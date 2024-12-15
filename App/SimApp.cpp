@@ -1,6 +1,5 @@
 #include "SimApp.h"
 #include "SimUtil.h"
-#include "FadingTriangleCase.h"
 
 SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
 	DxApp(hInstance, lpCmdLine, nCmdShow) {}
@@ -24,3 +23,8 @@ bool SimApp::initApp() {
 	h = pSimCase->getScreenHeight();
 	return true;
 }
+
+bool SimApp::initSim() {
+	return pSimCase->init(hWindow, dev, devCon);
+}
+

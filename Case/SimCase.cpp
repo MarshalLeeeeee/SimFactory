@@ -1,6 +1,6 @@
 #include "SimCase.h"
 
-SimCase::SimCase() {
+SimCase::SimCase() : pUI(nullptr) {
 	startTime = std::chrono::high_resolution_clock::now();
 	updateTime = startTime;
 }
@@ -14,6 +14,21 @@ int SimCase::getScreenWidth() const {
 int SimCase::getScreenHeight() const {
 	return 600;
 };
+
+bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
+	if (!initUI(hWindow, dev, devCon)) return false;
+	return true;
+}
+
+bool SimCase::needUI() const {
+	return false;
+}
+
+bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
+	if (!needUI()) return true;
+	pUI = std::make_shared<UI>(hWindow, dev, devCon);
+	return true;
+}
 
 void SimCase::update(ComPtr<ID3D11Device> dev) {
 	auto currTime = std::chrono::high_resolution_clock::now();
