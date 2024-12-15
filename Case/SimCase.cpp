@@ -66,8 +66,14 @@ bool SimCase::addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11D
 	return true;
 }
 
-void SimCase::removeRenderObj(std::string uuid) {
-	renderObjs.erase(uuid);
+bool SimCase::removeRenderObj(std::string uuid) {
+	if (hasRenderObj(uuid)) {
+		renderObjs.erase(uuid);
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool SimCase::hasRenderObj(std::string uuid) const {

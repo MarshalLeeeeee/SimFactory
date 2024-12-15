@@ -28,7 +28,7 @@ public:
 	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
 
 	bool addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
-	void removeRenderObj(std::string uuid);
+	bool removeRenderObj(std::string uuid);
 	bool hasRenderObj(std::string uuid) const;
 	std::shared_ptr<RenderObj> getRenderObj(std::string uuid) const;
 
