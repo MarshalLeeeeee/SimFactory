@@ -42,6 +42,7 @@ private:
         void updateRenderObj(std::shared_ptr<RenderObj>);
 
         float c;
+        float d;
     };
 };
 

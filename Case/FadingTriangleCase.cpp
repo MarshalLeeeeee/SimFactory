@@ -4,7 +4,7 @@
 #include "UIWidget.h"
 
 FadingTriangleCase::FadingTriangle::FadingTriangle(SimCase* pSimCase) :
-	SimEntity(pSimCase), c(0.0f) {}
+	SimEntity(pSimCase), c(0.0f), d(1.0f) {}
 
 bool FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
 	VertexPosColor vertices[3] = {
@@ -38,10 +38,15 @@ FadingTriangleCase::FadingTriangle::~FadingTriangle() {}
 
 void FadingTriangleCase::FadingTriangle::updateProperty(double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
-	double diff = simTime - static_cast<int>(simTime / period) * period;
-	double absDiff = std::abs(diff - period * 0.5);
-	double result = absDiff / period * 2.0;
-	c = static_cast<float>(result);
+	c += d * frameTime / period;
+	if (c > 1.0f) {
+		d = -1.0f;
+		c = 2.0 - c;
+	}
+	else if (c < 0.0f) {
+		d = 1.0f;
+		c = -c;
+	}
 }
 
 void FadingTriangleCase::FadingTriangle::updateRenderObj(std::shared_ptr<RenderObj> ro) {
