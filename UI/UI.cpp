@@ -4,6 +4,8 @@ UI::UI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCo
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     ImGui::StyleColorsDark();
     ImGui_ImplWin32_Init(hWindow);
     ImGui_ImplDX11_Init(dev.Get(), devCon.Get());
@@ -16,14 +18,15 @@ UI::~UI() {
 }
 
 void UI::render() const {
-    ImGui_ImplDX11_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-    ImGui::Begin("Control Panel");
-    for (auto itr = uiWidgets.begin(); itr != uiWidgets.end(); ++itr) {
-        itr->second->render();
+    {
+        ImGui::Begin("Control Panel");
+        for (auto itr = uiWidgets.begin(); itr != uiWidgets.end(); ++itr) {
+            itr->second->render();
+        }
+        ImGui::End();
     }
-    ImGui::End();
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 bool UI::addUIWidget(std::shared_ptr<UIWidget> pUIWidget) {

@@ -78,15 +78,15 @@ float FadingTriangleCase::getPeriod() const {
 }
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
-	/*if (sliderUUID.empty()) {
+	if (sliderUUID.empty()) {
 		sliderUUID = GenerateRenderObjUUID();
-		pUI->addUIWidget(std::make_shared<UISliderFloat>(sliderUUID, "Slider", 0.0, 10.0));
+		pUI->addUIWidget(std::make_shared<UISliderFloat>(sliderUUID, "Slider", 1.0, 10.0));
+		period = 1.0f;
 	}
 	else {
-		Any a;
-		pUI->getUIWidget(sliderUUID)->getValue(a);
+		Any a = pUI->getUIWidget(sliderUUID)->getValue();
 		period = a.get<float>();
-	}*/
+	}
 
 	if (entities.empty()) {
 		addEntity(std::make_shared<FadingTriangle>(this), dev);

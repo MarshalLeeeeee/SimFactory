@@ -46,10 +46,19 @@ void SimCase::updateEntities(double simTime, double frameTime) {
 	}
 }
 
+void SimCase::preRender(ComPtr<ID3D11DeviceContext> devCon) const {
+	if (needUI()) {
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+}
+
 void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
 		itr->second->render(devCon);
 	}
+	if (needUI()) pUI->render();
 }
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
@@ -104,4 +113,12 @@ bool SimCase::hasRenderObj(std::string uuid) const {
 std::shared_ptr<RenderObj> SimCase::getRenderObj(std::string uuid) const {
 	if (!hasRenderObj(uuid)) return nullptr;
 	else return renderObjs.at(uuid);
+}
+
+LRESULT CALLBACK SimCase::preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (!needUI()) return 0;
+	else if (pUI) {
+		return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+	}
+	else return 0;
 }

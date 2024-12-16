@@ -25,7 +25,8 @@ public:
 	int run();
 	bool init();
 	virtual void update() = 0;
-	virtual void render() = 0;
+	virtual void preRender() const = 0;
+	virtual void render() const = 0;
 	LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 protected:
@@ -33,6 +34,7 @@ protected:
 	bool initDx();
 	virtual bool initApp() = 0;
 	virtual bool initSim() = 0;
+	virtual LRESULT CALLBACK preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) = 0;
 
 	ComPtr<ID3D11Device> dev;
 	ComPtr<ID3D11DeviceContext> devCon;

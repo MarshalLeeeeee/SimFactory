@@ -10,7 +10,11 @@ void SimApp::update() {
 	pSimCase->update(dev);
 }
 
-void SimApp::render() {
+void SimApp::preRender() const {
+	pSimCase->preRender(devCon);
+}
+
+void SimApp::render() const {
 	float bg[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	devCon->ClearRenderTargetView(rt.Get(), bg);
 	pSimCase->render(devCon);
@@ -28,3 +32,9 @@ bool SimApp::initSim() {
 	return pSimCase->init(hWindow, dev, devCon);
 }
 
+LRESULT CALLBACK SimApp::preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (pSimCase) {
+		return pSimCase->preProc(hwnd, msg, wParam, lParam);
+	}
+	else return 0;
+}

@@ -19,7 +19,7 @@ public:
     virtual void render() = 0;
 
     std::string getUUID() const;
-    virtual void getValue(Any& any) const = 0;
+    virtual Any getValue() const = 0;
 
 protected:
     std::string uuid;
@@ -32,7 +32,7 @@ public:
     ~UISliderFloat();
 
     void render();
-    void getValue(Any& any) const;
+    Any getValue() const;
 
 private:
     float val;
@@ -47,7 +47,7 @@ public:
     ~UICheckbox();
 
     void render();
-    void getValue(Any& any) const;
+    Any getValue() const;
 
 private:
     bool val;

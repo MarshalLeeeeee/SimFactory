@@ -10,7 +10,7 @@ std::string UIWidget::getUUID() const {
 }
 
 UISliderFloat::UISliderFloat(std::string uuid, std::string name, float v_min, float v_max) :
-    UIWidget(uuid, name), v_min(v_min), v_max(v_max), val(0.0) {}
+    UIWidget(uuid, name), v_min(v_min), v_max(v_max), val(v_min) {}
 
 UISliderFloat::~UISliderFloat() {}
 
@@ -18,8 +18,8 @@ void UISliderFloat::render() {
     ImGui::SliderFloat(name.c_str(), &val, v_min, v_max);
 }
 
-void UISliderFloat::getValue(Any& any) const {
-    any = Any(val);
+Any UISliderFloat::getValue() const {
+    return Any(val);
 }
 
 UICheckbox::UICheckbox(std::string uuid, std::string name) : 
@@ -31,6 +31,6 @@ void UICheckbox::render() {
     ImGui::Checkbox(name.c_str(), &val);
 }
 
-void UICheckbox::getValue(Any& any) const {
-    any = Any(val);
+Any UICheckbox::getValue() const {
+    return Any(val);
 }

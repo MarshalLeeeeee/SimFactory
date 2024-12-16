@@ -13,11 +13,13 @@ public:
 	virtual ~SimApp();
 
 	void update();
-	void render();
+	void preRender() const;
+	void render() const;
 
 protected:
 	bool initApp();
 	bool initSim();
+	LRESULT CALLBACK preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	std::shared_ptr<SimCase> pSimCase;
 };

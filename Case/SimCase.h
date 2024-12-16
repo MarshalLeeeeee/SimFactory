@@ -10,6 +10,9 @@
 #include <unordered_map>
 #include <chrono>
 
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 class SimEntity;
 
 class SimCase {
@@ -19,6 +22,7 @@ public:
 
 	bool init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
 	void update(ComPtr<ID3D11Device> dev);
+	void preRender(ComPtr<ID3D11DeviceContext> devCon) const;
 	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 
 	virtual int getScreenWidth() const;
@@ -33,6 +37,8 @@ public:
 	bool removeRenderObj(std::string uuid);
 	bool hasRenderObj(std::string uuid) const;
 	std::shared_ptr<RenderObj> getRenderObj(std::string uuid) const;
+
+	LRESULT CALLBACK preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 protected:
 	virtual bool needUI() const;

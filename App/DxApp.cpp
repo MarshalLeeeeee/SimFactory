@@ -33,6 +33,7 @@ int DxApp::run() {
 				break;
 		}
 		update();
+		preRender();
 		render();
 	}
 	return static_cast<int>(msg.wParam);
@@ -152,6 +153,8 @@ bool DxApp::initDx() {
 }
 
 LRESULT CALLBACK DxApp::wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (preProc(hwnd, msg, wParam, lParam)) return true;
+
 	switch (msg) {
 		case WM_DESTROY: {
 			PostQuitMessage(0);
