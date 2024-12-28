@@ -23,7 +23,6 @@
     <ClInclude Include="App\SimApp.h" />
     <ClInclude Include="Case\FadingTriangleCase.h" />
     <ClInclude Include="Case\SimCase.h" />
-    <ClInclude Include="Constant.h" />
     <ClInclude Include="Entity\SimEntity.h" />
     <ClInclude Include="RenderObj\RenderGeometry.h" />
     <ClInclude Include="RenderObj\RenderObj.h" />
@@ -46,7 +45,6 @@
     <ClCompile Include="App\SimApp.cpp" />
     <ClCompile Include="Case\FadingTriangleCase.cpp" />
     <ClCompile Include="Case\SimCase.cpp" />
-    <ClCompile Include="Constant.cpp" />
     <ClCompile Include="Entity\SimEntity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObj\RenderGeometry.cpp" />

@@ -3,18 +3,28 @@
 #include "TypeUtil.h"
 #include "UIWidget.h"
 
-FadingTriangleCase::FadingTriangle::FadingTriangle(SimCase* pSimCase) :
-	SimEntity(pSimCase), c(0.0f), d(1.0f) {}
+FadingTriangle::FadingTriangle(SimCase* pSimCase) :
+	SimEntity(pSimCase), c(0.0f), d(1.0f),
+	vertexCnt(3), indexCnt(3) {
+		VertexPosColor vData[3] = {
+			{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+		};
+		DWORD iData[3] = {
+			0, 1, 2
+		};
+		vertices = std::make_unique<VertexPosColor[]>(vertexCnt);
+        for (int i = 0; i < vertexCnt; ++i) {
+            vertices[i] = vData[i];
+        }
+        indices = std::make_unique<DWORD[]>(indexCnt);
+        for (int i = 0; i < indexCnt; ++i) {
+            indices[i] = iData[i];
+        }
+	}
 
-bool FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
-	VertexPosColor vertices[3] = {
-		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) }
-	};
-	DWORD indices[3] = {
-		0, 1, 2
-	};
+bool FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
 	return pSimCase->addRenderObj(
 		std::make_shared<RenderGeometry<VertexPosColor>>(
 			uuid,
@@ -22,21 +32,21 @@ bool FadingTriangleCase::FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev)
 			L"ps.hlsl",
 			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
 			vertices,
-			3,
+			vertexCnt,
 			indices,
-			3
+			indexCnt
 		),
 		dev
 	);
 }
 
-bool FadingTriangleCase::FadingTriangle::initEntity() {
+bool FadingTriangle::initEntity() {
 	return true;
 }
 
-FadingTriangleCase::FadingTriangle::~FadingTriangle() {}
+FadingTriangle::~FadingTriangle() {}
 
-void FadingTriangleCase::FadingTriangle::updateProperty(double simTime, double frameTime) {
+void FadingTriangle::updateProperty(double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
 	c += d * frameTime / period;
 	if (c > 1.0f) {
@@ -49,17 +59,16 @@ void FadingTriangleCase::FadingTriangle::updateProperty(double simTime, double f
 	}
 }
 
-void FadingTriangleCase::FadingTriangle::updateRenderObj(std::shared_ptr<RenderObj> ro) {
+void FadingTriangle::updateRenderObj(std::shared_ptr<RenderObj> ro) {
 	DirectX::XMFLOAT4 cs[3] = {
 		{ DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) },
 	};
 	for (uint32_t i = 0; i < 3; ++i) {
-		ro->updateField(i, "color", Any(cs[i]));
+		vertices[i].color = cs[i];
 	}
 }
-	
 
 FadingTriangleCase::FadingTriangleCase() :
     SimCase(), period(1.0f) {}

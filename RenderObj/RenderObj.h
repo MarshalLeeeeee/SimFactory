@@ -30,8 +30,6 @@ public:
 
 	std::string getUUID() const;
 
-	virtual void updateField(uint32_t i, std::string fieldName, const Any& anyValue) = 0;
-
 protected:
 	bool initShader(ComPtr<ID3D11Device> dev);
 	virtual bool initLayout(ComPtr<ID3D11Device> dev, ComPtr<ID3DBlob> blob) = 0;

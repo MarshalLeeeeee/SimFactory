@@ -9,25 +9,13 @@ template<typename T>
 class RenderGeometry : public RenderObj {
 public:
     RenderGeometry(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology, 
-        T* vData, uint32_t vCnt, DWORD* iData, uint32_t iCnt) :
+        std::shared_ptr<T[]> vData, uint32_t vCnt, std::shared_ptr<DWORD[]> iData, uint32_t iCnt) :
         RenderObj(uuid, vsHLSL, psHLSL, primitiveTopology),
         vBuffer(nullptr), iBuffer(nullptr),
-        vertexCnt(vCnt), indexCnt(iCnt) {
-        vertices = std::make_unique<T[]>(vCnt);
-        for (int i = 0; i < vCnt; ++i) {
-            vertices[i] = vData[i];
-        }
-        indices = std::make_unique<DWORD[]>(iCnt);
-        for (int i = 0; i < iCnt; ++i) {
-            indices[i] = iData[i];
-        }
-    }
+        vertices(vData), vertexCnt(vCnt),
+        indices(iData), indexCnt(iCnt) {}
 	virtual ~RenderGeometry() {}
 
-    void updateField(uint32_t i, std::string fieldName, const Any& anyValue) {
-        if (i >= vertexCnt) return;
-        vertices[i].updateField(fieldName, anyValue);
-    }
 
 protected:
     bool initLayout(ComPtr<ID3D11Device> dev, ComPtr<ID3DBlob> blob) {
@@ -83,11 +71,11 @@ protected:
     }
 
     ComPtr<ID3D11Buffer> vBuffer;
-    std::unique_ptr<T[]> vertices;
+    std::shared_ptr<T[]> vertices;
     uint32_t vertexCnt;
 
     ComPtr<ID3D11Buffer> iBuffer;
-    std::unique_ptr<DWORD[]> indices;
+    std::shared_ptr<DWORD[]> indices;
     uint32_t indexCnt;
 };
 
