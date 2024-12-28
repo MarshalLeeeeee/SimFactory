@@ -8,7 +8,7 @@ FadingTriangle::FadingTriangle(SimCase* pSimCase) :
 	vertexCnt(3) {
 		VertexPosColor vData[3] = {
 			{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-			{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+			{ DirectX::XMFLOAT3(0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
 			{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
 		};
 		vertices = std::make_unique<VertexPosColor[]>(vertexCnt);

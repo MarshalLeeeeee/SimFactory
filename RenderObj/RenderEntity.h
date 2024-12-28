@@ -78,8 +78,8 @@ private:
             res &= pSimCase->addRenderObj(
                 std::make_shared<RenderObj<T>>(
                     renderObjUUID,
-                    L"vs.hlsl",
-                    L"ps.hlsl",
+                    L"./res/shader/vs_VertexPosColor_raw.hlsl",
+                    L"./res/shader/ps_VertexPosColor_raw.hlsl",
                     primitiveTopologyArray[i],
                     vertices,
                     vertexCnt,

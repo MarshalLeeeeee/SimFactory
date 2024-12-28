@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+  <layout>VertexPosColor</layout>
+  <vertices>0</vertices>
+  <vertices>0.5</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>1</vertices>
+  <vertices>0.45</vertices>
+  <vertices>-0.5</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>1</vertices>
+  <vertices>-0.45</vertices>
+  <vertices>-0.5</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>0</vertices>
+  <vertices>1</vertices>
+  <objects>
+    <ps>raw</ps>
+    <vs>raw</vs>
+    <primitiva_topology>4</primitiva_topology>
+    <indices>0</indices>
+    <indices>1</indices>
+    <indices>2</indices>
+  </objects>
+</root>
