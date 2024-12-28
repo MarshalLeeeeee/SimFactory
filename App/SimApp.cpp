@@ -1,6 +1,20 @@
 #include "SimApp.h"
 #include "SimUtil.h"
 
+#include "SimCase.h"
+#include "FadingTriangleCase.h"
+
+////////////////////////
+// SimCase factory
+std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs) {
+    if (cmdArgs.empty()) return std::make_shared<SimCase>();
+    else {
+        std::string caseName = cmdArgs[0];
+        if (caseName == "FadingTriangleCase") return std::make_shared<FadingTriangleCase>();
+        else return std::make_shared<SimCase>();
+    }
+}
+
 SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
 	DxApp(hInstance, lpCmdLine, nCmdShow) {}
 

@@ -5,7 +5,11 @@
 
 #include "DxApp.h"
 #include "SimCase.h"
+
 #include <memory>
+
+// SimCase factory
+std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs);
 
 class SimApp : public DxApp {
 public:

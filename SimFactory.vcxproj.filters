@@ -75,9 +75,6 @@
     <ClInclude Include="Entity\SimEntity.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="RenderObj\RenderGeometry.h">
-      <Filter>Header Files\RenderObj</Filter>
-    </ClInclude>
     <ClInclude Include="Util\TypeUtil.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
@@ -111,6 +108,9 @@
     <ClInclude Include="UI\UIWidget.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="RenderObj\RenderEntity.h">
+      <Filter>Header Files\RenderObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -139,9 +139,6 @@
     </ClCompile>
     <ClCompile Include="Entity\SimEntity.cpp">
       <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObj\RenderGeometry.cpp">
-      <Filter>Source Files\RenderObj</Filter>
     </ClCompile>
     <ClCompile Include="Util\TypeUtil.cpp">
       <Filter>Source Files\Util</Filter>
@@ -172,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="UI\UIWidget.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObj\RenderEntity.cpp">
+      <Filter>Source Files\RenderObj</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

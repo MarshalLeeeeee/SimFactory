@@ -1,8 +1,5 @@
 #include "SimUtil.h"
 
-#include "SimCase.h"
-#include "FadingTriangleCase.h"
-
 ////////////////////////
 // Generate uuid for render objects
 static std::random_device              rd;
@@ -10,7 +7,8 @@ static std::mt19937                    gen(rd());
 static std::uniform_int_distribution<> dis(0, 15);
 static std::uniform_int_distribution<> dis2(8, 11);
 
-std::string GenerateRenderObjUUID() {
+// Generate uuid
+std::string GenerateUUID() {
     std::stringstream ss;
     int i;
     ss << std::hex;
@@ -26,6 +24,17 @@ std::string GenerateRenderObjUUID() {
     for (i = 0; i < 4; i++) {
         ss << dis(gen);
     };
+    return ss.str();
+}
+
+// Generate sub uuid
+std::string GenerateSubUUID() {
+    std::stringstream ss;
+    int i;
+    ss << std::hex;
+    for (i = 0; i < 4; i++) {
+        ss << dis(gen);
+    }
     return ss.str();
 }
 
@@ -62,16 +71,5 @@ void unparseLpCmdLine(LPSTR lpCmdLine, std::vector<std::string>& cmdArgs) {
     }
     if (!arg.empty()) {
         cmdArgs.push_back(arg);
-    }
-}
-
-////////////////////////
-// SimCase factory
-std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs) {
-    if (cmdArgs.empty()) return std::make_shared<SimCase>();
-    else {
-        std::string caseName = cmdArgs[0];
-        if (caseName == "FadingTriangleCase") return std::make_shared<FadingTriangleCase>();
-        else return std::make_shared<SimCase>();
     }
 }

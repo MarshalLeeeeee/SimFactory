@@ -3,13 +3,14 @@
 #ifndef __SIMENTITY_H__
 #define __SIMENTITY_H__
 
-#include "RenderObj.h"
 #include "SimCase.h"
 
 #include <string>
 #include <memory>
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+class RenderEntityBase;
 
 class SimEntity {
 public:
@@ -22,13 +23,16 @@ public:
 
 protected:
     bool initUUID();
-    virtual bool initRenderObj(ComPtr<ID3D11Device> dev) = 0;
+    virtual bool initRenderEntity(ComPtr<ID3D11Device> dev) = 0;
     virtual bool initEntity() = 0;
     virtual void updateProperty(double simTime, double frameTime) = 0;
-    virtual void updateRenderObj(std::shared_ptr<RenderObj> ro) = 0;
+    virtual void updateRenderEntity() = 0;
 
     std::string uuid;
     SimCase* pSimCase;
+    std::unique_ptr<RenderEntityBase> pRenderEntity;
 };
+
+#include "RenderEntity.h"
 
 #endif

@@ -1,24 +1,24 @@
 #include "RenderObj.h"
 #include "GraphicsUtil.h"
 
-RenderObj::RenderObj(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology) :
+RenderObjBase::RenderObjBase(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology) :
 	vLayout(nullptr), vs(nullptr), ps(nullptr),
 	vsHLSL(vsHLSL), psHLSL(psHLSL),
 	uuid(uuid), primitiveTopology(primitiveTopology) {}
 
-RenderObj::~RenderObj() {}
+RenderObjBase::~RenderObjBase() {}
 
-std::string RenderObj::getUUID() const {
+std::string RenderObjBase::getUUID() const {
 	return uuid;
 }
 
-bool RenderObj::init(ComPtr<ID3D11Device> dev) {
+bool RenderObjBase::init(ComPtr<ID3D11Device> dev) {
 	if (!initShader(dev)) return false;
 	if (!initBuffer(dev)) return false;
 	return true;
 }
 
-bool RenderObj::initShader(ComPtr<ID3D11Device> dev) {
+bool RenderObjBase::initShader(ComPtr<ID3D11Device> dev) {
 	ComPtr<ID3DBlob> blob;
 
 	// Compile and create vertex shader
@@ -44,7 +44,7 @@ bool RenderObj::initShader(ComPtr<ID3D11Device> dev) {
 	return true;
 }
 
-void RenderObj::render(ComPtr<ID3D11DeviceContext> devCon) const {
+void RenderObjBase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	devCon->VSSetShader(vs.Get(), nullptr, 0);
 	devCon->PSSetShader(ps.Get(), nullptr, 0);
 	devCon->IASetInputLayout(vLayout.Get());

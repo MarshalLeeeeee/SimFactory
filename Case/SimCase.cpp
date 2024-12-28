@@ -88,7 +88,7 @@ std::shared_ptr<SimEntity> SimCase::getEntity(std::string uuid) const {
 	else return entities.at(uuid);
 }
 
-bool SimCase::addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev) {
+bool SimCase::addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev) {
 	std::string uuid = pRenderObj->getUUID();
 	if (hasRenderObj(uuid)) return false;
 	if (!pRenderObj->init(dev)) return false;
@@ -110,7 +110,7 @@ bool SimCase::hasRenderObj(std::string uuid) const {
 	return renderObjs.find(uuid) != renderObjs.end();
 }
 
-std::shared_ptr<RenderObj> SimCase::getRenderObj(std::string uuid) const {
+std::shared_ptr<RenderObjBase> SimCase::getRenderObj(std::string uuid) const {
 	if (!hasRenderObj(uuid)) return nullptr;
 	else return renderObjs.at(uuid);
 }

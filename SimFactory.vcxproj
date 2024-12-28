@@ -24,7 +24,7 @@
     <ClInclude Include="Case\FadingTriangleCase.h" />
     <ClInclude Include="Case\SimCase.h" />
     <ClInclude Include="Entity\SimEntity.h" />
-    <ClInclude Include="RenderObj\RenderGeometry.h" />
+    <ClInclude Include="RenderObj\RenderEntity.h" />
     <ClInclude Include="RenderObj\RenderObj.h" />
     <ClInclude Include="UI\imconfig.h" />
     <ClInclude Include="UI\imgui.h" />
@@ -47,7 +47,7 @@
     <ClCompile Include="Case\SimCase.cpp" />
     <ClCompile Include="Entity\SimEntity.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderObj\RenderGeometry.cpp" />
+    <ClCompile Include="RenderObj\RenderEntity.cpp" />
     <ClCompile Include="RenderObj\RenderObj.cpp" />
     <ClCompile Include="UI\imgui.cpp" />
     <ClCompile Include="UI\imgui_demo.cpp" />

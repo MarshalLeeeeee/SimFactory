@@ -6,7 +6,7 @@
 #include "SimCase.h"
 #include "SimEntity.h"
 #include "RenderObj.h"
-#include "RenderGeometry.h"
+#include "RenderObj.h"
 
 #include <memory>
 #include <d3d11.h>
@@ -21,10 +21,10 @@ public:
     virtual ~FadingTriangle();
 
 private:
-    bool initRenderObj(ComPtr<ID3D11Device> dev);
+    bool initRenderEntity(ComPtr<ID3D11Device> dev);
     bool initEntity();
     void updateProperty(double simTime, double frameTime);
-    void updateRenderObj(std::shared_ptr<RenderObj>);
+    void updateRenderEntity();
 
 private: // sim logic property
     float c;
@@ -33,9 +33,6 @@ private: // sim logic property
 private: // render property
     std::shared_ptr<VertexPosColor[]> vertices;
     uint32_t vertexCnt;
-
-    std::shared_ptr<DWORD[]> indices;
-    uint32_t indexCnt;
 };
 
 class FadingTriangleCase : public SimCase {

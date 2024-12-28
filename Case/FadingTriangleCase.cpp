@@ -5,39 +5,49 @@
 
 FadingTriangle::FadingTriangle(SimCase* pSimCase) :
 	SimEntity(pSimCase), c(0.0f), d(1.0f),
-	vertexCnt(3), indexCnt(3) {
+	vertexCnt(3) {
 		VertexPosColor vData[3] = {
 			{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
 			{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
 			{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
 		};
-		DWORD iData[3] = {
-			0, 1, 2
-		};
 		vertices = std::make_unique<VertexPosColor[]>(vertexCnt);
-        for (int i = 0; i < vertexCnt; ++i) {
+        for (uint32_t i = 0; i < vertexCnt; ++i) {
             vertices[i] = vData[i];
-        }
-        indices = std::make_unique<DWORD[]>(indexCnt);
-        for (int i = 0; i < indexCnt; ++i) {
-            indices[i] = iData[i];
         }
 	}
 
-bool FadingTriangle::initRenderObj(ComPtr<ID3D11Device> dev) {
-	return pSimCase->addRenderObj(
-		std::make_shared<RenderGeometry<VertexPosColor>>(
-			uuid,
-			L"vs.hlsl",
-			L"ps.hlsl",
-			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
-			vertices,
-			vertexCnt,
-			indices,
-			indexCnt
-		),
-		dev
+bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
+	D3D_PRIMITIVE_TOPOLOGY primitiveTopologyData[1] = {
+		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+	};
+	DWORD iData[3] = {
+		0, 1, 2
+	};
+	DWORD* indicesData[1] = {
+		iData
+	};
+	uint32_t indicesLenData[1] = {
+		3
+	};
+	VertexPosColor vData[3] = {
+		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+	};
+	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
+		pSimCase,
+		uuid,
+		primitiveTopologyData,
+		indicesData,
+		indicesLenData,
+		1,
+		vData,
+		3
 	);
+	bool res = pRenderEntity->init(dev);
+	if (!res) pRenderEntity = nullptr;
+	return res;
 }
 
 bool FadingTriangle::initEntity() {
@@ -48,10 +58,10 @@ FadingTriangle::~FadingTriangle() {}
 
 void FadingTriangle::updateProperty(double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
-	c += d * frameTime / period;
+	c += d * float(frameTime) / period;
 	if (c > 1.0f) {
 		d = -1.0f;
-		c = 2.0 - c;
+		c = 2.0f - c;
 	}
 	else if (c < 0.0f) {
 		d = 1.0f;
@@ -59,14 +69,15 @@ void FadingTriangle::updateProperty(double simTime, double frameTime) {
 	}
 }
 
-void FadingTriangle::updateRenderObj(std::shared_ptr<RenderObj> ro) {
+void FadingTriangle::updateRenderEntity() {
+	if (!pRenderEntity) return;
 	DirectX::XMFLOAT4 cs[3] = {
 		{ DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) },
 	};
 	for (uint32_t i = 0; i < 3; ++i) {
-		vertices[i].color = cs[i];
+		pRenderEntity->updateField(i, "color", cs[i]);
 	}
 }
 
@@ -93,7 +104,7 @@ float FadingTriangleCase::getPeriod() const {
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
 	if (sliderUUID.empty()) {
-		sliderUUID = GenerateRenderObjUUID();
+		sliderUUID = GenerateUUID();
 		pUI->addUIWidget(std::make_shared<UISliderFloat>(sliderUUID, "Slider", 1.0, 10.0));
 		period = 1.0f;
 	}

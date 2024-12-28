@@ -33,10 +33,10 @@ public:
 	bool hasEntity(std::string uuid) const;
 	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
 
-	bool addRenderObj(std::shared_ptr<RenderObj> pRenderObj, ComPtr<ID3D11Device> dev);
+	bool addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev);
 	bool removeRenderObj(std::string uuid);
 	bool hasRenderObj(std::string uuid) const;
-	std::shared_ptr<RenderObj> getRenderObj(std::string uuid) const;
+	std::shared_ptr<RenderObjBase> getRenderObj(std::string uuid) const;
 
 	LRESULT CALLBACK preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -47,7 +47,7 @@ protected:
 	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 	void updateEntities(double simTime, double frameTime);
 
-	std::unordered_map<std::string, std::shared_ptr<RenderObj>> renderObjs;
+	std::unordered_map<std::string, std::shared_ptr<RenderObjBase>> renderObjs;
 	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
 
 	std::shared_ptr<UI> pUI;
