@@ -21,29 +21,11 @@ DxApp::DxApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
 
 DxApp::~DxApp() {}
 
-int DxApp::run() {
-	MSG msg;
-	ZeroMemory(&msg, sizeof(MSG));
-	while (true) {
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-
-			if (msg.message == WM_QUIT)
-				break;
-		}
-		update();
-		preRender();
-		render();
-	}
-	return static_cast<int>(msg.wParam);
-}
-
 bool DxApp::init() {
 	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
-	if (!initSim()) return false;
+	if (!initFunc()) return false;
 	return true;
 }
 
@@ -152,8 +134,27 @@ bool DxApp::initDx() {
 	return true;
 }
 
+int DxApp::run() {
+	MSG msg;
+	ZeroMemory(&msg, sizeof(MSG));
+	while (true) {
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+
+			if (msg.message == WM_QUIT)
+				break;
+		}
+		update();
+		preRender();
+		render();
+		postRender();
+	}
+	return static_cast<int>(msg.wParam);
+}
+
 LRESULT CALLBACK DxApp::wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	if (preProc(hwnd, msg, wParam, lParam)) return true;
+	if (appProc(hwnd, msg, wParam, lParam)) return true;
 
 	switch (msg) {
 		case WM_DESTROY: {

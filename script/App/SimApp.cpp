@@ -4,8 +4,6 @@
 #include "SimCase.h"
 #include "FadingTriangleCase.h"
 
-////////////////////////
-// SimCase factory
 std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs) {
     if (cmdArgs.empty()) return std::make_shared<SimCase>();
     else {
@@ -19,6 +17,17 @@ SimApp::SimApp(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow) :
 	DxApp(hInstance, lpCmdLine, nCmdShow) {}
 
 SimApp::~SimApp() {}
+
+bool SimApp::initApp() {
+	pSimCase = createSimCase(cmdArgs);
+	w = pSimCase->getScreenWidth();
+	h = pSimCase->getScreenHeight();
+	return true;
+}
+
+bool SimApp::initFunc() {
+	return pSimCase->init(hWindow, dev, devCon);
+}
 
 void SimApp::update() {
 	pSimCase->update(dev);
@@ -35,18 +44,9 @@ void SimApp::render() const {
 	swChain->Present(0, 0);
 }
 
-bool SimApp::initApp() {
-	pSimCase = createSimCase(cmdArgs);
-	w = pSimCase->getScreenWidth();
-	h = pSimCase->getScreenHeight();
-	return true;
-}
+void SimApp::postRender() const {}
 
-bool SimApp::initSim() {
-	return pSimCase->init(hWindow, dev, devCon);
-}
-
-LRESULT CALLBACK SimApp::preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK SimApp::appProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	if (pSimCase) {
 		return pSimCase->preProc(hwnd, msg, wParam, lParam);
 	}

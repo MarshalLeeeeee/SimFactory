@@ -19,12 +19,6 @@
     <Filter Include="Source Files\App">
       <UniqueIdentifier>{d0c9b234-2f63-44ee-b44c-f814ea68e4da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\RenderObj">
-      <UniqueIdentifier>{89530e00-424c-46bc-9171-a2bb04b4156c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\RenderObj">
-      <UniqueIdentifier>{96d350fa-1364-47aa-801e-ba5eeb897e2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Case">
       <UniqueIdentifier>{fe3ab045-5afd-4593-8eb7-e6b81b20c346}</UniqueIdentifier>
     </Filter>
@@ -37,141 +31,153 @@
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{5707dbe0-efee-4ee4-adc6-9f9250b06d6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Entity">
-      <UniqueIdentifier>{80c81163-c0aa-4fa1-bab0-578a701c87ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Entity">
-      <UniqueIdentifier>{061bfe75-12ff-4b37-9f5e-37ea262b7c03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{7dd5189d-3753-4ee0-9160-c2b590506d4d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{a5ff5c2e-ab3c-4783-a4c0-c1c6ed9a4975}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{89530e00-424c-46bc-9171-a2bb04b4156c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{96d350fa-1364-47aa-801e-ba5eeb897e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sim">
+      <UniqueIdentifier>{80c81163-c0aa-4fa1-bab0-578a701c87ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sim">
+      <UniqueIdentifier>{061bfe75-12ff-4b37-9f5e-37ea262b7c03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App\DxApp.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
-    <ClInclude Include="App\SimApp.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObj\RenderObj.h">
-      <Filter>Header Files\RenderObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Case\SimCase.h">
-      <Filter>Header Files\Case</Filter>
-    </ClInclude>
-    <ClInclude Include="Case\FadingTriangleCase.h">
-      <Filter>Header Files\Case</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\GraphicsUtil.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\SimUtil.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\SimEntity.h">
-      <Filter>Header Files\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Util\TypeUtil.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imconfig.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imgui.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imgui_impl_dx11.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imgui_impl_win32.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imgui_internal.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imstb_rectpack.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imstb_textedit.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\imstb_truetype.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UI.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\UIWidget.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObj\RenderEntity.h">
-      <Filter>Header Files\RenderObj</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="script\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="App\DxApp.cpp">
+    <ClCompile Include="script\App\DxApp.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
-    <ClCompile Include="App\SimApp.cpp">
+    <ClCompile Include="script\App\SimApp.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
-    <ClCompile Include="RenderObj\RenderObj.cpp">
-      <Filter>Source Files\RenderObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Case\SimCase.cpp">
+    <ClCompile Include="script\Case\FadingTriangleCase.cpp">
       <Filter>Source Files\Case</Filter>
     </ClCompile>
-    <ClCompile Include="Case\FadingTriangleCase.cpp">
+    <ClCompile Include="script\Case\SimCase.cpp">
       <Filter>Source Files\Case</Filter>
     </ClCompile>
-    <ClCompile Include="Util\GraphicsUtil.cpp">
+    <ClCompile Include="script\Case\SimpleShapeCase.cpp">
+      <Filter>Source Files\Case</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Render\RenderEntity.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Render\RenderObj.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_demo.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_draw.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_impl_dx11.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_impl_win32.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_tables.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\imgui_widgets.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\UI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\UI\UIWidget.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Util\GraphicsUtil.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Util\SimUtil.cpp">
+    <ClCompile Include="script\Util\SimUtil.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\SimEntity.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Util\TypeUtil.cpp">
+    <ClCompile Include="script\Util\TypeUtil.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui.cpp">
-      <Filter>Source Files\UI</Filter>
+    <ClCompile Include="script\Sim\SimEntity.cpp">
+      <Filter>Source Files\Sim</Filter>
     </ClCompile>
-    <ClCompile Include="UI\imgui_demo.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\imgui_draw.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\imgui_impl_dx11.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\imgui_impl_win32.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\imgui_tables.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\imgui_widgets.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UI.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\UIWidget.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObj\RenderEntity.cpp">
-      <Filter>Source Files\RenderObj</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="script\App\DxApp.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="script\App\SimApp.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Case\FadingTriangleCase.h">
+      <Filter>Header Files\Case</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Case\SimCase.h">
+      <Filter>Header Files\Case</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Case\SimpleShapeCase.h">
+      <Filter>Header Files\Case</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\RenderEntity.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\RenderObj.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imconfig.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imgui.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imgui_impl_dx11.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imgui_impl_win32.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imgui_internal.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imstb_rectpack.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imstb_textedit.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\imstb_truetype.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\UI.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\UIWidget.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Util\GraphicsUtil.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Util\SimUtil.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Util\TypeUtil.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Sim\SimEntity.h">
+      <Filter>Header Files\Sim</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
