@@ -44,11 +44,13 @@ void SimApp::render() const {
 	swChain->Present(0, 0);
 }
 
-void SimApp::postRender() const {}
+void SimApp::postRender() const {
+	pSimCase->postRender(devCon);
+}
 
 LRESULT CALLBACK SimApp::appProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	if (pSimCase) {
-		return pSimCase->preProc(hwnd, msg, wParam, lParam);
+		return pSimCase->simProc(hwnd, msg, wParam, lParam);
 	}
 	else return 0;
 }

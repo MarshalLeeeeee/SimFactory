@@ -19,41 +19,74 @@ class SimCase {
 public:
 	SimCase();
 	virtual ~SimCase();
-
-	bool init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
-	void update(ComPtr<ID3D11Device> dev);
-	void preRender(ComPtr<ID3D11DeviceContext> devCon) const;
-	void render(ComPtr<ID3D11DeviceContext> devCon) const;
-
+	/* screen width defined by specific sim case */
 	virtual int getScreenWidth() const;
-    virtual int getScreenHeight() const;
-
-	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
-	bool removeEntity(std::string uuid);
-	bool hasEntity(std::string uuid) const;
-	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
-
-	bool addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev);
-	bool removeRenderObj(std::string uuid);
-	bool hasRenderObj(std::string uuid) const;
-	std::shared_ptr<RenderObjBase> getRenderObj(std::string uuid) const;
-
-	LRESULT CALLBACK preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
+	/* screen height defined by specific sim case */
+	virtual int getScreenHeight() const;
 protected:
-	virtual bool needUI() const;
+	/* start time of the simulation */
+	std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+	/* time of the last update */
+	std::chrono::time_point<std::chrono::high_resolution_clock> updateTime;
+
+public:
+	/* 
+	* initialization of the sim case 
+	* including ui
+	*/
+	bool init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
+	/* event handler of sim case */
+	LRESULT CALLBACK simProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+protected:
+	/* initialization of ui */
 	bool initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
-
-	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
-	void updateEntities(double simTime, double frameTime);
-
-	std::unordered_map<std::string, std::shared_ptr<RenderObjBase>> renderObjs;
-	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
-
+	/* if sim case needs ui */
+	virtual bool needUI() const;
+	/* ptr of UI */
 	std::shared_ptr<UI> pUI;
 
-	std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
-	std::chrono::time_point<std::chrono::high_resolution_clock> updateTime;
+public:
+	/* update of the logic properties */
+	void update(ComPtr<ID3D11Device> dev);
+	/* pre stage of render */
+	void preRender(ComPtr<ID3D11DeviceContext> devCon) const;
+	/* stage of render 
+	* draw renderobjs and ui
+	*/
+	void render(ComPtr<ID3D11DeviceContext> devCon) const;
+	/* post stage of render */
+	void postRender(ComPtr<ID3D11DeviceContext> devCon) const;
+protected:
+	/* implementation of the update of the logic properties */
+	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
+
+public:
+	/* add sim entity */
+	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
+	/* remove sim entity */
+	bool removeEntity(std::string uuid);
+	/* if has sim entity */
+	bool hasEntity(std::string uuid) const;
+	/* get sim entity, nullptr if not exist */
+	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
+protected:
+	/* update logic properties of sim entities */
+	void updateEntities(double simTime, double frameTime);
+	/* uuid -> sim entity */
+	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
+
+public:
+	/* add render obj */
+	bool addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev);
+	/* remove render obj */
+	bool removeRenderObj(std::string uuid);
+	/* if has render obj */
+	bool hasRenderObj(std::string uuid) const;
+	/* get render obj, nullptr if not exist */
+	std::shared_ptr<RenderObjBase> getRenderObj(std::string uuid) const;
+protected:
+	/* uuid -> render obj */
+	std::unordered_map<std::string, std::shared_ptr<RenderObjBase>> renderObjs;
 };
 
 #include "SimEntity.h"

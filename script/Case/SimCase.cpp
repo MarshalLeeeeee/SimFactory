@@ -20,14 +20,19 @@ bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceCo
 	return true;
 }
 
-bool SimCase::needUI() const {
-	return false;
+LRESULT CALLBACK SimCase::simProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (pUI) return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+	else return 0;
 }
 
 bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!needUI()) return true;
 	pUI = std::make_shared<UI>(hWindow, dev, devCon);
 	return true;
+}
+
+bool SimCase::needUI() const {
+	return false;
 }
 
 void SimCase::update(ComPtr<ID3D11Device> dev) {
@@ -39,12 +44,6 @@ void SimCase::update(ComPtr<ID3D11Device> dev) {
 }
 
 void SimCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {}
-
-void SimCase::updateEntities(double simTime, double frameTime) {
-	for (auto itr = entities.begin(); itr != entities.end(); ++itr) {
-		itr->second->update(simTime, frameTime);
-	}
-}
 
 void SimCase::preRender(ComPtr<ID3D11DeviceContext> devCon) const {
 	if (needUI()) {
@@ -60,6 +59,8 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	}
 	if (needUI()) pUI->render();
 }
+
+void SimCase::postRender(ComPtr<ID3D11DeviceContext> devCon) const {}
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
 	if (!pSimEntity->init(dev)) return false;
@@ -88,6 +89,12 @@ std::shared_ptr<SimEntity> SimCase::getEntity(std::string uuid) const {
 	else return entities.at(uuid);
 }
 
+void SimCase::updateEntities(double simTime, double frameTime) {
+	for (auto itr = entities.begin(); itr != entities.end(); ++itr) {
+		itr->second->update(simTime, frameTime);
+	}
+}
+
 bool SimCase::addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev) {
 	std::string uuid = pRenderObj->getUUID();
 	if (hasRenderObj(uuid)) return false;
@@ -113,12 +120,4 @@ bool SimCase::hasRenderObj(std::string uuid) const {
 std::shared_ptr<RenderObjBase> SimCase::getRenderObj(std::string uuid) const {
 	if (!hasRenderObj(uuid)) return nullptr;
 	else return renderObjs.at(uuid);
-}
-
-LRESULT CALLBACK SimCase::preProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	if (!needUI()) return 0;
-	else if (pUI) {
-		return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
-	}
-	else return 0;
 }

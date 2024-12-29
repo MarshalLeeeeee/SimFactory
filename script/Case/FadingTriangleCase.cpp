@@ -4,18 +4,9 @@
 #include "UIWidget.h"
 
 FadingTriangle::FadingTriangle(SimCase* pSimCase) :
-	SimEntity(pSimCase), c(0.0f), d(1.0f),
-	vertexCnt(3) {
-		VertexPosColor vData[3] = {
-			{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-			{ DirectX::XMFLOAT3(0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-			{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
-		};
-		vertices = std::make_unique<VertexPosColor[]>(vertexCnt);
-        for (uint32_t i = 0; i < vertexCnt; ++i) {
-            vertices[i] = vData[i];
-        }
-	}
+	SimEntity(pSimCase), c(0.0f), d(1.0f) {}
+
+FadingTriangle::~FadingTriangle() {}
 
 bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 	D3D_PRIMITIVE_TOPOLOGY primitiveTopologyData[1] = {
@@ -53,8 +44,6 @@ bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 bool FadingTriangle::initEntity() {
 	return true;
 }
-
-FadingTriangle::~FadingTriangle() {}
 
 void FadingTriangle::updateProperty(double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
@@ -98,10 +87,6 @@ bool FadingTriangleCase::needUI() const {
 	return true;
 }
 
-float FadingTriangleCase::getPeriod() const {
-	return period;
-}
-
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
 	if (sliderUUID.empty()) {
 		sliderUUID = GenerateUUID();
@@ -119,4 +104,8 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 	else {
 		updateEntities(simTime, frameTime);
 	}
+}
+
+float FadingTriangleCase::getPeriod() const {
+	return period;
 }

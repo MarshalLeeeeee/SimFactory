@@ -26,32 +26,39 @@ private:
     void updateProperty(double simTime, double frameTime);
     void updateRenderEntity();
 
-private: // sim logic property
+private:
+    /* color degree */
     float c;
+    /* change direction */
     float d;
-
-private: // render property
-    std::shared_ptr<VertexPosColor[]> vertices;
-    uint32_t vertexCnt;
 };
 
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
     virtual ~FadingTriangleCase();
-
+    /* screen width defined by specific sim case */
     int getScreenWidth() const;
+    /* screen height defined by specific sim case */
     int getScreenHeight() const;
 
-    float getPeriod() const;
-
 private:
+    /* if sim case needs ui */
     bool needUI() const;
-    void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
-
+    /* uuid of slider */
     std::string sliderUUID;
+    /* uuid of checkbox */
     std::string checkboxUUID;
 
+private:
+	/* implementation of the update of the logic properties */
+    void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
+
+public:
+    /* get changing period */
+    float getPeriod() const;
+private:
+    /* changing period */
     float period;
 };
 

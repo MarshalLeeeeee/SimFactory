@@ -4,9 +4,7 @@
 SimEntity::SimEntity(SimCase* pSimCase) :
 	pSimCase(pSimCase) {}
 
-SimEntity::~SimEntity() {
-	pSimCase->removeRenderObj(uuid);
-}
+SimEntity::~SimEntity() {}
 
 bool SimEntity::init(ComPtr<ID3D11Device> dev) {
 	if (!initUUID()) return false;
