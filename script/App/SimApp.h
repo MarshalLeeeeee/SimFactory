@@ -1,3 +1,7 @@
+/*
+ * SimApp
+ * hold sim case, which represents simulation logic and rendering
+ */
 #pragma once
 
 #ifndef __SIMAPP_H_
