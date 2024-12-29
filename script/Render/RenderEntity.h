@@ -20,22 +20,29 @@
 #include <string>
 #include <unordered_set>
 
-
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+/*
+ * Render entity manages render obj
+ * Render entity has the common vertex layout and vertices data
+ */
 class RenderEntityBase {
 public:
     RenderEntityBase(SimCase* pSimCase, std::string uuid);
     virtual ~RenderEntityBase();
-
-    bool init(ComPtr<ID3D11Device> dev);
+    /* update field of vertices data */
     virtual void updateField(uint32_t i, const std::string fieldName, const Any& anyValue) = 0;
-
 protected:
-    virtual bool initRenderObj(ComPtr<ID3D11Device> dev) = 0;
-
     SimCase* pSimCase;
     std::string uuid;
+
+public:
+    /* initialization */
+    bool init(ComPtr<ID3D11Device> dev);
+protected:
+    /* initialization of render objs */
+    virtual bool initRenderObj(ComPtr<ID3D11Device> dev) = 0;
+    /* uuid of render objs */
     std::unordered_set<std::string> renderObjs;
 };
 
@@ -62,15 +69,22 @@ public:
             vertices[i] = vData[i];
         }
     }
-
     ~RenderEntity() {}
-
+    /* update field of vertices data */
     void updateField(uint32_t i, const std::string fieldName, const Any& anyValue) {
         if (i >= vertexCnt) return;
         vertices[i].updateField(fieldName, anyValue);
     }
+private:
+    std::shared_ptr<T[]> vertices;
+    uint32_t vertexCnt;
+    std::unique_ptr<D3D_PRIMITIVE_TOPOLOGY[]> primitiveTopologyArray;
+    std::unique_ptr<DWORD*[]> indicesArray;
+    std::unique_ptr<uint32_t[]>  indicesLenArray;
+    uint32_t renderObjCnt;
 
 private:
+    /* initialization of render objs */
     bool initRenderObj(ComPtr<ID3D11Device> dev) {
         bool res = true;
         for (uint32_t i = 0; i < renderObjCnt; ++i) {
@@ -100,14 +114,6 @@ private:
         }
         return res;
     }
-
-    std::shared_ptr<T[]> vertices;
-    uint32_t vertexCnt;
-
-    std::unique_ptr<D3D_PRIMITIVE_TOPOLOGY[]> primitiveTopologyArray;
-    std::unique_ptr<DWORD*[]> indicesArray;
-    std::unique_ptr<uint32_t[]>  indicesLenArray;
-    uint32_t renderObjCnt;
 };
 
 #endif

@@ -8,10 +8,6 @@ RenderObjBase::RenderObjBase(std::string uuid, const WCHAR* vsHLSL, const WCHAR*
 
 RenderObjBase::~RenderObjBase() {}
 
-std::string RenderObjBase::getUUID() const {
-	return uuid;
-}
-
 bool RenderObjBase::init(ComPtr<ID3D11Device> dev) {
 	if (!initShader(dev)) return false;
 	if (!initBuffer(dev)) return false;
@@ -50,4 +46,8 @@ void RenderObjBase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	devCon->IASetInputLayout(vLayout.Get());
 	devCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	doRender(devCon);
+}
+
+std::string RenderObjBase::getUUID() const {
+	return uuid;
 }

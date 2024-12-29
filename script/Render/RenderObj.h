@@ -20,30 +20,43 @@
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+/*
+ * Render obj is the primitive class for rendering
+ */
 class RenderObjBase {
 public:
 	RenderObjBase(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology);
 	virtual ~RenderObjBase();
 
+public:
+    /* initialization : shader, buffer */
 	bool init(ComPtr<ID3D11Device> dev);
-	void render(ComPtr<ID3D11DeviceContext> devCon) const;
-
-	std::string getUUID() const;
-
 protected:
+    /* initialization of shader */
 	bool initShader(ComPtr<ID3D11Device> dev);
+    /* initialization of layout */
 	virtual bool initLayout(ComPtr<ID3D11Device> dev, ComPtr<ID3DBlob> blob) = 0;
+    /* initialization of buffer */
 	virtual bool initBuffer(ComPtr<ID3D11Device> dev) = 0;
-	virtual void doRender(ComPtr<ID3D11DeviceContext> devCon) const = 0;
-
 	ComPtr<ID3D11InputLayout> vLayout;
 	ComPtr<ID3D11VertexShader> vs;
 	ComPtr<ID3D11PixelShader> ps;
-
-	std::string uuid;
 	std::wstring vsHLSL;
 	std::wstring psHLSL;
 	D3D_PRIMITIVE_TOPOLOGY primitiveTopology;
+
+public:
+    /* prepare render, then draw */
+	void render(ComPtr<ID3D11DeviceContext> devCon) const;
+protected:
+    /* draw */
+	virtual void doRender(ComPtr<ID3D11DeviceContext> devCon) const = 0;
+
+public:
+    /* get uuid */
+	std::string getUUID() const;
+protected:
+	std::string uuid;
 };
 
 
@@ -62,8 +75,7 @@ public:
 		}
 	virtual ~RenderObj() {}
 
-
-protected:
+private:
     bool initLayout(ComPtr<ID3D11Device> dev, ComPtr<ID3DBlob> blob) {
         if (FAILED(dev->CreateInputLayout(T::inputLayout, ARRAYSIZE(T::inputLayout),
             blob->GetBufferPointer(), blob->GetBufferSize(), vLayout.GetAddressOf()))) {
@@ -84,7 +96,6 @@ protected:
         if (FAILED(hr)) {
             return false;
         }
-
         // index buffer
         D3D11_BUFFER_DESC ibd;
         ZeroMemory(&ibd, sizeof(ibd));
@@ -98,31 +109,29 @@ protected:
         if (FAILED(dev->CreateBuffer(&ibd, &initDataI, iBuffer.GetAddressOf()))) {
             return false;
         }
-
         return true;
     }
+    ComPtr<ID3D11Buffer> vBuffer;
+    std::shared_ptr<T[]> vertices;
+    uint32_t vertexCnt;
+    ComPtr<ID3D11Buffer> iBuffer;
+    std::unique_ptr<DWORD[]> indices;
+    uint32_t indexCnt;
 
+private:
 	void doRender(ComPtr<ID3D11DeviceContext> devCon) const {
-
+        // buff data
         D3D11_MAPPED_SUBRESOURCE ms;
         devCon->Map(vBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms); // map the buffer
         memcpy(ms.pData, vertices.get(), sizeof(T) * vertexCnt); // copy the data
         devCon->Unmap(vBuffer.Get(), NULL); // unmap the buffer
-
+        // draw
         UINT stride = sizeof(T);
         UINT offset = 0;
         devCon->IASetVertexBuffers(0, 1, vBuffer.GetAddressOf(), &stride, &offset);
         devCon->IASetIndexBuffer(iBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
         devCon->DrawIndexed(indexCnt, 0, 0);
     }
-
-    ComPtr<ID3D11Buffer> vBuffer;
-    std::shared_ptr<T[]> vertices;
-    uint32_t vertexCnt;
-
-    ComPtr<ID3D11Buffer> iBuffer;
-    std::unique_ptr<DWORD[]> indices;
-    uint32_t indexCnt;
 };
 
 #endif
