@@ -41,10 +41,6 @@ bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 	return res;
 }
 
-bool FadingTriangle::initEntity() {
-	return true;
-}
-
 void FadingTriangle::updateProperty(double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
 	c += d * float(frameTime) / period;

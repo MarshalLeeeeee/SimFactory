@@ -21,9 +21,13 @@ public:
     virtual ~FadingTriangle();
 
 private:
+    /* intialization of render entity */
     bool initRenderEntity(ComPtr<ID3D11Device> dev);
-    bool initEntity();
+
+private:
+    /* update the logic property */
     void updateProperty(double simTime, double frameTime);
+    /* update the render entity property */
     void updateRenderEntity();
 
 private:

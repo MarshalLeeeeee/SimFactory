@@ -2,7 +2,7 @@
 #include "SimUtil.h"
 
 SimEntity::SimEntity(SimCase* pSimCase) :
-	pSimCase(pSimCase) {}
+	pSimCase(pSimCase), pRenderEntity(nullptr) {}
 
 SimEntity::~SimEntity() {}
 
@@ -11,11 +11,6 @@ bool SimEntity::init(ComPtr<ID3D11Device> dev) {
 	if (!initRenderEntity(dev)) return false;
 	if (!initEntity()) return false;
 	return true;
-}
-
-void SimEntity::update(double simTime, double frameTime) {
-	updateProperty(simTime, frameTime);
-    updateRenderEntity();
 }
 
 bool SimEntity::initUUID() {
@@ -29,6 +24,21 @@ bool SimEntity::initUUID() {
 	}
 	return false;
 }
+
+bool SimEntity::initRenderEntity(ComPtr<ID3D11Device> dev) {
+	return true;
+}
+
+bool SimEntity::initEntity() {
+	return true;
+}
+
+void SimEntity::update(double simTime, double frameTime) {
+	updateProperty(simTime, frameTime);
+    updateRenderEntity();
+}
+
+void SimEntity::updateRenderEntity() {}
 
 std::string SimEntity::getUUID() const {
 	return uuid;
