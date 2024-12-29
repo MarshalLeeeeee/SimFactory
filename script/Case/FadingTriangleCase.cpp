@@ -3,7 +3,7 @@
 #include "TypeUtil.h"
 #include "UIWidget.h"
 
-FadingTriangle::FadingTriangle(SimCase* pSimCase) :
+FadingTriangle::FadingTriangle(FadingTriangleCase* pSimCase) :
 	SimEntity(pSimCase), c(0.0f), d(1.0f) {}
 
 FadingTriangle::~FadingTriangle() {}

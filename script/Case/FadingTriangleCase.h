@@ -15,28 +15,6 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-class FadingTriangle : public SimEntity {
-public:
-    FadingTriangle(SimCase* pSimCase);
-    virtual ~FadingTriangle();
-
-private:
-    /* intialization of render entity */
-    bool initRenderEntity(ComPtr<ID3D11Device> dev);
-
-private:
-    /* update the logic property */
-    void updateProperty(double simTime, double frameTime);
-    /* update the render entity property */
-    void updateRenderEntity();
-
-private:
-    /* color degree */
-    float c;
-    /* change direction */
-    float d;
-};
-
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
@@ -64,6 +42,28 @@ public:
 private:
     /* changing period */
     float period;
+};
+
+class FadingTriangle : public SimEntity {
+public:
+    FadingTriangle(FadingTriangleCase* pSimCase);
+    virtual ~FadingTriangle();
+
+private:
+    /* intialization of render entity */
+    bool initRenderEntity(ComPtr<ID3D11Device> dev);
+
+private:
+    /* update the logic property */
+    void updateProperty(double simTime, double frameTime);
+    /* update the render entity property */
+    void updateRenderEntity();
+
+private:
+    /* color degree */
+    float c;
+    /* change direction */
+    float d;
 };
 
 #endif
