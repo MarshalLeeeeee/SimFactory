@@ -3,11 +3,14 @@
 #ifndef __TYPE_UTIL_H__
 #define __TYPE_UTIL_H__
 
+// No project header is allowed
 #include <string>
 #include <memory>
 #include <d3d11.h>
 #include <DirectXMath.h>
+// No project header is allowed
 
+/* class holding arbitary type */
 class Any {
 public:
     Any() : content(nullptr) {}
@@ -41,7 +44,7 @@ private:
     std::unique_ptr<Base> content;
 };
 
-
+/* Layout type : VertexPosColor */
 struct VertexPosColor {
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMFLOAT4 color;
