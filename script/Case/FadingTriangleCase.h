@@ -27,10 +27,6 @@ public:
 private:
     /* if sim case needs ui */
     bool needUI() const;
-    /* uuid of slider */
-    std::string sliderUUID;
-    /* uuid of checkbox */
-    std::string checkboxUUID;
 
 private:
 	/* implementation of the update of the logic properties */
