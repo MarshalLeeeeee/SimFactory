@@ -18,44 +18,42 @@ UI::~UI() {
 }
 
 void UI::render() const {
-    {
-        ImGui::Begin("Control Panel");
-        for (auto itr = uiWidgets.begin(); itr != uiWidgets.end(); ++itr) {
-            itr->second->render();
-        }
+    for (auto itr = uiPanels.begin(); itr != uiPanels.end(); ++itr) {
+        ImGui::Begin(itr->first.c_str());
+        itr->second->render();
         ImGui::End();
     }
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-bool UI::addUIWidget(std::shared_ptr<UIWidget> pUIWidget) {
-    std::string uuid = pUIWidget->getUUID();
-    if (hasUIWidget(uuid)) {
+bool UI::addUIPanel(std::shared_ptr<UIPanel> pUIPanel) {
+    std::string name = pUIPanel->getName();
+    if (hasUIPanel(name)) {
         return false;
     }
     else {
-        uiWidgets[uuid] = pUIWidget;
+        uiPanels[name] = pUIPanel;
         return true;
     }
 }
 
-bool UI::removeUIWidget(std::string uuid) {
-    if (hasUIWidget(uuid)) {
-        uiWidgets.erase(uuid);
+bool UI::removeUIPanel(std::string name) {
+    if (hasUIPanel(name)) {
+        uiPanels.erase(name);
         return true;
     }
     else {
         return false;
     }
 }
-bool UI::hasUIWidget(std::string uuid) const {
-    return uiWidgets.find(uuid) != uiWidgets.end();
+bool UI::hasUIPanel(std::string name) const {
+    return uiPanels.find(name) != uiPanels.end();
 }
 
-std::shared_ptr<UIWidget> UI::getUIWidget(std::string uuid) const {
-    if (hasUIWidget(uuid)) {
-        return uiWidgets.at(uuid);
+std::shared_ptr<UIPanel> UI::getUIPanel(std::string name) const {
+    if (hasUIPanel(name)) {
+        return uiPanels.at(name);
     }
     else return nullptr;
 }

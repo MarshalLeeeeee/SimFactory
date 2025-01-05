@@ -1,4 +1,8 @@
-// A user interface based on ImGui
+/*
+ * UI
+ * A singleton manager
+ */
+
 #pragma once
 
 #ifndef __UI_H__
@@ -19,23 +23,23 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #include <string>
 #include <unordered_map>
 
-#include "UIWidget.h"
+#include "UIPanel.h"
 
 class UI {
 public:
     UI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
     virtual ~UI();
-
+    /* render the whole interface including all panels */
     void render() const;
 
-    bool addUIWidget(std::shared_ptr<UIWidget> pUIWidget);
-    bool removeUIWidget(std::string uuid);
-    bool hasUIWidget(std::string uuid) const;
-    std::shared_ptr<UIWidget> getUIWidget(std::string uuid) const;
-
+public:
+    bool addUIPanel(std::shared_ptr<UIPanel> pUIPanel);
+    bool removeUIPanel(std::string name);
+    bool hasUIPanel(std::string name) const;
+    std::shared_ptr<UIPanel> getUIPanel(std::string name) const;
 private:
-
-    std::unordered_map<std::string, std::shared_ptr<UIWidget>> uiWidgets;
+    /* all panels with exclusive names as key */
+    std::unordered_map<std::string, std::shared_ptr<UIPanel>> uiPanels;
 
 };
 

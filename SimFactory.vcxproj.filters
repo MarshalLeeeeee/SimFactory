@@ -114,6 +114,9 @@
     <ClCompile Include="script\Sim\SimEntity.cpp">
       <Filter>Source Files\Sim</Filter>
     </ClCompile>
+    <ClCompile Include="script\UI\UIPanel.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\App\DxApp.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="script\Sim\SimEntity.h">
       <Filter>Header Files\Sim</Filter>
+    </ClInclude>
+    <ClInclude Include="script\UI\UIPanel.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

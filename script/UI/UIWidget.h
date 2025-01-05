@@ -13,22 +13,21 @@
 
 class UIWidget {
 public:
-    UIWidget(std::string uuid, std::string name);
+    UIWidget(std::string name);
     virtual ~UIWidget();
-
+    /* render with all exclusive implementation */
     virtual void render() = 0;
+    virtual Any getValue() const;
 
-    std::string getUUID() const;
-    virtual Any getValue() const = 0;
-
+public:
+    std::string getName() const;
 protected:
-    std::string uuid;
     std::string name;
 };
 
 class UISliderFloat : public UIWidget {
 public:
-    UISliderFloat(std::string uuid, std::string name, float v_min, float v_max);
+    UISliderFloat(std::string name, float v_min, float v_max);
     ~UISliderFloat();
 
     void render();
@@ -43,7 +42,7 @@ private:
 
 class UICheckbox : public UIWidget {
 public:
-    UICheckbox(std::string uuid, std::string name);
+    UICheckbox(std::string name);
     ~UICheckbox();
 
     void render();

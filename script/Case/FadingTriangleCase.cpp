@@ -1,6 +1,7 @@
 #include "FadingTriangleCase.h"
 #include "SimUtil.h"
 #include "TypeUtil.h"
+#include "UIPanel.h"
 #include "UIWidget.h"
 
 FadingTriangle::FadingTriangle(FadingTriangleCase* pSimCase) :
@@ -84,14 +85,19 @@ bool FadingTriangleCase::needUI() const {
 }
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
-	if (sliderUUID.empty()) {
-		sliderUUID = GenerateUUID();
-		pUI->addUIWidget(std::make_shared<UISliderFloat>(sliderUUID, "Slider", 1.0, 10.0));
-		period = 1.0f;
+	// update ui and binding value
+	std::shared_ptr<UIPanel> pControlPanel = pUI->getUIPanel("Control");
+	if (pControlPanel) {
+		std::shared_ptr<UIWidget> pControlSlider = pControlPanel->getUIWidget("Slider");
+		if (pControlSlider) {
+			period = pControlSlider->getValue().get<float>();
+		}
+		else {
+			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>("Slider", 1.0, 10.0));
+		}
 	}
 	else {
-		Any a = pUI->getUIWidget(sliderUUID)->getValue();
-		period = a.get<float>();
+		pUI->addUIPanel(std::make_shared<UIPanel>("Control"));
 	}
 
 	if (entities.empty()) {

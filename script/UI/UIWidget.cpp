@@ -1,16 +1,24 @@
 #include "UIWidget.h"
 
-UIWidget::UIWidget(std::string uuid, std::string name) : 
-    uuid(uuid), name(name) {}
+//////////////////////////////////
+
+UIWidget::UIWidget(std::string name) : 
+    name(name) {}
 
 UIWidget::~UIWidget() {}
 
-std::string UIWidget::getUUID() const {
-    return uuid;
+std::string UIWidget::getName() const {
+    return name;
 }
 
-UISliderFloat::UISliderFloat(std::string uuid, std::string name, float v_min, float v_max) :
-    UIWidget(uuid, name), v_min(v_min), v_max(v_max), val(v_min) {}
+Any UIWidget::getValue() const {
+    return Any(nullptr);
+}
+
+//////////////////////////////////
+
+UISliderFloat::UISliderFloat(std::string name, float v_min, float v_max) :
+    UIWidget(name), v_min(v_min), v_max(v_max), val(v_min) {}
 
 UISliderFloat::~UISliderFloat() {}
 
@@ -22,8 +30,10 @@ Any UISliderFloat::getValue() const {
     return Any(val);
 }
 
-UICheckbox::UICheckbox(std::string uuid, std::string name) : 
-    UIWidget(uuid, name), val(false) {}
+//////////////////////////////////
+
+UICheckbox::UICheckbox(std::string name) : 
+    UIWidget(name), val(false) {}
 
 UICheckbox::~UICheckbox() {}
 
@@ -34,3 +44,5 @@ void UICheckbox::render() {
 Any UICheckbox::getValue() const {
     return Any(val);
 }
+
+//////////////////////////////////
