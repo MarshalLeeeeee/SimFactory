@@ -1,6 +1,8 @@
 /*
  * SimApp
- * hold sim case, which represents simulation logic and rendering
+ * Holding window and its config
+ * Holding dx and its coms
+ * Holding pSimCase
  */
 #pragma once
 
@@ -13,9 +15,9 @@
 #include <memory>
 
 /*
-* SimCase factory
-* Return specific SimCase given the cmd args
-*/
+ * SimCase factory
+ * Return specific SimCase given the cmd args
+ */
 std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs);
 
 class SimApp : public DxApp {

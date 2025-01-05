@@ -25,6 +25,8 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 /*
  * Render entity manages render obj
  * Render entity has the common vertex layout and vertices data
+ * Holding pSimCase
+ * Holding render obj uuids
  */
 class RenderEntityBase {
 public:
@@ -46,6 +48,11 @@ protected:
     std::unordered_set<std::string> renderObjs;
 };
 
+/*
+ * Template cls inherited from RenderEntityBase
+ * Holding configs of render objs
+ * Holding vertices data
+ */
 template<typename T>
 class RenderEntity : public RenderEntityBase {
 public:

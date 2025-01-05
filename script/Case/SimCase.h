@@ -1,3 +1,9 @@
+/*
+ * SimCase frame
+ * Holding UI
+ * Holding sim entities
+ * Holding render objs
+ */
 #pragma once
 
 #ifndef __SIMCASE_H__

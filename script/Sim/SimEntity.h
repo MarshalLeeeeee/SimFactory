@@ -1,3 +1,9 @@
+/*
+ * SimEntity
+ * Holding pSimCase
+ * Holding one render entity
+ */
+
 #pragma once
 
 #ifndef __SIMENTITY_H__

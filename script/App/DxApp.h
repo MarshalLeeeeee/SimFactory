@@ -1,6 +1,8 @@
 /*
-* Basic DirectX frame irrelevant to simulation logic
-*/
+ * Basic DirectX frame irrelevant to simulation logic
+ * Holding window and its config
+ * Holding dx and its coms
+ */
 
 #pragma once
 

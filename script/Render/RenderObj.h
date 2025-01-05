@@ -22,6 +22,9 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 /*
  * Render obj is the primitive class for rendering
+ * Holding vertex and pixel shaders
+ * Holding vertex layout
+ * Holding primitive topology
  */
 class RenderObjBase {
 public:
@@ -59,7 +62,11 @@ protected:
 	std::string uuid;
 };
 
-
+/* 
+ * Template cls inherited from RenderObjBase
+ * Holding indices data
+ * Sharing vertex data from RenderEntity
+ */
 template<typename T>
 class RenderObj : public RenderObjBase {
 public:
