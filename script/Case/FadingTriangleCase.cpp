@@ -93,11 +93,11 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 			period = pControlSlider->getValue().get<float>();
 		}
 		else {
-			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>(this, "Slider", 1.0, 10.0));
+			pControlPanel->addUIWidget(std::make_shared<FadingTriangleControlSlider>(this, "Slider", 1.0, 10.0));
 		}
 	}
 	else {
-		pUI->addUIPanel(std::make_shared<UIPanel>(this, "Control"));
+		pUI->addUIPanel(std::make_shared<FadingTriangleControlPanel>(this, "Control"));
 	}
 
 	if (entities.empty()) {
@@ -107,3 +107,11 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 		updateEntities(simTime, frameTime);
 	}
 }
+
+FadingTriangleControlPanel::FadingTriangleControlPanel(SimCase* pSimCase, std::string name) :
+	UIPanel(pSimCase, name) {}
+FadingTriangleControlPanel::~FadingTriangleControlPanel() {}
+
+FadingTriangleControlSlider::FadingTriangleControlSlider(SimCase* pSimCase, std::string name, float v_min, float v_max) :
+	UISliderFloat(pSimCase, name, v_min, v_max) {}
+FadingTriangleControlSlider::~FadingTriangleControlSlider() {}

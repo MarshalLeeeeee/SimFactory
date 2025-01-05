@@ -61,4 +61,15 @@ private:
     float d;
 };
 
+class FadingTriangleControlPanel : public UIPanel {
+public:
+    FadingTriangleControlPanel(SimCase* pSimcase, std::string name);
+    ~FadingTriangleControlPanel();
+};
+class FadingTriangleControlSlider : public UISliderFloat {
+public:
+    FadingTriangleControlSlider(SimCase* pSimCase, std::string name, float v_min, float v_max);
+    ~FadingTriangleControlSlider();
+};
+
 #endif

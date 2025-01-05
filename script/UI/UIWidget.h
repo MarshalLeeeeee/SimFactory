@@ -36,12 +36,12 @@ protected:
 class UISliderFloat : public UIWidget {
 public:
     UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max);
-    ~UISliderFloat();
+    virtual ~UISliderFloat();
 
     void render();
     Any getValue() const;
 
-private:
+protected:
     float val;
     float v_min;
     float v_max;
@@ -50,7 +50,7 @@ private:
 class UICheckbox : public UIWidget {
 public:
     UICheckbox(SimCase* pSimCase, std::string name);
-    ~UICheckbox();
+    virtual ~UICheckbox();
 
     void render();
     Any getValue() const;
