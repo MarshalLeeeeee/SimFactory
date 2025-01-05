@@ -1,6 +1,7 @@
 /*
  * UI
  * A singleton manager
+ * Holding pSimCase
  */
 
 #pragma once

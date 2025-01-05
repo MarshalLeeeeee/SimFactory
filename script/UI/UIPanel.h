@@ -1,5 +1,6 @@
 /*
  * UI panel
+ * Holding pSimCase
  */
 
 #pragma once

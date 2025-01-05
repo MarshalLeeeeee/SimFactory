@@ -1,3 +1,8 @@
+/*
+ * Ui widgets
+ * Holding pSimCase
+ */
+
 #pragma once
 
 #ifndef __UI_WIDGET_H__
