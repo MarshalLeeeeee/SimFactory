@@ -10,15 +10,19 @@
 #define __SIMCASE_H__
 
 #include "RenderObj.h"
-#include "UI.h"
 
 #include <memory>
 #include <unordered_map>
 #include <chrono>
 
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
 // Forward declare message handler from imgui_impl_win32.cpp
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+class UI;
 class SimEntity;
 
 class SimCase {
@@ -95,6 +99,7 @@ protected:
 	std::unordered_map<std::string, std::shared_ptr<RenderObjBase>> renderObjs;
 };
 
+#include "UI.h"
 #include "SimEntity.h"
 
 #endif

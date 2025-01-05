@@ -1,7 +1,7 @@
 #include "UIPanel.h"
 
-UIPanel::UIPanel(std::string name) :
-    name(name) {}
+UIPanel::UIPanel(SimCase* pSimCase, std::string name) :
+    pSimCase(pSimCase), name(name) {}
 
 UIPanel::~UIPanel() {}
 

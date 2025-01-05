@@ -7,6 +7,8 @@
 #include "SimEntity.h"
 #include "RenderObj.h"
 #include "RenderObj.h"
+#include "UIPanel.h"
+#include "UIWidget.h"
 
 #include <memory>
 #include <d3d11.h>
@@ -33,9 +35,6 @@ private:
     void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 
 public:
-    /* get changing period */
-    float getPeriod() const;
-private:
     /* changing period */
     float period;
 };

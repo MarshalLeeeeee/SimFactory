@@ -11,14 +11,18 @@
 #include <string>
 #include <unordered_map>
 
-#include "UIWidget.h"
+#include "SimCase.h"
+
+class UIWidget;
 
 class UIPanel {
 public:
-    UIPanel(std::string name);
+    UIPanel(SimCase* pSimcase, std::string name);
     virtual ~UIPanel();
     /* render of all including widgets */
     void render() const;
+private:
+    SimCase* pSimCase;
 
 public:
     std::string getName() const;
@@ -35,5 +39,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<UIWidget>> uiWidgets;
 
 };
+
+#include "UIWidget.h"
 
 #endif

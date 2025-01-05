@@ -9,15 +9,18 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
+#include "SimCase.h"
 #include "TypeUtil.h"
 
 class UIWidget {
 public:
-    UIWidget(std::string name);
+    UIWidget(SimCase* pSimCase, std::string name);
     virtual ~UIWidget();
     /* render with all exclusive implementation */
     virtual void render() = 0;
     virtual Any getValue() const;
+protected:
+    SimCase* pSimCase;
 
 public:
     std::string getName() const;
@@ -27,7 +30,7 @@ protected:
 
 class UISliderFloat : public UIWidget {
 public:
-    UISliderFloat(std::string name, float v_min, float v_max);
+    UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max);
     ~UISliderFloat();
 
     void render();
@@ -37,12 +40,11 @@ private:
     float val;
     float v_min;
     float v_max;
-
 };
 
 class UICheckbox : public UIWidget {
 public:
-    UICheckbox(std::string name);
+    UICheckbox(SimCase* pSimCase, std::string name);
     ~UICheckbox();
 
     void render();
@@ -50,7 +52,6 @@ public:
 
 private:
     bool val;
-
 };
 
 #endif

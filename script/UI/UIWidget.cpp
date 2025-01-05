@@ -2,8 +2,8 @@
 
 //////////////////////////////////
 
-UIWidget::UIWidget(std::string name) : 
-    name(name) {}
+UIWidget::UIWidget(SimCase* pSimCase, std::string name) : 
+    pSimCase(pSimCase), name(name) {}
 
 UIWidget::~UIWidget() {}
 
@@ -17,8 +17,8 @@ Any UIWidget::getValue() const {
 
 //////////////////////////////////
 
-UISliderFloat::UISliderFloat(std::string name, float v_min, float v_max) :
-    UIWidget(name), v_min(v_min), v_max(v_max), val(v_min) {}
+UISliderFloat::UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max) :
+    UIWidget(pSimCase, name), v_min(v_min), v_max(v_max), val(v_min) {}
 
 UISliderFloat::~UISliderFloat() {}
 
@@ -32,8 +32,8 @@ Any UISliderFloat::getValue() const {
 
 //////////////////////////////////
 
-UICheckbox::UICheckbox(std::string name) : 
-    UIWidget(name), val(false) {}
+UICheckbox::UICheckbox(SimCase* pSimCase, std::string name) : 
+    UIWidget(pSimCase, name), val(false) {}
 
 UICheckbox::~UICheckbox() {}
 

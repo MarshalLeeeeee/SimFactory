@@ -43,7 +43,7 @@ bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 }
 
 void FadingTriangle::updateProperty(double simTime, double frameTime) {
-	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
+	float period = static_cast<FadingTriangleCase*>(pSimCase)->period;
 	c += d * float(frameTime) / period;
 	if (c > 1.0f) {
 		d = -1.0f;
@@ -93,11 +93,11 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 			period = pControlSlider->getValue().get<float>();
 		}
 		else {
-			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>("Slider", 1.0, 10.0));
+			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>(this, "Slider", 1.0, 10.0));
 		}
 	}
 	else {
-		pUI->addUIPanel(std::make_shared<UIPanel>("Control"));
+		pUI->addUIPanel(std::make_shared<UIPanel>(this, "Control"));
 	}
 
 	if (entities.empty()) {
@@ -106,8 +106,4 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 	else {
 		updateEntities(simTime, frameTime);
 	}
-}
-
-float FadingTriangleCase::getPeriod() const {
-	return period;
 }

@@ -23,14 +23,18 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #include <string>
 #include <unordered_map>
 
-#include "UIPanel.h"
+#include "SimCase.h"
+
+class UIPanel;
 
 class UI {
 public:
-    UI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
+    UI(SimCase* pSimCase, HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon);
     virtual ~UI();
     /* render the whole interface including all panels */
     void render() const;
+private:
+    SimCase* pSimCase;
 
 public:
     bool addUIPanel(std::shared_ptr<UIPanel> pUIPanel);
@@ -42,5 +46,7 @@ private:
     std::unordered_map<std::string, std::shared_ptr<UIPanel>> uiPanels;
 
 };
+
+#include "UIPanel.h"
 
 #endif
