@@ -55,7 +55,7 @@ public:
     void render();
     Any getValue() const;
 
-private:
+protected:
     bool val;
 };
 
