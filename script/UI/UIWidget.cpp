@@ -46,3 +46,18 @@ Any UICheckbox::getValue() const {
 }
 
 //////////////////////////////////
+
+UIButton::UIButton(SimCase* pSimCase, std::string name) : 
+    UIWidget(pSimCase, name) {}
+
+UIButton::~UIButton() {}
+
+void UIButton::render() {
+    if (ImGui::Button(name.c_str())) {
+        ImGui::LogToClipboard();
+        ImGui::LogText("Hello, world!");
+        ImGui::LogFinish();
+    }
+}
+
+//////////////////////////////////

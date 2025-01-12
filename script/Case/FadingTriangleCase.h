@@ -17,6 +17,8 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
+#include "renderdoc/renderdoc_app.h"
+
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
@@ -26,17 +28,34 @@ public:
     /* screen height defined by specific sim case */
     int getScreenHeight() const;
 
+public:
+    /* changing period */
+    float period;
+    /* if use debug panel */
+    bool show_debug_pnl;
+
 private:
     /* if sim case needs ui */
     bool needUI() const;
 
 private:
+    /* pre stage of render */
+    void preRender(ComPtr<ID3D11DeviceContext> devCon);
+    /* post stage of render */
+    void postRender(ComPtr<ID3D11DeviceContext> devCon);
+
+private:
 	/* implementation of the update of the logic properties */
     void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 
-public:
-    /* changing period */
-    float period;
+protected:
+    /* initialization of case */
+	bool initCase();
+private:
+    /* render doc api */
+    RENDERDOC_API_1_6_0* rdoc_api;
+    /* if should capture frame */
+    bool should_capture_frame;
 };
 
 class FadingTriangle : public SimEntity {
@@ -66,10 +85,11 @@ public:
     FadingTriangleControlPanel(SimCase* pSimcase, std::string name);
     ~FadingTriangleControlPanel();
 };
-class FadingTriangleControlSlider : public UISliderFloat {
+
+class FadingTriangleDebugPanel : public UIPanel {
 public:
-    FadingTriangleControlSlider(SimCase* pSimCase, std::string name, float v_min, float v_max);
-    ~FadingTriangleControlSlider();
+    FadingTriangleDebugPanel(SimCase* pSimcase, std::string name);
+    ~FadingTriangleDebugPanel();
 };
 
 #endif

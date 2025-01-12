@@ -31,6 +31,10 @@ bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11Device
 	return true;
 }
 
+bool SimCase::initCase() {
+	return true;
+}
+
 bool SimCase::needUI() const {
 	return false;
 }
@@ -45,7 +49,7 @@ void SimCase::update(ComPtr<ID3D11Device> dev) {
 
 void SimCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {}
 
-void SimCase::preRender(ComPtr<ID3D11DeviceContext> devCon) const {
+void SimCase::preRender(ComPtr<ID3D11DeviceContext> devCon) {
 	if (needUI()) {
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
@@ -60,7 +64,7 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	if (needUI()) pUI->render();
 }
 
-void SimCase::postRender(ComPtr<ID3D11DeviceContext> devCon) const {}
+void SimCase::postRender(ComPtr<ID3D11DeviceContext> devCon) {}
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
 	if (!pSimEntity->init(dev)) return false;

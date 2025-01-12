@@ -59,4 +59,12 @@ protected:
     bool val;
 };
 
+class UIButton : public UIWidget {
+public:
+    UIButton(SimCase* pSimCase, std::string name);
+    virtual ~UIButton();
+
+    void render();
+};
+
 #endif

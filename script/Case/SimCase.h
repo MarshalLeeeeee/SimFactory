@@ -55,17 +55,21 @@ protected:
 	/* ptr of UI */
 	std::shared_ptr<UI> pUI;
 
+protected:
+	/* initialization of case */
+	virtual bool initCase();
+
 public:
 	/* update of the logic properties */
 	void update(ComPtr<ID3D11Device> dev);
 	/* pre stage of render */
-	void preRender(ComPtr<ID3D11DeviceContext> devCon) const;
+	virtual void preRender(ComPtr<ID3D11DeviceContext> devCon);
 	/* stage of render 
 	* draw renderobjs and ui
 	*/
 	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 	/* post stage of render */
-	void postRender(ComPtr<ID3D11DeviceContext> devCon) const;
+	virtual void postRender(ComPtr<ID3D11DeviceContext> devCon);
 protected:
 	/* implementation of the update of the logic properties */
 	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
