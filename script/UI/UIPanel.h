@@ -18,7 +18,7 @@ class UIWidget;
 
 class UIPanel {
 public:
-    UIPanel(SimCase* pSimcase, std::string name);
+    UIPanel(SimCase* pSimCase, std::string name);
     virtual ~UIPanel();
     /* render of all including widgets */
     void render() const;
