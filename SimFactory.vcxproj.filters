@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Sim">
       <UniqueIdentifier>{061bfe75-12ff-4b37-9f5e-37ea262b7c03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Lib">
+      <UniqueIdentifier>{635f1418-5f1b-47ac-8168-30c7ae4578f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Lib\imgui">
+      <UniqueIdentifier>{552b8786-6513-4d70-aa2b-e116e8b441b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="script\main.cpp">
@@ -75,27 +81,6 @@
     <ClCompile Include="script\Render\RenderObj.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="script\UI\imgui.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_demo.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_draw.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_impl_dx11.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_impl_win32.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_tables.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="script\UI\imgui_widgets.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="script\UI\UI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -116,6 +101,27 @@
     </ClCompile>
     <ClCompile Include="script\UI\UIPanel.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_demo.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_draw.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_impl_dx11.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_impl_win32.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_tables.cpp">
+      <Filter>External Lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external_lib\imgui\imgui_widgets.cpp">
+      <Filter>External Lib\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,30 +146,6 @@
     <ClInclude Include="script\Render\RenderObj.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="script\UI\imconfig.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imgui.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imgui_impl_dx11.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imgui_impl_win32.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imgui_internal.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imstb_rectpack.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imstb_textedit.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="script\UI\imstb_truetype.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="script\UI\UI.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
@@ -184,6 +166,30 @@
     </ClInclude>
     <ClInclude Include="script\UI\UIPanel.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imconfig.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imgui.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imgui_impl_dx11.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imgui_impl_win32.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imgui_internal.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imstb_rectpack.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imstb_textedit.h">
+      <Filter>External Lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\imgui\imstb_truetype.h">
+      <Filter>External Lib\imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,6 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="external_lib\imgui\imgui.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_demo.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_draw.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_tables.cpp" />
+    <ClCompile Include="external_lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="script\App\DxApp.cpp" />
     <ClCompile Include="script\App\SimApp.cpp" />
     <ClCompile Include="script\Case\FadingTriangleCase.cpp" />
@@ -28,13 +35,6 @@
     <ClCompile Include="script\Render\RenderEntity.cpp" />
     <ClCompile Include="script\Render\RenderObj.cpp" />
     <ClCompile Include="script\Sim\SimEntity.cpp" />
-    <ClCompile Include="script\UI\imgui.cpp" />
-    <ClCompile Include="script\UI\imgui_demo.cpp" />
-    <ClCompile Include="script\UI\imgui_draw.cpp" />
-    <ClCompile Include="script\UI\imgui_impl_dx11.cpp" />
-    <ClCompile Include="script\UI\imgui_impl_win32.cpp" />
-    <ClCompile Include="script\UI\imgui_tables.cpp" />
-    <ClCompile Include="script\UI\imgui_widgets.cpp" />
     <ClCompile Include="script\UI\UI.cpp" />
     <ClCompile Include="script\UI\UIPanel.cpp" />
     <ClCompile Include="script\UI\UIWidget.cpp" />
@@ -43,6 +43,14 @@
     <ClCompile Include="script\Util\TypeUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="external_lib\imgui\imconfig.h" />
+    <ClInclude Include="external_lib\imgui\imgui.h" />
+    <ClInclude Include="external_lib\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="external_lib\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="external_lib\imgui\imgui_internal.h" />
+    <ClInclude Include="external_lib\imgui\imstb_rectpack.h" />
+    <ClInclude Include="external_lib\imgui\imstb_textedit.h" />
+    <ClInclude Include="external_lib\imgui\imstb_truetype.h" />
     <ClInclude Include="script\App\DxApp.h" />
     <ClInclude Include="script\App\SimApp.h" />
     <ClInclude Include="script\Case\FadingTriangleCase.h" />
@@ -51,14 +59,6 @@
     <ClInclude Include="script\Render\RenderEntity.h" />
     <ClInclude Include="script\Render\RenderObj.h" />
     <ClInclude Include="script\Sim\SimEntity.h" />
-    <ClInclude Include="script\UI\imconfig.h" />
-    <ClInclude Include="script\UI\imgui.h" />
-    <ClInclude Include="script\UI\imgui_impl_dx11.h" />
-    <ClInclude Include="script\UI\imgui_impl_win32.h" />
-    <ClInclude Include="script\UI\imgui_internal.h" />
-    <ClInclude Include="script\UI\imstb_rectpack.h" />
-    <ClInclude Include="script\UI\imstb_textedit.h" />
-    <ClInclude Include="script\UI\imstb_truetype.h" />
     <ClInclude Include="script\UI\UI.h" />
     <ClInclude Include="script\UI\UIPanel.h" />
     <ClInclude Include="script\UI\UIWidget.h" />
@@ -158,7 +158,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,7 +177,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
