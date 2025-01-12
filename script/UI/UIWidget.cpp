@@ -17,13 +17,14 @@ Any UIWidget::getValue() const {
 
 //////////////////////////////////
 
-UISliderFloat::UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max) :
-    UIWidget(pSimCase, name), v_min(v_min), v_max(v_max), val(v_min) {}
+UISliderFloat::UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max, FunctionType func) :
+    UIWidget(pSimCase, name), v_min(v_min), v_max(v_max), val(v_min), func(func) {}
 
 UISliderFloat::~UISliderFloat() {}
 
 void UISliderFloat::render() {
     ImGui::SliderFloat(name.c_str(), &val, v_min, v_max);
+    func(val);
 }
 
 Any UISliderFloat::getValue() const {

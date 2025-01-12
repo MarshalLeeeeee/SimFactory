@@ -9,6 +9,7 @@
 #define __UI_WIDGET_H__
 
 #include <string>
+#include <functional>
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_dx11.h"
@@ -35,16 +36,22 @@ protected:
 
 class UISliderFloat : public UIWidget {
 public:
-    UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max);
+    using FunctionType = std::function<void(float)>;
+    UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max, FunctionType func);
     virtual ~UISliderFloat();
+private:
+    FunctionType func;
 
+public:
     void render();
     Any getValue() const;
-
 protected:
     float val;
     float v_min;
     float v_max;
+
+public:
+
 };
 
 class UICheckbox : public UIWidget {

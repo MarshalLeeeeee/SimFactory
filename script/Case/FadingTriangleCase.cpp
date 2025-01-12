@@ -39,16 +39,26 @@ bool FadingTriangleCase::initCase() {
 	return true;
 }
 
+void FadingTriangleCase::set_period(float p) {
+	period = p;
+}
+
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
 	// update ui and binding value
 	std::shared_ptr<UIPanel> pControlPanel = pUI->getUIPanel("Control");
 	if (pControlPanel) {
 		std::shared_ptr<UIWidget> pPeriodSlider = pControlPanel->getUIWidget("PeriodSlider");
 		if (pPeriodSlider) {
-			period = pPeriodSlider->getValue().get<float>();
+			// period = pPeriodSlider->getValue().get<float>();
 		}
 		else {
-			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>(this, "PeriodSlider", 1.0, 10.0));
+			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>(
+				this,
+				"PeriodSlider",
+				1.0,
+				10.0,
+				std::bind(&FadingTriangleCase::set_period, this, std::placeholders::_1)
+			));
 		}
 
 		std::shared_ptr<UIWidget> pDebugChecker = pControlPanel->getUIWidget("DebugChecker");
@@ -162,14 +172,14 @@ void FadingTriangle::updateRenderEntity() {
 
 FadingTriangleControlPanel::FadingTriangleControlPanel(SimCase* pSimCase, std::string name) :
 	UIPanel(pSimCase, name) {
-		addUIWidget(std::make_shared<UISliderFloat>(pSimCase, "PeriodSlider", 1.0, 10.0));
-		addUIWidget(std::make_shared<UICheckbox>(pSimCase, "DebugChecker"));
+		// addUIWidget(std::make_shared<UISliderFloat>(pSimCase, "PeriodSlider", 1.0, 10.0));
+		// addUIWidget(std::make_shared<UICheckbox>(pSimCase, "DebugChecker"));
 	}
 FadingTriangleControlPanel::~FadingTriangleControlPanel() {}
 
 
 FadingTriangleDebugPanel::FadingTriangleDebugPanel(SimCase* pSimCase, std::string name) :
 	UIPanel(pSimCase, name) {
-		addUIWidget(std::make_shared<UIButton>(pSimCase, "CaptureFrameBtn"));
+		// addUIWidget(std::make_shared<UIButton>(pSimCase, "CaptureFrameBtn"));
 	}
 FadingTriangleDebugPanel::~FadingTriangleDebugPanel() {}

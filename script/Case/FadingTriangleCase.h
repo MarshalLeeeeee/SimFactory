@@ -11,6 +11,7 @@
 #include "UIWidget.h"
 
 #include <memory>
+#include <functional>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
@@ -29,6 +30,7 @@ public:
     int getScreenHeight() const;
 
 public:
+    void set_period(float p);
     /* changing period */
     float period;
     /* if use debug panel */
