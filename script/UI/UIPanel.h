@@ -1,6 +1,5 @@
 /*
  * UI panel
- * Holding pSimCase
  */
 
 #pragma once
@@ -12,18 +11,14 @@
 #include <string>
 #include <unordered_map>
 
-#include "SimCase.h"
-
-class UIWidget;
+#include "UIWidget.h"
 
 class UIPanel {
 public:
-    UIPanel(SimCase* pSimCase, std::string name);
+    UIPanel(std::string name);
     virtual ~UIPanel();
     /* render of all including widgets */
     void render() const;
-private:
-    SimCase* pSimCase;
 
 public:
     std::string getName() const;
@@ -40,7 +35,5 @@ private:
     std::unordered_map<std::string, std::shared_ptr<UIWidget>> uiWidgets;
 
 };
-
-#include "UIWidget.h"
 
 #endif

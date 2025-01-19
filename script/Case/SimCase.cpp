@@ -27,7 +27,7 @@ LRESULT CALLBACK SimCase::simProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!needUI()) return true;
-	pUI = std::make_shared<UI>(this, hWindow, dev, devCon);
+	pUI = std::make_shared<UI>(hWindow, dev, devCon);
 	return true;
 }
 

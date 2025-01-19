@@ -1,6 +1,5 @@
 /*
  * Ui widgets
- * Holding pSimCase
  */
 
 #pragma once
@@ -15,18 +14,14 @@
 #include "imgui/imgui_impl_dx11.h"
 #include "imgui/imgui_impl_win32.h"
 
-#include "SimCase.h"
 #include "TypeUtil.h"
 
 class UIWidget {
 public:
-    UIWidget(SimCase* pSimCase, std::string name);
+    UIWidget(std::string name);
     virtual ~UIWidget();
     /* render with all exclusive implementation */
     virtual void render() = 0;
-    virtual Any getValue() const;
-protected:
-    SimCase* pSimCase;
 
 public:
     std::string getName() const;
@@ -37,40 +32,42 @@ protected:
 class UISliderFloat : public UIWidget {
 public:
     using FunctionType = std::function<void(float)>;
-    UISliderFloat(SimCase* pSimCase, std::string name, float v_min, float v_max, FunctionType func);
+    UISliderFloat(std::string name, float v_min, float v_max, FunctionType func);
     virtual ~UISliderFloat();
 private:
     FunctionType func;
 
 public:
     void render();
-    Any getValue() const;
 protected:
     float val;
     float v_min;
     float v_max;
-
-public:
-
 };
 
 class UICheckbox : public UIWidget {
 public:
-    UICheckbox(SimCase* pSimCase, std::string name);
+    using FunctionType = std::function<void(bool)>;
+    UICheckbox(std::string name, FunctionType func);
     virtual ~UICheckbox();
+private:
+    FunctionType func;
 
+public:
     void render();
-    Any getValue() const;
-
 protected:
     bool val;
 };
 
 class UIButton : public UIWidget {
 public:
-    UIButton(SimCase* pSimCase, std::string name);
+    using FunctionType = std::function<void(void)>;
+    UIButton(std::string name, FunctionType func);
     virtual ~UIButton();
+private:
+    FunctionType func;
 
+public:
     void render();
 };
 

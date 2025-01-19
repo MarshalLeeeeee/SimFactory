@@ -1,7 +1,6 @@
 #include "UI.h"
 
-UI::UI(SimCase* pSimCase, HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) :
-    pSimCase(pSimCase) {
+UI::UI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;

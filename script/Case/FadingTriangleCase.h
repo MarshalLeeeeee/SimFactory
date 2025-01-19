@@ -30,11 +30,17 @@ public:
     int getScreenHeight() const;
 
 public:
-    void set_period(float p);
+    void setPeriod(float p);
+    float getPeriod() const;
+private:
     /* changing period */
     float period;
+
+public:
+    void setShowDebugPnl(bool b);
+private:
     /* if use debug panel */
-    bool show_debug_pnl;
+    bool showDebugPnl;
 
 private:
     /* if sim case needs ui */
@@ -84,13 +90,13 @@ private:
 
 class FadingTriangleControlPanel : public UIPanel {
 public:
-    FadingTriangleControlPanel(SimCase* pSimcase, std::string name);
+    FadingTriangleControlPanel(std::string name);
     ~FadingTriangleControlPanel();
 };
 
 class FadingTriangleDebugPanel : public UIPanel {
 public:
-    FadingTriangleDebugPanel(SimCase* pSimcase, std::string name);
+    FadingTriangleDebugPanel(std::string name);
     ~FadingTriangleDebugPanel();
 };
 
