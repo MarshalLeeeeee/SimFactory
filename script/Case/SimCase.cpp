@@ -67,7 +67,7 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 void SimCase::postRender(ComPtr<ID3D11DeviceContext> devCon) {}
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
-	if (!pSimEntity->init(dev)) return false;
+	if (!pSimEntity->init(this, dev)) return false;
 	std::string uuid = pSimEntity->getUUID();
 	if (hasEntity(uuid)) return false;
 	entities[uuid] = pSimEntity;
@@ -95,7 +95,7 @@ std::shared_ptr<SimEntity> SimCase::getEntity(std::string uuid) const {
 
 void SimCase::updateEntities(double simTime, double frameTime) {
 	for (auto itr = entities.begin(); itr != entities.end(); ++itr) {
-		itr->second->update(simTime, frameTime);
+		itr->second->update(this, simTime, frameTime);
 	}
 }
 

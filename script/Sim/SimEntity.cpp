@@ -1,19 +1,18 @@
 #include "SimEntity.h"
 #include "SimUtil.h"
 
-SimEntity::SimEntity(SimCase* pSimCase) :
-	pSimCase(pSimCase), pRenderEntity(nullptr) {}
+SimEntity::SimEntity() : pRenderEntity(nullptr) {}
 
 SimEntity::~SimEntity() {}
 
-bool SimEntity::init(ComPtr<ID3D11Device> dev) {
-	if (!initUUID()) return false;
-	if (!initRenderEntity(dev)) return false;
+bool SimEntity::init(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
+	if (!initUUID(pSimCase)) return false;
+	if (!initRenderEntity(pSimCase, dev)) return false;
 	if (!initEntity()) return false;
 	return true;
 }
 
-bool SimEntity::initUUID() {
+bool SimEntity::initUUID(SimCase* pSimCase) {
 	std::string _uuid;
 	for (int i = 0; i < 50; ++i) {
 		_uuid = GenerateUUID();
@@ -25,7 +24,7 @@ bool SimEntity::initUUID() {
 	return false;
 }
 
-bool SimEntity::initRenderEntity(ComPtr<ID3D11Device> dev) {
+bool SimEntity::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
 	return true;
 }
 
@@ -33,8 +32,8 @@ bool SimEntity::initEntity() {
 	return true;
 }
 
-void SimEntity::update(double simTime, double frameTime) {
-	updateProperty(simTime, frameTime);
+void SimEntity::update(SimCase* pSimCase, double simTime, double frameTime) {
+	updateProperty(pSimCase, simTime, frameTime);
     updateRenderEntity();
 }
 

@@ -1,6 +1,5 @@
 /*
  * SimEntity
- * Holding pSimCase
  * Holding one render entity
  */
 
@@ -20,11 +19,8 @@ class RenderEntityBase;
 
 class SimEntity {
 public:
-    SimEntity(SimCase* pSimCase);
+    SimEntity();
     virtual ~SimEntity();
-protected:
-    /* ptr of sim case */
-    SimCase* pSimCase;
 
 public:
     /* initialization of sim entity
@@ -32,12 +28,12 @@ public:
      * render entity
      * specific initialization
      */
-    bool init(ComPtr<ID3D11Device> dev);
+    bool init(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
 protected:
     /* intialization of uuid */
-    bool initUUID();
+    bool initUUID(SimCase* pSimCase);
     /* intialization of render entity */
-    virtual bool initRenderEntity(ComPtr<ID3D11Device> dev);
+    virtual bool initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
     /* intialization of specific demand */
     virtual bool initEntity();
     /* ptr of render entity */
@@ -45,10 +41,10 @@ protected:
 
 public:
     /* update */
-    void update(double simTime, double frameTime);
+    void update(SimCase* pSimCase, double simTime, double frameTime);
 protected:
     /* update the logic property */
-    virtual void updateProperty(double simTime, double frameTime) = 0;
+    virtual void updateProperty(SimCase* pSimCase, double simTime, double frameTime) = 0;
     /* update the render entity property */
     virtual void updateRenderEntity();
 

@@ -85,7 +85,7 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 	}
 
 	if (entities.empty()) {
-		addEntity(std::make_shared<FadingTriangle>(this), dev);
+		addEntity(std::make_shared<FadingTriangle>(), dev);
 	}
 	else {
 		updateEntities(simTime, frameTime);
@@ -109,12 +109,12 @@ void FadingTriangleCase::postRender(ComPtr<ID3D11DeviceContext> devCon) {
 
 
 
-FadingTriangle::FadingTriangle(FadingTriangleCase* pSimCase) :
-	SimEntity(pSimCase), c(0.0f), d(1.0f) {}
+FadingTriangle::FadingTriangle() :
+	SimEntity(), c(0.0f), d(1.0f) {}
 
 FadingTriangle::~FadingTriangle() {}
 
-bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
+bool FadingTriangle::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
 	VertexPosColor vData[3] = {
 		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
 		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
@@ -149,7 +149,7 @@ bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 	return res;
 }
 
-void FadingTriangle::updateProperty(double simTime, double frameTime) {
+void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
 	c += d * float(frameTime) / period;
 	if (c > 1.0f) {

@@ -68,16 +68,16 @@ private:
 
 class FadingTriangle : public SimEntity {
 public:
-    FadingTriangle(FadingTriangleCase* pSimCase);
+    FadingTriangle();
     virtual ~FadingTriangle();
 
 private:
     /* intialization of render entity */
-    bool initRenderEntity(ComPtr<ID3D11Device> dev);
+    bool initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
 
 private:
     /* update the logic property */
-    void updateProperty(double simTime, double frameTime);
+    void updateProperty(SimCase* pSimCase, double simTime, double frameTime);
     /* update the render entity property */
     void updateRenderEntity();
 
