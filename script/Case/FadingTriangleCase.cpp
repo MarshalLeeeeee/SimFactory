@@ -115,6 +115,16 @@ FadingTriangle::FadingTriangle(FadingTriangleCase* pSimCase) :
 FadingTriangle::~FadingTriangle() {}
 
 bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
+	VertexPosColor vData[3] = {
+		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+	};
+	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
+		uuid,
+		vData,
+		3
+	);
 	D3D_PRIMITIVE_TOPOLOGY primitiveTopologyData[1] = {
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	};
@@ -127,22 +137,14 @@ bool FadingTriangle::initRenderEntity(ComPtr<ID3D11Device> dev) {
 	uint32_t indicesLenData[1] = {
 		3
 	};
-	VertexPosColor vData[3] = {
-		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
-	};
-	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
+	bool res = pRenderEntity->init(
 		pSimCase,
-		uuid,
+		dev,
 		primitiveTopologyData,
 		indicesData,
 		indicesLenData,
-		1,
-		vData,
-		3
+		1
 	);
-	bool res = pRenderEntity->init(dev);
 	if (!res) pRenderEntity = nullptr;
 	return res;
 }

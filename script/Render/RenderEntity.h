@@ -25,25 +25,37 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 /*
  * Render entity manages render obj
  * Render entity has the common vertex layout and vertices data
- * Holding pSimCase
  * Holding render obj uuids
  */
 class RenderEntityBase {
 public:
-    RenderEntityBase(SimCase* pSimCase, std::string uuid);
+    RenderEntityBase(std::string uuid);
     virtual ~RenderEntityBase();
     /* update field of vertices data */
     virtual void updateField(uint32_t i, const std::string fieldName, const Any& anyValue) = 0;
 protected:
-    SimCase* pSimCase;
     std::string uuid;
 
 public:
     /* initialization */
-    bool init(ComPtr<ID3D11Device> dev);
+    bool init(
+        SimCase* pSimCase,
+        ComPtr<ID3D11Device> dev,
+        D3D_PRIMITIVE_TOPOLOGY* primitiveTopologyData,
+        DWORD** indicesData,
+        uint32_t* indicesLenData,
+        uint32_t renderObjCnt
+    );
 protected:
     /* initialization of render objs */
-    virtual bool initRenderObj(ComPtr<ID3D11Device> dev) = 0;
+    virtual bool initRenderObj(
+        SimCase* pSimCase,
+        ComPtr<ID3D11Device> dev,
+        D3D_PRIMITIVE_TOPOLOGY* primitiveTopologyData,
+        DWORD** indicesData,
+        uint32_t* indicesLenData,
+        uint32_t renderObjCnt
+    ) = 0;
     /* uuid of render objs */
     std::unordered_set<std::string> renderObjs;
 };
@@ -56,21 +68,8 @@ protected:
 template<typename T>
 class RenderEntity : public RenderEntityBase {
 public:
-    RenderEntity(SimCase* pSimCase, std::string uuid, 
-        D3D_PRIMITIVE_TOPOLOGY* primitiveTopologyData, 
-        DWORD** indicesData, 
-        uint32_t* indicesLenData, uint32_t renderObjCnt, 
-        T* vData, uint32_t vCnt) :
-        RenderEntityBase(pSimCase, uuid),
-        renderObjCnt(renderObjCnt), vertexCnt(vCnt) {
-        primitiveTopologyArray = std::make_unique<D3D_PRIMITIVE_TOPOLOGY[]>(renderObjCnt);
-        indicesArray = std::make_unique<DWORD*[]>(renderObjCnt);
-        indicesLenArray = std::make_unique<uint32_t[]>(renderObjCnt);
-        for (uint32_t i = 0; i < renderObjCnt; ++i) {
-            primitiveTopologyArray[i] = primitiveTopologyData[i];
-            indicesArray[i] = indicesData[i];
-            indicesLenArray[i] = indicesLenData[i];
-        }
+    RenderEntity(std::string uuid, T* vData, uint32_t vCnt) :
+        RenderEntityBase(uuid), vertexCnt(vCnt) {
         vertices = std::make_unique<T[]>(vertexCnt);
         for (uint32_t i = 0; i < vertexCnt; ++i) {
             vertices[i] = vData[i];
@@ -85,14 +84,17 @@ public:
 private:
     std::shared_ptr<T[]> vertices;
     uint32_t vertexCnt;
-    std::unique_ptr<D3D_PRIMITIVE_TOPOLOGY[]> primitiveTopologyArray;
-    std::unique_ptr<DWORD*[]> indicesArray;
-    std::unique_ptr<uint32_t[]>  indicesLenArray;
-    uint32_t renderObjCnt;
 
 private:
     /* initialization of render objs */
-    bool initRenderObj(ComPtr<ID3D11Device> dev) {
+    bool initRenderObj(
+        SimCase* pSimCase,
+        ComPtr<ID3D11Device> dev,
+        D3D_PRIMITIVE_TOPOLOGY* primitiveTopologyData,
+        DWORD** indicesData,
+        uint32_t* indicesLenData,
+        uint32_t renderObjCnt
+    ) {
         bool res = true;
         for (uint32_t i = 0; i < renderObjCnt; ++i) {
             std::string renderObjUUID = uuid + "-" + GenerateSubUUID();
@@ -101,11 +103,11 @@ private:
                     renderObjUUID,
                     L"./res/shader/vs_VertexPosColor_raw.hlsl",
                     L"./res/shader/ps_VertexPosColor_raw.hlsl",
-                    primitiveTopologyArray[i],
+                    primitiveTopologyData[i],
                     vertices,
                     vertexCnt,
-                    indicesArray[i],
-                    indicesLenArray[i]
+                    indicesData[i],
+                    indicesLenData[i]
                 ),
                 dev
             );
