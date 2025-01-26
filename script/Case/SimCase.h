@@ -40,6 +40,11 @@ protected:
 	std::chrono::time_point<std::chrono::high_resolution_clock> updateTime;
 
 public:
+	/*
+	* pre initialization of the sim case
+	* before window and dx
+	*/
+	virtual bool preInit();
 	/* 
 	* initialization of the sim case 
 	* including ui
@@ -63,13 +68,13 @@ public:
 	/* update of the logic properties */
 	void update(ComPtr<ID3D11Device> dev);
 	/* pre stage of render */
-	virtual void preRender(ComPtr<ID3D11DeviceContext> devCon);
+	virtual void preRender(ComPtr<ID3D11Device> dev, HWND hWindow);
 	/* stage of render 
 	* draw renderobjs and ui
 	*/
 	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 	/* post stage of render */
-	virtual void postRender(ComPtr<ID3D11DeviceContext> devCon);
+	virtual void postRender(ComPtr<ID3D11Device> dev, HWND hWindow);
 protected:
 	/* implementation of the update of the logic properties */
 	virtual void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);

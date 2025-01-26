@@ -6,7 +6,6 @@
 #include "SimCase.h"
 #include "SimEntity.h"
 #include "RenderObj.h"
-#include "RenderObj.h"
 #include "UIPanel.h"
 #include "UIWidget.h"
 
@@ -48,22 +47,28 @@ private:
 
 private:
     /* pre stage of render */
-    void preRender(ComPtr<ID3D11DeviceContext> devCon);
+    void preRender(ComPtr<ID3D11Device> dev, HWND hWindow);
     /* post stage of render */
-    void postRender(ComPtr<ID3D11DeviceContext> devCon);
+    void postRender(ComPtr<ID3D11Device> dev, HWND hWindow);
 
 private:
 	/* implementation of the update of the logic properties */
     void doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime);
 
-protected:
-    /* initialization of case */
-	bool initCase();
+public:
+    /* pre initialization of the sim case */
+    bool preInit();
+
+public:
+    /* enable capture frame once */
+    void enableCaptureFrame();
 private:
     /* render doc api */
-    RENDERDOC_API_1_6_0* rdoc_api;
+    RENDERDOC_API_1_6_0* renderDocApi;
     /* if should capture frame */
-    bool should_capture_frame;
+    bool captureFrameSwitch;
+    /* if capture frame starts */
+    bool captureFraming;
 };
 
 class FadingTriangle : public SimEntity {
@@ -90,13 +95,13 @@ private:
 
 class FadingTriangleControlPanel : public UIPanel {
 public:
-    FadingTriangleControlPanel(std::string name);
+    FadingTriangleControlPanel(std::string name, FadingTriangleCase* pSimCase);
     ~FadingTriangleControlPanel();
 };
 
 class FadingTriangleDebugPanel : public UIPanel {
 public:
-    FadingTriangleDebugPanel(std::string name);
+    FadingTriangleDebugPanel(std::string name, FadingTriangleCase* pSimCase);
     ~FadingTriangleDebugPanel();
 };
 

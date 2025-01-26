@@ -15,8 +15,13 @@ int SimCase::getScreenHeight() const {
 	return 600;
 };
 
+bool SimCase::preInit() {
+	return true;
+}
+
 bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!initUI(hWindow, dev, devCon)) return false;
+	if (!initCase()) return false;
 	return true;
 }
 
@@ -49,7 +54,7 @@ void SimCase::update(ComPtr<ID3D11Device> dev) {
 
 void SimCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {}
 
-void SimCase::preRender(ComPtr<ID3D11DeviceContext> devCon) {
+void SimCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 	if (needUI()) {
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
@@ -64,7 +69,7 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	if (needUI()) pUI->render();
 }
 
-void SimCase::postRender(ComPtr<ID3D11DeviceContext> devCon) {}
+void SimCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {}
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
 	if (!pSimEntity->init(this, dev)) return false;

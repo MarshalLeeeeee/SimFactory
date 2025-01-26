@@ -6,7 +6,7 @@
 
 FadingTriangleCase::FadingTriangleCase() :
     SimCase(), period(1.0f), showDebugPnl(false),
-	rdoc_api(nullptr), should_capture_frame(false) {}
+	renderDocApi(nullptr), captureFrameSwitch(false), captureFraming(false) {}
 
 FadingTriangleCase::~FadingTriangleCase() {}
 
@@ -22,20 +22,24 @@ bool FadingTriangleCase::needUI() const {
 	return true;
 }
 
-bool FadingTriangleCase::initCase() {
-    HMODULE mod = LoadLibraryA("renderdoc.dll");
-    if (mod == NULL) {
-        MessageBox(0, L"Load renderdoc.dll failed...", 0, 0);
+bool FadingTriangleCase::preInit() {
+	HMODULE mod = LoadLibraryA("renderdoc.dll");
+	if (mod == NULL) {
+		MessageBox(0, L"Load renderdoc.dll failed...", 0, 0);
 		return false;
-    }
+	}
 
-    pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
-    int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_6_0, (void**)&rdoc_api);
-    if (ret != 1) {
-        MessageBox(0, L"Init renderdoc api failed...", 0, 0);
+	pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
+	int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_6_0, (void**)&renderDocApi);
+	if (ret != 1) {
+		MessageBox(0, L"Init renderdoc api failed...", 0, 0);
 		return false;
-    }
-
+	}
+	if (!renderDocApi) {
+		MessageBox(0, L"Init renderdoc api failed...", 0, 0);
+		return false;
+	}
+	renderDocApi->SetCaptureFilePathTemplate("captures/frame");
 	return true;
 }
 
@@ -51,34 +55,18 @@ void FadingTriangleCase::setShowDebugPnl(bool b) {
 	showDebugPnl = b;
 }
 
+void FadingTriangleCase::enableCaptureFrame() {
+	captureFrameSwitch = true;
+}
+
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
 	// update ui and binding value
-	std::shared_ptr<UIPanel> pControlPanel = pUI->getUIPanel("Control");
-	if (pControlPanel) {
-		std::shared_ptr<UIWidget> pPeriodSlider = pControlPanel->getUIWidget("PeriodSlider");
-		if (!pPeriodSlider) {
-			pControlPanel->addUIWidget(std::make_shared<UISliderFloat>(
-				"PeriodSlider",
-				1.0,
-				10.0,
-				std::bind(&FadingTriangleCase::setPeriod, this, std::placeholders::_1)
-			));
-		}
-
-		std::shared_ptr<UIWidget> pDebugChecker = pControlPanel->getUIWidget("DebugChecker");
-		if (!pDebugChecker) {
-			pControlPanel->addUIWidget(std::make_shared<UICheckbox>(
-				"DebugChecker",
-				std::bind(&FadingTriangleCase::setShowDebugPnl, this, std::placeholders::_1)
-			));
-		}
-	}
-	else {
-		pUI->addUIPanel(std::make_shared<FadingTriangleControlPanel>("Control"));
+	if (!pUI->hasUIPanel("Control")) {
+		pUI->addUIPanel(std::make_shared<FadingTriangleControlPanel>("Control", this));
 	}
 
 	if (showDebugPnl) {
-		pUI->addUIPanel(std::make_shared<FadingTriangleDebugPanel>("Debug"));
+		pUI->addUIPanel(std::make_shared<FadingTriangleDebugPanel>("Debug", this));
 	}
 	else {
 		pUI->removeUIPanel("Debug");
@@ -92,19 +80,21 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 	}
 }
 
-void FadingTriangleCase::preRender(ComPtr<ID3D11DeviceContext> devCon) {
-	SimCase::preRender(devCon);
-	if (should_capture_frame) {
-		rdoc_api->StartFrameCapture(NULL, NULL);
+void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
+	SimCase::preRender(dev, hWindow);
+	if (captureFrameSwitch) {
+		renderDocApi->StartFrameCapture(NULL, NULL);
+		captureFraming = true;
+		captureFrameSwitch = false;
 	}
 }
 
-void FadingTriangleCase::postRender(ComPtr<ID3D11DeviceContext> devCon) {
-	SimCase::postRender(devCon);
-	if (should_capture_frame) {
-		rdoc_api->EndFrameCapture(NULL, NULL);
-		should_capture_frame = false;
+void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
+	if (captureFraming) {
+		renderDocApi->EndFrameCapture(NULL, NULL);
+		captureFraming = false;
 	}
+	SimCase::postRender(dev, hWindow);
 }
 
 
@@ -176,11 +166,27 @@ void FadingTriangle::updateRenderEntity() {
 
 
 
-FadingTriangleControlPanel::FadingTriangleControlPanel(std::string name) :
-	UIPanel(name) {}
+FadingTriangleControlPanel::FadingTriangleControlPanel(std::string name, FadingTriangleCase* pSimCase) :
+	UIPanel(name) {
+		addUIWidget(std::make_shared<UISliderFloat>(
+			"PeriodSlider",
+			1.0,
+			10.0,
+			std::bind(&FadingTriangleCase::setPeriod, pSimCase, std::placeholders::_1)
+		));
+		addUIWidget(std::make_shared<UICheckbox>(
+			"DebugChecker",
+			std::bind(&FadingTriangleCase::setShowDebugPnl, pSimCase, std::placeholders::_1)
+		));
+	}
 FadingTriangleControlPanel::~FadingTriangleControlPanel() {}
 
 
-FadingTriangleDebugPanel::FadingTriangleDebugPanel(std::string name) :
-	UIPanel(name) {}
+FadingTriangleDebugPanel::FadingTriangleDebugPanel(std::string name, FadingTriangleCase* pSimCase) :
+	UIPanel(name) {
+		addUIWidget(std::make_shared<UIButton>(
+			"FrameCapture",
+			std::bind(&FadingTriangleCase::enableCaptureFrame, pSimCase)
+		));
+	}
 FadingTriangleDebugPanel::~FadingTriangleDebugPanel() {}

@@ -44,9 +44,7 @@ UIButton::~UIButton() {}
 
 void UIButton::render() {
     if (ImGui::Button(name.c_str())) {
-        ImGui::LogToClipboard();
-        ImGui::LogText("Hello, world!");
-        ImGui::LogFinish();
+        func();
     }
 }
 

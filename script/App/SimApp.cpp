@@ -22,7 +22,7 @@ bool SimApp::initApp() {
 	pSimCase = createSimCase(cmdArgs);
 	w = pSimCase->getScreenWidth();
 	h = pSimCase->getScreenHeight();
-	return true;
+	return pSimCase->preInit();
 }
 
 bool SimApp::initFunc() {
@@ -34,7 +34,7 @@ void SimApp::update() {
 }
 
 void SimApp::preRender() const {
-	pSimCase->preRender(devCon);
+	pSimCase->preRender(dev, hWindow);
 }
 
 void SimApp::render() const {
@@ -45,7 +45,7 @@ void SimApp::render() const {
 }
 
 void SimApp::postRender() const {
-	pSimCase->postRender(devCon);
+	pSimCase->postRender(dev, hWindow);
 }
 
 LRESULT CALLBACK SimApp::appProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
