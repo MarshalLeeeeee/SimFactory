@@ -69,3 +69,6 @@ x86/
 # Config
 .vs/
 .vscode/
+
+# Custom
+captures/
