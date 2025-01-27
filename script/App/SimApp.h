@@ -29,7 +29,7 @@ protected:
 	/* The first initialization step, initialize application constants */
 	bool initApp();
 	/* The last initialization step, initialize application logic */
-	bool initFunc();
+	bool initCase();
 
 protected:
 	/* Logic update */

@@ -25,7 +25,7 @@ bool SimApp::initApp() {
 	return pSimCase->preInit();
 }
 
-bool SimApp::initFunc() {
+bool SimApp::initCase() {
 	return pSimCase->init(hWindow, dev, devCon);
 }
 

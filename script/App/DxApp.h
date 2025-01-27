@@ -42,7 +42,7 @@ protected:
 	/* The direct x initialization */
 	bool initDx();
 	/* The last initialization step, initialize application logic */
-	virtual bool initFunc() = 0;
+	virtual bool initCase() = 0;
 protected:
 	/* Standard hInstance from main entry */
 	HINSTANCE hInstance;

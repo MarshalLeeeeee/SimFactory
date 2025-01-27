@@ -25,7 +25,7 @@ bool DxApp::init() {
 	if (!initApp()) return false;
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
-	if (!initFunc()) return false;
+	if (!initCase()) return false;
 	return true;
 }
 
