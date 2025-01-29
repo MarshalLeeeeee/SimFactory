@@ -17,17 +17,17 @@ Logger::~Logger() {
 }
 
 void Logger::log(const char* txt) {
-    append("[Log]", txt);
+    append("Log", txt);
 }
 
 void Logger::error(const char* txt) {
-    append("[Error]", txt);
+    append("Error", txt);
 }
 
 void Logger::debug(const char* txt) {
-    append("[Debug]", txt);
+    append("Debug", txt);
 }
 
 void Logger::append(const char* prefix, const char* txt) {
-    f << getTimeStampStr() << prefix << txt << std::endl;
+    f << getTimeStampStr() << " [" << prefix << "] " << txt << std::endl;
 }

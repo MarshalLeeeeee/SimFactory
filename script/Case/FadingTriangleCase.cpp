@@ -1,6 +1,7 @@
 #include "FadingTriangleCase.h"
 #include "SimUtil.h"
 #include "TypeUtil.h"
+#include "LogUtil.h"
 #include "UIPanel.h"
 #include "UIWidget.h"
 
@@ -86,6 +87,7 @@ void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 		renderDocApi->StartFrameCapture(NULL, NULL);
 		captureFraming = true;
 		captureFrameSwitch = false;
+		Logger::getInstance().debug("Start frame capture...");
 	}
 }
 
@@ -93,6 +95,7 @@ void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 	if (captureFraming) {
 		renderDocApi->EndFrameCapture(NULL, NULL);
 		captureFraming = false;
+		Logger::getInstance().debug("End frame capture...");
 	}
 	SimCase::postRender(dev, hWindow);
 }
