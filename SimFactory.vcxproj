@@ -38,7 +38,9 @@
     <ClCompile Include="script\UI\UI.cpp" />
     <ClCompile Include="script\UI\UIPanel.cpp" />
     <ClCompile Include="script\UI\UIWidget.cpp" />
+    <ClCompile Include="script\Util\FileUtil.cpp" />
     <ClCompile Include="script\Util\GraphicsUtil.cpp" />
+    <ClCompile Include="script\Util\LogUtil.cpp" />
     <ClCompile Include="script\Util\SimUtil.cpp" />
     <ClCompile Include="script\Util\TypeUtil.cpp" />
   </ItemGroup>
@@ -62,7 +64,9 @@
     <ClInclude Include="script\UI\UI.h" />
     <ClInclude Include="script\UI\UIPanel.h" />
     <ClInclude Include="script\UI\UIWidget.h" />
+    <ClInclude Include="script\Util\FileUtil.h" />
     <ClInclude Include="script\Util\GraphicsUtil.h" />
+    <ClInclude Include="script\Util\LogUtil.h" />
     <ClInclude Include="script\Util\SimUtil.h" />
     <ClInclude Include="script\Util\TypeUtil.h" />
   </ItemGroup>

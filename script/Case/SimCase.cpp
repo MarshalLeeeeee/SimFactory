@@ -66,7 +66,7 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
 		itr->second->render(devCon);
 	}
-	if (needUI()) pUI->render();
+	if (pUI) pUI->render();
 }
 
 void SimCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {}

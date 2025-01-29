@@ -1,6 +1,7 @@
 #include "DxApp.h"
 #include "GraphicsUtil.h"
 #include "SimUtil.h"
+#include "LogUtil.h"
 
 namespace {
 	DxApp* thisptr = nullptr;
@@ -26,6 +27,7 @@ bool DxApp::init() {
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
 	if (!initCase()) return false;
+	Logger::getInstance().log("App is successfully initialized...");
 	return true;
 }
 
@@ -137,6 +139,7 @@ bool DxApp::initDx() {
 int DxApp::run() {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
+	Logger::getInstance().log("App starts...");
 	while (true) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
@@ -150,6 +153,7 @@ int DxApp::run() {
 		render();
 		postRender();
 	}
+	Logger::getInstance().log("App ends...");
 	return static_cast<int>(msg.wParam);
 }
 
