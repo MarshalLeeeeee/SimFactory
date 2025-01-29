@@ -8,15 +8,25 @@ std::string getTimeStampStr() {
     localtime_s(&localTime, &time);
     ts += std::to_string(localTime.tm_year + 1900);
     ts += "-";
-    ts += std::to_string(localTime.tm_mon + 1);
+    auto mon = std::to_string(localTime.tm_mon + 1);
+    if (mon.size() == 1) ts += "0";
+    ts += mon;
     ts += "-";
-    ts += std::to_string(localTime.tm_mday);
+    auto day = std::to_string(localTime.tm_mday);
+    if (day.size() == 1) ts += "0";
+    ts += day;
     ts += "-";
-    ts += std::to_string(localTime.tm_hour);
+    auto hour = std::to_string(localTime.tm_hour);
+    if (hour.size() == 1) ts += "0";
+    ts += hour;
     ts += "-";
-    ts += std::to_string(localTime.tm_min);
+    auto min = std::to_string(localTime.tm_min);
+    if (min.size() == 1) ts += "0";
+    ts += min;
     ts += "-";
-    ts += std::to_string(localTime.tm_sec);
+    auto sec = std::to_string(localTime.tm_sec);
+    if (sec.size() == 1) ts += "0";
+    ts += sec;
     return ts;
 }
 
