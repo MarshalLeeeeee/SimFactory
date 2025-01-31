@@ -1,11 +1,15 @@
 #include "FileUtil.h"
 
 std::string getTimeStampStr() {
-    std::string ts;
     const std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+    return getTimeStampStr(now);
+}
+
+std::string getTimeStampStr(const std::chrono::time_point<std::chrono::system_clock> now) {
     auto time = std::chrono::system_clock::to_time_t(now);
     std::tm localTime;
     localtime_s(&localTime, &time);
+    std::string ts;
     ts += std::to_string(localTime.tm_year + 1900);
     ts += "-";
     auto mon = std::to_string(localTime.tm_mon + 1);

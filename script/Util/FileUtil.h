@@ -13,6 +13,9 @@
 /* Return year-mon-day-hour-min-sec */
 std::string getTimeStampStr();
 
+/* Return year-mon-day-hour-min-sec */
+std::string getTimeStampStr(const std::chrono::time_point<std::chrono::system_clock> now);
+
 /* return if the directory exists */
 bool directoryExists(const char* dir);
 
