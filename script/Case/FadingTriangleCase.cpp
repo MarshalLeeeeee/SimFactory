@@ -6,8 +6,12 @@
 #include "UIWidget.h"
 
 FadingTriangleCase::FadingTriangleCase() :
-    SimCase(), period(1.0f), showDebugPnl(false),
-	renderDocApi(nullptr), captureFrameSwitch(false), captureFraming(false) {}
+    SimCase(), period(1.0f)
+#ifndef NDEBUG
+	, showDebugPnl(false)
+	, renderDocApi(nullptr), captureFrameSwitch(false), captureFraming(false) 
+#endif
+	{}
 
 FadingTriangleCase::~FadingTriangleCase() {}
 
@@ -35,16 +39,20 @@ float FadingTriangleCase::getPeriod() const {
 	return period;
 }
 
+#ifndef NDEBUG
 void FadingTriangleCase::setShowDebugPnl(bool b) {
 	showDebugPnl = b;
 }
+#endif
 
+#ifndef NDEBUG
 void FadingTriangleCase::enableCaptureFrame() {
 	captureFrameSwitch = true;
 }
+#endif
 
 bool FadingTriangleCase::initRenderDoc() {
-#if _DEBUG
+#ifndef NDEBUG
 	HMODULE mod = LoadLibraryA("renderdoc.dll");
 	if (mod == NULL) {
 		MessageBox(0, L"Load renderdoc.dll failed...", 0, 0);
@@ -72,12 +80,14 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 		pUI->addUIPanel(std::make_shared<FadingTriangleControlPanel>("Control", this));
 	}
 
+#ifndef NDEBUG
 	if (showDebugPnl) {
 		pUI->addUIPanel(std::make_shared<FadingTriangleDebugPanel>("Debug", this));
 	}
 	else {
 		pUI->removeUIPanel("Debug");
 	}
+#endif
 
 	if (entities.empty()) {
 		addEntity(std::make_shared<FadingTriangle>(), dev);
@@ -89,7 +99,7 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 
 void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 	SimCase::preRender(dev, hWindow);
-#if _DEBUG
+#ifndef NDEBUG
 	if (captureFrameSwitch) {
 		renderDocApi->StartFrameCapture(NULL, NULL);
 		captureFraming = true;
@@ -100,7 +110,7 @@ void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 }
 
 void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
-#if _DEBUG
+#ifndef NDEBUG
 	if (captureFraming) {
 		renderDocApi->EndFrameCapture(NULL, NULL);
 		captureFraming = false;
@@ -187,19 +197,23 @@ FadingTriangleControlPanel::FadingTriangleControlPanel(std::string name, FadingT
 			10.0,
 			std::bind(&FadingTriangleCase::setPeriod, pSimCase, std::placeholders::_1)
 		));
+#ifndef NDEBUG
 		addUIWidget(std::make_shared<UICheckbox>(
 			"DebugChecker",
 			std::bind(&FadingTriangleCase::setShowDebugPnl, pSimCase, std::placeholders::_1)
 		));
+#endif
 	}
 FadingTriangleControlPanel::~FadingTriangleControlPanel() {}
 
 
 FadingTriangleDebugPanel::FadingTriangleDebugPanel(std::string name, FadingTriangleCase* pSimCase) :
 	UIPanel(name) {
+#ifndef NDEBUG
 		addUIWidget(std::make_shared<UIButton>(
 			"FrameCapture",
 			std::bind(&FadingTriangleCase::enableCaptureFrame, pSimCase)
 		));
+#endif
 	}
 FadingTriangleDebugPanel::~FadingTriangleDebugPanel() {}

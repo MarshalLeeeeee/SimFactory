@@ -17,7 +17,9 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
+#ifndef NDEBUG
 #include "renderdoc/renderdoc_app.h"
+#endif
 
 class FadingTriangleCase : public SimCase {
 public:
@@ -35,11 +37,13 @@ private:
     /* changing period */
     float period;
 
+#ifndef NDEBUG
 public:
     void setShowDebugPnl(bool b);
 private:
     /* if use debug panel */
     bool showDebugPnl;
+#endif
 
 private:
     /* if sim case needs ui */
@@ -58,18 +62,22 @@ private:
 public:
     /* pre initialization of the sim case */
     bool preInit();
+private:
+    /* init render doc */
+    bool initRenderDoc();
 
+#ifndef NDEBUG
 public:
     /* enable capture frame once */
     void enableCaptureFrame();
 private:
-    bool initRenderDoc();
     /* render doc api */
     RENDERDOC_API_1_6_0* renderDocApi;
     /* if should capture frame */
     bool captureFrameSwitch;
     /* if capture frame starts */
     bool captureFraming;
+#endif
 };
 
 class FadingTriangle : public SimEntity {
