@@ -63,6 +63,7 @@ public:
     /* enable capture frame once */
     void enableCaptureFrame();
 private:
+    bool initRenderDoc();
     /* render doc api */
     RENDERDOC_API_1_6_0* renderDocApi;
     /* if should capture frame */

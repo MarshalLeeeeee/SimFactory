@@ -8,7 +8,7 @@ static std::uniform_int_distribution<> dis(0, 15);
 static std::uniform_int_distribution<> dis2(8, 11);
 
 // Generate uuid
-std::string GenerateUUID() {
+std::string generateUUID() {
     std::stringstream ss;
     int i;
     ss << std::hex;
@@ -28,7 +28,7 @@ std::string GenerateUUID() {
 }
 
 // Generate sub uuid
-std::string GenerateSubUUID() {
+std::string generateSubUUID() {
     std::stringstream ss;
     int i;
     ss << std::hex;
@@ -37,6 +37,12 @@ std::string GenerateSubUUID() {
     }
     return ss.str();
 }
+
+// Generate uniform random within [0,1]
+double uniformRandom() {
+    return distribution(generator);
+}
+
 
 ////////////////////////
 // Unparse lpCmdLine

@@ -15,7 +15,7 @@ bool SimEntity::init(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
 bool SimEntity::initUUID(SimCase* pSimCase) {
 	std::string _uuid;
 	for (int i = 0; i < 50; ++i) {
-		_uuid = GenerateUUID();
+		_uuid = generateUUID();
 		if (!pSimCase->hasRenderObj(_uuid)) {
 			uuid = _uuid;
 			return true;

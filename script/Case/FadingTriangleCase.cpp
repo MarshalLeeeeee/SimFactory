@@ -24,6 +24,27 @@ bool FadingTriangleCase::needUI() const {
 }
 
 bool FadingTriangleCase::preInit() {
+	return initRenderDoc();
+}
+
+void FadingTriangleCase::setPeriod(float p) {
+	period = p;
+}
+
+float FadingTriangleCase::getPeriod() const {
+	return period;
+}
+
+void FadingTriangleCase::setShowDebugPnl(bool b) {
+	showDebugPnl = b;
+}
+
+void FadingTriangleCase::enableCaptureFrame() {
+	captureFrameSwitch = true;
+}
+
+bool FadingTriangleCase::initRenderDoc() {
+#if _DEBUG
 	HMODULE mod = LoadLibraryA("renderdoc.dll");
 	if (mod == NULL) {
 		MessageBox(0, L"Load renderdoc.dll failed...", 0, 0);
@@ -41,23 +62,8 @@ bool FadingTriangleCase::preInit() {
 		return false;
 	}
 	renderDocApi->SetCaptureFilePathTemplate("captures/frame");
+#endif
 	return true;
-}
-
-void FadingTriangleCase::setPeriod(float p) {
-	period = p;
-}
-
-float FadingTriangleCase::getPeriod() const {
-	return period;
-}
-
-void FadingTriangleCase::setShowDebugPnl(bool b) {
-	showDebugPnl = b;
-}
-
-void FadingTriangleCase::enableCaptureFrame() {
-	captureFrameSwitch = true;
 }
 
 void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, double frameTime) {
@@ -83,20 +89,24 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 
 void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 	SimCase::preRender(dev, hWindow);
+#if _DEBUG
 	if (captureFrameSwitch) {
 		renderDocApi->StartFrameCapture(NULL, NULL);
 		captureFraming = true;
 		captureFrameSwitch = false;
 		Logger::getInstance().debug("Start frame capture...");
 	}
+#endif
 }
 
 void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
+#if _DEBUG
 	if (captureFraming) {
 		renderDocApi->EndFrameCapture(NULL, NULL);
 		captureFraming = false;
 		Logger::getInstance().debug("End frame capture...");
 	}
+#endif
 	SimCase::postRender(dev, hWindow);
 }
 

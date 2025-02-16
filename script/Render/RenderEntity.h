@@ -97,7 +97,7 @@ private:
     ) {
         bool res = true;
         for (uint32_t i = 0; i < renderObjCnt; ++i) {
-            std::string renderObjUUID = uuid + "-" + GenerateSubUUID();
+            std::string renderObjUUID = uuid + "-" + generateSubUUID();
             res &= pSimCase->addRenderObj(
                 std::make_shared<RenderObj<T>>(
                     renderObjUUID,
