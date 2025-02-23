@@ -71,10 +71,11 @@ template<typename T>
 class RenderObj : public RenderObjBase {
 public:
     RenderObj(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology, 
-        std::shared_ptr<T[]> vData, uint32_t vCnt, DWORD* iData, uint32_t iCnt) :
+        std::shared_ptr<T[]> vData, uint32_t vCnt, DWORD* iData, uint32_t iCnt, std::shared_ptr<TransformBuffer> tfData) :
         RenderObjBase(uuid, vsHLSL, psHLSL, primitiveTopology),
         vBuffer(nullptr), iBuffer(nullptr),
-        vertices(vData), vertexCnt(vCnt), indexCnt(iCnt) {
+        vertices(vData), vertexCnt(vCnt), indexCnt(iCnt),
+        pTfBufferData(tfData) {
 			indices = std::make_unique<DWORD[]>(indexCnt);
 			for (uint32_t i = 0; i < indexCnt; ++i) {
 				indices[i] = iData[i];
@@ -99,8 +100,7 @@ private:
         bd.ByteWidth = sizeof(T) * vertexCnt;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        HRESULT hr = dev->CreateBuffer(&bd, NULL, vBuffer.GetAddressOf()); // create the buffer
-        if (FAILED(hr)) {
+        if (FAILED(dev->CreateBuffer(&bd, NULL, vBuffer.GetAddressOf()))) {
             return false;
         }
         // index buffer
@@ -116,6 +116,16 @@ private:
         if (FAILED(dev->CreateBuffer(&ibd, &initDataI, iBuffer.GetAddressOf()))) {
             return false;
         }
+        // transform buffer
+        D3D11_BUFFER_DESC tfbd;
+        ZeroMemory(&tfbd, sizeof(tfbd));
+        tfbd.Usage = D3D11_USAGE_DYNAMIC;
+        tfbd.ByteWidth = sizeof(TransformBuffer);
+        tfbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        tfbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        if (FAILED(dev->CreateBuffer(&tfbd, NULL, tfBuffer.GetAddressOf()))) {
+            return false;
+        }
         return true;
     }
     ComPtr<ID3D11Buffer> vBuffer;
@@ -124,6 +134,8 @@ private:
     ComPtr<ID3D11Buffer> iBuffer;
     std::unique_ptr<DWORD[]> indices;
     uint32_t indexCnt;
+    ComPtr<ID3D11Buffer> tfBuffer; // transformBuffer for shader
+    std::shared_ptr<TransformBuffer> pTfBufferData; // transformBuffer data
 
 private:
 	void doRender(ComPtr<ID3D11DeviceContext> devCon) const {
@@ -132,11 +144,17 @@ private:
         devCon->Map(vBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms); // map the buffer
         memcpy(ms.pData, vertices.get(), sizeof(T) * vertexCnt); // copy the data
         devCon->Unmap(vBuffer.Get(), NULL); // unmap the buffer
+        // transform data
+        D3D11_MAPPED_SUBRESOURCE tfms;
+        devCon->Map(tfBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &tfms); // map the buffer
+        memcpy(tfms.pData, pTfBufferData.get(), sizeof(TransformBuffer)); // copy the data
+        devCon->Unmap(tfBuffer.Get(), NULL); // unmap the buffer
         // draw
         UINT stride = sizeof(T);
         UINT offset = 0;
         devCon->IASetVertexBuffers(0, 1, vBuffer.GetAddressOf(), &stride, &offset);
         devCon->IASetIndexBuffer(iBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+        devCon->VSSetConstantBuffers(0, 1, tfBuffer.GetAddressOf());
         devCon->DrawIndexed(indexCnt, 0, 0);
     }
 };

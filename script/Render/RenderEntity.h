@@ -6,6 +6,7 @@
 #include "SimCase.h"
 #include "SimUtil.h"
 #include "TypeUtil.h"
+#include "MathUtil.h"
 
 #include <Windows.h>
 #include <wrl/client.h>
@@ -58,6 +59,22 @@ protected:
     ) = 0;
     /* uuid of render objs */
     std::unordered_set<std::string> renderObjs;
+
+protected:
+    float posX; // NDC coordinate width
+    float posY; // NDC coordinate height
+    float posZ; // depth layer
+    float scX; // local scaling in X
+    float scY; // local scaling in Y
+    float angle; // local rotation angle;
+    std::shared_ptr<TransformBuffer> pTfBufferData; // transformBuffer data
+    void updateTranformBuffer() {
+        pTfBufferData->mat = getTransformMatrix(posX, posY, angle, scX, scY);
+    }
+
+protected:
+    float opacity; // opacity
+    bool vis; // visible, render or not
 };
 
 /*
@@ -107,7 +124,8 @@ private:
                     vertices,
                     vertexCnt,
                     indicesData[i],
-                    indicesLenData[i]
+                    indicesLenData[i],
+                    pTfBufferData
                 ),
                 dev
             );

@@ -41,6 +41,7 @@
     <ClCompile Include="script\Util\FileUtil.cpp" />
     <ClCompile Include="script\Util\GraphicsUtil.cpp" />
     <ClCompile Include="script\Util\LogUtil.cpp" />
+    <ClCompile Include="script\Util\MathUtil.cpp" />
     <ClCompile Include="script\Util\SimUtil.cpp" />
     <ClCompile Include="script\Util\ThreadUtil.cpp" />
     <ClCompile Include="script\Util\TypeUtil.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="script\Util\FileUtil.h" />
     <ClInclude Include="script\Util\GraphicsUtil.h" />
     <ClInclude Include="script\Util\LogUtil.h" />
+    <ClInclude Include="script\Util\MathUtil.h" />
     <ClInclude Include="script\Util\SimUtil.h" />
     <ClInclude Include="script\Util\ThreadUtil.h" />
     <ClInclude Include="script\Util\TypeUtil.h" />

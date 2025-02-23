@@ -53,4 +53,9 @@ struct VertexPosColor {
     void updateField(const std::string fieldName, const Any& anyValue);
 };
 
+/* Transform Buffer */
+struct TransformBuffer {
+    DirectX::XMMATRIX mat;
+};
+
 #endif

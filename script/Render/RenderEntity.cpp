@@ -1,6 +1,16 @@
 #include "RenderEntity.h"
 
-RenderEntityBase::RenderEntityBase(std::string uuid) : uuid(uuid) {}
+RenderEntityBase::RenderEntityBase(std::string uuid) : 
+    uuid(uuid),
+    posX(0.5f), posY(0.5f), posZ(0.f),
+    scX(1.f), scY(1.f),
+    angle(1.f),
+    opacity(1.f),
+    vis(true)
+    {
+    pTfBufferData = std::make_shared<TransformBuffer>();
+    updateTranformBuffer();
+}
 
 RenderEntityBase::~RenderEntityBase() {}
 
