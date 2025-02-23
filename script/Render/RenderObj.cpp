@@ -1,5 +1,6 @@
 #include "RenderObj.h"
 #include "GraphicsUtil.h"
+#include "LogUtil.h"
 
 RenderObjBase::RenderObjBase(std::string uuid, const WCHAR* vsHLSL, const WCHAR* psHLSL, D3D_PRIMITIVE_TOPOLOGY primitiveTopology) :
 	vLayout(nullptr), vs(nullptr), ps(nullptr),
@@ -19,21 +20,27 @@ bool RenderObjBase::initShader(ComPtr<ID3D11Device> dev) {
 
 	// Compile and create vertex shader
 	if (FAILED(CreateShaderFromFile(vsHLSL.c_str(), "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()))) {
+		Logger::getInstance().error("[CreateShaderFromFile] Create vertex shader failed...");
 		return false;
 	}
 	if (FAILED(dev->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, vs.GetAddressOf()))) {
+		Logger::getInstance().error("[CreateVertexShader] Compile vertex shader failed...");
 		return false;
 	}
 
-	if (!initLayout(dev, blob)) return false;
-
+	// Init vertex layout
+	if (!initLayout(dev, blob)) {
+		Logger::getInstance().error("[initLayout] Init vertex shader layout failed...");
+		return false;
+	}
+	
 	// Compile and create pixel shader
 	if (FAILED(CreateShaderFromFile(psHLSL.c_str(), "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()))) {
-		MessageBox(0, L"Compile pixel shader failed...", 0, 0);
+		Logger::getInstance().error("[CreateShaderFromFile] Create pixel shader failed...");
 		return false;
 	}
 	if (FAILED(dev->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, ps.GetAddressOf()))) {
-		MessageBox(0, L"Create pixel shader failed...", 0, 0);
+		Logger::getInstance().error("[CreateVertexShader] Compile pixel shader failed...");
 		return false;
 	}
 

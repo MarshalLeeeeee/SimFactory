@@ -1,4 +1,6 @@
 #include "SimCase.h"
+#include "SimUtil.h"
+#include "LogUtil.h"
 
 SimCase::SimCase() : pUI(nullptr) {
 	startTime = std::chrono::high_resolution_clock::now();
@@ -21,7 +23,6 @@ bool SimCase::preInit() {
 
 bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!initUI(hWindow, dev, devCon)) return false;
-	if (!initCase()) return false;
 	return true;
 }
 
@@ -31,12 +32,7 @@ LRESULT CALLBACK SimCase::simProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 }
 
 bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
-	if (!needUI()) return true;
-	pUI = std::make_shared<UI>(hWindow, dev, devCon);
-	return true;
-}
-
-bool SimCase::initCase() {
+	if (needUI()) pUI = std::make_shared<UI>(hWindow, dev, devCon);
 	return true;
 }
 
@@ -72,9 +68,15 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 void SimCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {}
 
 bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
-	if (!pSimEntity->init(this, dev)) return false;
-	std::string uuid = pSimEntity->getUUID();
-	if (hasEntity(uuid)) return false;
+	std::string uuid = generateUUID();
+	if (hasEntity(uuid)) {
+		Logger::getInstance().error("[SimCase::addEntity] duplicate uuid...");
+		return false;
+	}
+	if (!pSimEntity->init(this, uuid, dev)) {
+		Logger::getInstance().error("[SimCase::addEntity] fail to init sim entity...");
+		return false;
+	}
 	entities[uuid] = pSimEntity;
 	return true;
 }

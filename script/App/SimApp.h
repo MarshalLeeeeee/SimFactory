@@ -18,7 +18,7 @@
  * SimCase factory
  * Return specific SimCase given the cmd args
  */
-std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs);
+std::unique_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs);
 
 class SimApp : public DxApp {
 public:
@@ -45,7 +45,7 @@ protected:
 
 protected:
 	/* ptr of specific sim case */
-	std::shared_ptr<SimCase> pSimCase;
+	std::unique_ptr<SimCase> pSimCase;
 };
 
 #endif

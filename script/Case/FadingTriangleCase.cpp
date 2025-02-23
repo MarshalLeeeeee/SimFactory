@@ -56,17 +56,20 @@ bool FadingTriangleCase::initRenderDoc() {
 	HMODULE mod = LoadLibraryA("renderdoc.dll");
 	if (mod == NULL) {
 		MessageBox(0, L"Load renderdoc.dll failed...", 0, 0);
+		Logger::getInstance().error("[FadingTriangleCase::initRenderDoc] Load renderdoc.dll failed...");
 		return false;
 	}
-
+	
 	pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
 	int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_6_0, (void**)&renderDocApi);
 	if (ret != 1) {
 		MessageBox(0, L"Init renderdoc api failed...", 0, 0);
+		Logger::getInstance().error("[FadingTriangleCase::initRenderDoc] Init renderdoc api failed...");
 		return false;
 	}
 	if (!renderDocApi) {
 		MessageBox(0, L"Init renderdoc api failed...", 0, 0);
+		Logger::getInstance().error("[FadingTriangleCase::initRenderDoc] Init renderdoc api failed...");
 		return false;
 	}
 	renderDocApi->SetCaptureFilePathTemplate("captures/frame");

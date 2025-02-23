@@ -60,10 +60,6 @@ protected:
 	/* ptr of UI */
 	std::shared_ptr<UI> pUI;
 
-protected:
-	/* initialization of case */
-	virtual bool initCase();
-
 public:
 	/* update of the logic properties */
 	void update(ComPtr<ID3D11Device> dev);

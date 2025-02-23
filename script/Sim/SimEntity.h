@@ -28,10 +28,8 @@ public:
      * render entity
      * specific initialization
      */
-    bool init(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
+    bool init(SimCase* pSimCase, std::string uuid, ComPtr<ID3D11Device> dev);
 protected:
-    /* intialization of uuid */
-    bool initUUID(SimCase* pSimCase);
     /* intialization of render entity */
     virtual bool initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
     /* intialization of specific demand */

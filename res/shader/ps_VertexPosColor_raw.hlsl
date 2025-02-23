@@ -1,4 +1,10 @@
-float4 PS(float4 position : SV_POSITION, float4 color : COLOR) : SV_TARGET
+struct PIn
 {
-    return color;
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
+};
+
+float4 PS(PIn input) : SV_TARGET
+{
+    return input.color;
 }

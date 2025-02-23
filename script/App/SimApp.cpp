@@ -4,12 +4,12 @@
 #include "SimCase.h"
 #include "FadingTriangleCase.h"
 
-std::shared_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs) {
-    if (cmdArgs.empty()) return std::make_shared<SimCase>();
+std::unique_ptr<SimCase> createSimCase(const std::vector<std::string>& cmdArgs) {
+    if (cmdArgs.empty()) return std::make_unique<SimCase>();
     else {
         std::string caseName = cmdArgs[0];
-        if (caseName == "FadingTriangleCase") return std::make_shared<FadingTriangleCase>();
-        else return std::make_shared<SimCase>();
+        if (caseName == "FadingTriangleCase") return std::make_unique<FadingTriangleCase>();
+        else return std::make_unique<SimCase>();
     }
 }
 

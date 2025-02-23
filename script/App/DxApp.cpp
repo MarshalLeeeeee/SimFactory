@@ -45,6 +45,7 @@ bool DxApp::initWindow() {
 	wc.lpszClassName = L"DxAppWC";
 	if (!RegisterClassEx(&wc)) {
 		MessageBox(0, L"Register window class failed...", 0, 0);
+		Logger::getInstance().error("[DxApp::initWindow] Register window class failed...");
 		return false;
 	}
 
@@ -67,6 +68,7 @@ bool DxApp::initWindow() {
 	);
 	if (!hWindow) {
 		MessageBox(0, L"Create window failed...", 0, 0);
+		Logger::getInstance().error("[DxApp::initWindow] Create window handler failed...");
 		return false;
 	}
 	ShowWindow(hWindow, nCmdShow);
@@ -106,6 +108,7 @@ bool DxApp::initDx() {
 	);
 	if (FAILED(hr)) {
 		MessageBox(0, L"CreateDeviceAndSwapChain failed...", 0, 0);
+		Logger::getInstance().error("[DxApp::initDx] CreateDeviceAndSwapChain failed...");
 		return false;
 	}
 
@@ -114,12 +117,14 @@ bool DxApp::initDx() {
 	hr = swChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)pBackBuffer.GetAddressOf());
 	if (FAILED(hr)) {
 		MessageBox(0, L"Get back buffer failed...", 0, 0);
+		Logger::getInstance().error("[DxApp::initDx] Get back buffer failed...");
 		return false;
 	}
 	hr = dev->CreateRenderTargetView(pBackBuffer.Get(), NULL, rt.GetAddressOf()); // use the back buffer address to create the render target
 	pBackBuffer->Release();
 	if (FAILED(hr)) {
 		MessageBox(0, L"Create render target failed...", 0, 0);
+		Logger::getInstance().error("[DxApp::initDx] Create render target failed...");
 		return false;
 	}
 	devCon->OMSetRenderTargets(1, rt.GetAddressOf(), nullptr); // set the render target as the back buffer
