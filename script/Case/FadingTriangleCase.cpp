@@ -176,6 +176,11 @@ void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double fr
 		d = 1.0f;
 		c = -c;
 	}
+
+	if (pRenderEntity) {
+		float a = pRenderEntity->getAngle();
+		pRenderEntity->setAngle(a + 0.5 * frameTime);
+	}
 }
 
 void FadingTriangle::updateRenderEntity() {
@@ -188,6 +193,7 @@ void FadingTriangle::updateRenderEntity() {
 	for (uint32_t i = 0; i < 3; ++i) {
 		pRenderEntity->updateField(i, "color", cs[i]);
 	}
+	pRenderEntity->updateTranformBuffer();
 }
 
 

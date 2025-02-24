@@ -60,6 +60,16 @@ protected:
     /* uuid of render objs */
     std::unordered_set<std::string> renderObjs;
 
+public:
+    float getAngle() const { return angle; }
+    void setAngle(float a) {
+        angle = a;
+        if (angle > PI_2) angle -= PI_2;
+        else if (angle < 0.) angle += PI_2;
+    }
+    void updateTranformBuffer() {
+        pTfBufferData->mat = getTransformMatrix(posX, posY, angle, scX, scY);
+    }
 protected:
     float posX; // NDC coordinate width
     float posY; // NDC coordinate height
@@ -68,9 +78,6 @@ protected:
     float scY; // local scaling in Y
     float angle; // local rotation angle;
     std::shared_ptr<TransformBuffer> pTfBufferData; // transformBuffer data
-    void updateTranformBuffer() {
-        pTfBufferData->mat = getTransformMatrix(posX, posY, angle, scX, scY);
-    }
 
 protected:
     float opacity; // opacity

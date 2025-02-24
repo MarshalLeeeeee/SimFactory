@@ -8,6 +8,9 @@
 #include <DirectXMath.h>
 // No project header is allowed
 
+#define PI 3.1415926
+#define PI_2 PI * 2.0
+
 /* Get rotation matrix 4*4 in the XY surface */
 DirectX::XMMATRIX getRotationMatrix(float angle);
 
