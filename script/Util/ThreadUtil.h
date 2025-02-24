@@ -53,6 +53,7 @@ private:
     Dispatcher();
     ~Dispatcher();
     Dispatcher(const Dispatcher&) = delete;
+    Dispatcher(const Dispatcher&&) = delete;
     void operator=(const Dispatcher&) = delete;
 
 public:
