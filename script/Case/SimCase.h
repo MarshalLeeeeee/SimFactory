@@ -33,6 +33,8 @@ public:
 	virtual int getScreenWidth() const;
 	/* screen height defined by specific sim case */
 	virtual int getScreenHeight() const;
+	/* screen resolution x : y */
+	float x2y;
 protected:
 	/* start time of the simulation */
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTime;

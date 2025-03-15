@@ -96,10 +96,12 @@ private:
     void updateRenderEntity();
 
 private:
-    /* color degree */
-    float c;
+    /* color opacity */
+    float co;
     /* change direction */
     float d;
+    /* angle */
+    float a;
 };
 
 class FadingTriangleControlPanel : public UIPanel {

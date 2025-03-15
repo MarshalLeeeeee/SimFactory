@@ -2,6 +2,7 @@
 #include "SimUtil.h"
 #include "TypeUtil.h"
 #include "LogUtil.h"
+#include "MathUtil.h"
 #include "UIPanel.h"
 #include "UIWidget.h"
 
@@ -126,18 +127,19 @@ void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 
 
 FadingTriangle::FadingTriangle() :
-	SimEntity(), c(0.0f), d(1.0f) {}
+	SimEntity(), co(1.f), d(1.f), a(0.f) {}
 
 FadingTriangle::~FadingTriangle() {}
 
 bool FadingTriangle::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
 	VertexPosColor vData[3] = {
-		{ DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.45f, -0.5, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-0.45f, -0.5f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+		{ DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
 	};
 	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
 		uuid,
+		pSimCase->x2y,
 		vData,
 		3
 	);
@@ -167,33 +169,27 @@ bool FadingTriangle::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> de
 
 void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
-	c += d * float(frameTime) / period;
-	if (c > 1.0f) {
+	co += d * float(frameTime) * period;
+	if (co > 1.0f) {
 		d = -1.0f;
-		c = 2.0f - c;
+		co = 2.0f - co;
 	}
-	else if (c < 0.0f) {
+	else if (co < 0.0f) {
 		d = 1.0f;
-		c = -c;
+		co = -co;
 	}
-
-	if (pRenderEntity) {
-		float a = pRenderEntity->getAngle();
-		pRenderEntity->setAngle(a + 0.5 * frameTime);
-	}
+	a += float(frameTime) * period;
+	if (a > PI_2) a -= PI_2;
+    else if (a < 0.) a += PI_2;
 }
 
 void FadingTriangle::updateRenderEntity() {
 	if (!pRenderEntity) return;
-	DirectX::XMFLOAT4 cs[3] = {
-		{ DirectX::XMFLOAT4(c, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT4(0.0f, c, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT4(0.0f, 0.0f, c, 1.0f) },
-	};
-	for (uint32_t i = 0; i < 3; ++i) {
-		pRenderEntity->updateField(i, "color", cs[i]);
-	}
+	pRenderEntity->setAngle(a);
 	pRenderEntity->updateTranformBuffer();
+	pRenderEntity->setOpacity(co);
+	pRenderEntity->setIntensity(co);
+	pRenderEntity->updatePixelBuffer();
 }
 
 
@@ -202,7 +198,7 @@ FadingTriangleControlPanel::FadingTriangleControlPanel(std::string name, FadingT
 	UIPanel(name) {
 		addUIWidget(std::make_shared<UISliderFloat>(
 			"PeriodSlider",
-			1.0,
+			0.0,
 			10.0,
 			std::bind(&FadingTriangleCase::setPeriod, pSimCase, std::placeholders::_1)
 		));

@@ -49,13 +49,16 @@ struct VertexPosColor {
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMFLOAT4 color;
 	static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
-
-    void updateField(const std::string fieldName, const Any& anyValue);
 };
 
 /* Transform Buffer */
 struct TransformBuffer {
     DirectX::XMMATRIX mat;
+};
+
+/* Pixel Buffer */
+struct PixelBuffer {
+    DirectX::XMFLOAT4 data;
 };
 
 #endif

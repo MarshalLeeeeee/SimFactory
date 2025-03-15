@@ -31,16 +31,18 @@ DirectX::XMMATRIX getTranslationMatrix(float x, float y, float z) {
 }
 
 /* Get transform matrix 4*4 for axis-X, axis-Y, axis-Z */
-DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle) {
+DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float x2y) {
     DirectX::XMMATRIX rotationMat = getRotationMatrix(angle);
     DirectX::XMMATRIX translationMat = getTranslationMatrix(x, y);
-    return XMMatrixMultiply(rotationMat, translationMat);
+    DirectX::XMMATRIX resolutionMat = getScalingMatrix(1.f, x2y);
+    return XMMatrixMultiply(XMMatrixMultiply(rotationMat, translationMat), resolutionMat);
 }
 
 /* Get transform matrix 4*4 for axis-X, axis-Y, axis-Z */
-DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float scX, float scY) {
+DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float scX, float scY, float x2y) {
     DirectX::XMMATRIX scalingMat = getScalingMatrix(scX, scY);
     DirectX::XMMATRIX rotationMat = getRotationMatrix(angle);
     DirectX::XMMATRIX translationMat = getTranslationMatrix(x, y);
-    return XMMatrixMultiply(XMMatrixMultiply(scalingMat, rotationMat), translationMat);
+    DirectX::XMMATRIX resolutionMat = getScalingMatrix(1.f, x2y);
+    return XMMatrixMultiply(XMMatrixMultiply(XMMatrixMultiply(scalingMat, rotationMat), translationMat), resolutionMat);
 }

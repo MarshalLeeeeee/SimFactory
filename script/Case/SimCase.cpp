@@ -23,6 +23,7 @@ bool SimCase::preInit() {
 
 bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!initUI(hWindow, dev, devCon)) return false;
+	x2y = static_cast<float>(getScreenWidth()) / static_cast<float>(getScreenHeight());
 	return true;
 }
 

@@ -56,7 +56,7 @@ bool DxApp::initWindow() {
 		NULL,
 		L"DxAppWC",
 		L"App",
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		wr.right - wr.left,
