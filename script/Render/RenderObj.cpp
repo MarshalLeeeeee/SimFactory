@@ -51,7 +51,7 @@ void RenderObjBase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 	devCon->VSSetShader(vs.Get(), nullptr, 0);
 	devCon->PSSetShader(ps.Get(), nullptr, 0);
 	devCon->IASetInputLayout(vLayout.Get());
-	devCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	devCon->IASetPrimitiveTopology(primitiveTopology);
 	doRender(devCon);
 }
 
