@@ -1,6 +1,7 @@
 #include "SimCase.h"
 #include "SimUtil.h"
 #include "LogUtil.h"
+#include "ThreadUtil.h"
 
 SimCase::SimCase() : pUI(nullptr) {
 	startTime = std::chrono::high_resolution_clock::now();
@@ -42,6 +43,7 @@ bool SimCase::needUI() const {
 }
 
 void SimCase::update(ComPtr<ID3D11Device> dev) {
+	MainthreadCallbackHub::getInstance().invoke();
 	auto currTime = std::chrono::high_resolution_clock::now();
     double simTime = static_cast<std::chrono::duration<double>>(currTime - startTime).count();
     double frameTime = static_cast<std::chrono::duration<double>>(currTime - updateTime).count();

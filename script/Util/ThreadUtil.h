@@ -25,6 +25,8 @@ protected:
     std::atomic<bool> stop;
 };
 
+///////////////////////////////////////////////
+
 /* Universal task dispatcher
  * with priority controll
  * once dispatched, tasks can be paraly done
@@ -53,9 +55,9 @@ private:
     Dispatcher();
     ~Dispatcher();
     Dispatcher(const Dispatcher&) = delete;
-    Dispatcher(const Dispatcher&&) = delete;
+    Dispatcher(Dispatcher&&) = delete;
     Dispatcher& operator=(const Dispatcher&) = delete;
-    Dispatcher& operator=(const Dispatcher&&) = delete;
+    Dispatcher& operator=(Dispatcher&&) = delete;
 
 public:
     void work();
@@ -64,5 +66,37 @@ private:
     std::priority_queue<Task, std::vector<Task>, CmpTask> tasks;
     uint32_t taskId;
 };
+
+///////////////////////////////////////////////
+
+/*
+ * Universal mainthread callcack hub
+ */
+
+class MainthreadCallbackHub {
+public:
+    static MainthreadCallbackHub& getInstance() {
+        static MainthreadCallbackHub instance;
+        return instance;
+    }
+private:
+    MainthreadCallbackHub();
+    ~MainthreadCallbackHub();
+    MainthreadCallbackHub(const MainthreadCallbackHub&) = delete;
+    MainthreadCallbackHub(MainthreadCallbackHub&&) = delete;
+    MainthreadCallbackHub& operator=(const MainthreadCallbackHub&) = delete;
+    MainthreadCallbackHub& operator=(MainthreadCallbackHub&&) = delete;
+
+public:
+    void submit(std::function<void()> func);
+    void invoke();
+private:
+    std::mutex m;
+    std::queue<std::function<void()>> funcs;
+    std::atomic<bool> stop;
+    uint32_t invokeBatch;
+    uint32_t funcCnt;
+};
+
 
 #endif

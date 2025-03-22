@@ -33,9 +33,9 @@ private:
     Logger();
     ~Logger();
     Logger(const Logger&) = delete;
-    Logger(const Logger&&) = delete;
+    Logger(Logger&&) = delete;
     Logger& operator=(const Logger&) = delete;
-    Logger& operator=(const Logger&&) = delete;
+    Logger& operator=(Logger&&) = delete;
     void work();
 
 public:
