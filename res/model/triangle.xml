@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+    <VertexData>triangle</VertexData>
+    <Meshes>
+        <Mesh>
+            <Name>main</Name>
+            <PrimitiveType>4</PrimitiveType>
+            <Indices>
+                <i>0</i>
+                <i>1</i>
+                <i>2</i>
+            </Indices>
+            <VertexShader>raw</VertexShader>
+            <PixelShader>raw</PixelShader>
+        </Mesh>
+    </Meshes>
+</Model>
