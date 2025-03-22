@@ -55,6 +55,12 @@
     <Filter Include="External Lib\imgui">
       <UniqueIdentifier>{552b8786-6513-4d70-aa2b-e116e8b441b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Lib\renderdoc">
+      <UniqueIdentifier>{8a284bfd-0c33-4187-9138-00dc00e5b4a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Lib\tinyxml2">
+      <UniqueIdentifier>{fffd24b1-c009-4c4e-ad2f-1d6e9057263b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="script\main.cpp">
@@ -135,6 +141,9 @@
     <ClCompile Include="script\Util\MathUtil.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
+    <ClCompile Include="external_lib\tinyxml2\tinyxml2.cpp">
+      <Filter>External Lib\tinyxml2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\App\DxApp.h">
@@ -214,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="script\Util\MathUtil.h">
       <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\renderdoc\renderdoc_app.h">
+      <Filter>External Lib\renderdoc</Filter>
+    </ClInclude>
+    <ClInclude Include="external_lib\tinyxml2\tinyxml2.h">
+      <Filter>External Lib\tinyxml2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

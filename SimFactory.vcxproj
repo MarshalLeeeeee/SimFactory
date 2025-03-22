@@ -26,6 +26,7 @@
     <ClCompile Include="external_lib\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="external_lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="external_lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="external_lib\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="script\App\DxApp.cpp" />
     <ClCompile Include="script\App\SimApp.cpp" />
     <ClCompile Include="script\Case\FadingTriangleCase.cpp" />
@@ -55,6 +56,8 @@
     <ClInclude Include="external_lib\imgui\imstb_rectpack.h" />
     <ClInclude Include="external_lib\imgui\imstb_textedit.h" />
     <ClInclude Include="external_lib\imgui\imstb_truetype.h" />
+    <ClInclude Include="external_lib\renderdoc\renderdoc_app.h" />
+    <ClInclude Include="external_lib\tinyxml2\tinyxml2.h" />
     <ClInclude Include="script\App\DxApp.h" />
     <ClInclude Include="script\App\SimApp.h" />
     <ClInclude Include="script\Case\FadingTriangleCase.h" />
