@@ -9,7 +9,6 @@
 #include <chrono>
 #include <queue>
 #include "ThreadUtil.h"
-#include "FileUtil.h"
 // No project header is allowed
 
 struct Log {

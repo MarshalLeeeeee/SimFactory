@@ -1,4 +1,5 @@
 #include "LogUtil.h"
+#include "FileUtil.h"
 
 Log::Log(std::string prefix, std::string txt, std::chrono::time_point<std::chrono::system_clock> now) :
     prefix(prefix), txt(txt), now(now) {}
