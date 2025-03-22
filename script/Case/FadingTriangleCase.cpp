@@ -133,9 +133,9 @@ FadingTriangle::~FadingTriangle() {}
 
 bool FadingTriangle::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
 	VertexPosColor vData[3] = {
-		{ DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f) , DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f) , DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f) , DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) }
+		VertexPosColor(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f),
+		VertexPosColor(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f),
+		VertexPosColor(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f)
 	};
 	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
 		uuid,

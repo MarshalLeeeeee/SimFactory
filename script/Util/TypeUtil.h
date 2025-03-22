@@ -8,6 +8,7 @@
 #include <memory>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "tinyxml2/tinyxml2.h"
 // No project header is allowed
 
 /* class holding arbitary type */
@@ -44,11 +45,17 @@ private:
     std::unique_ptr<Base> content;
 };
 
+/* Layout type : base */
+struct VertexLayout {};
+
 /* Layout type : VertexPosColor */
-struct VertexPosColor {
+struct VertexPosColor : public VertexLayout {
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMFLOAT4 color;
 	static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
+    VertexPosColor();
+    VertexPosColor(float, float, float, float, float, float, float);
+    VertexPosColor(tinyxml2::XMLNode*);
 };
 
 /* Transform Buffer */

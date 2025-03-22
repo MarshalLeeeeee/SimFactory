@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VertexData>
-    <VertexLayout>PosColor</VertexLayout>
-    <VertexCount>3</VertexCount>
+    <VertexLayout>poscolor</VertexLayout>
     <Vertices>
         <Vertex>
             <Position>
