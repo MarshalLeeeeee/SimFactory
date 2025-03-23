@@ -1,4 +1,7 @@
 #include "TypeUtil.h"
+#include <locale>
+#include <codecvt>
+#include <cstdlib>
 
 const D3D11_INPUT_ELEMENT_DESC VertexPosColor::inputLayout[2] = {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -31,3 +34,10 @@ VertexPosColor::VertexPosColor(tinyxml2::XMLNode* node) {
     color = DirectX::XMFLOAT4(r, g, b, a);
 }
 
+///////////////////////////////////////////////////
+
+std::wstring getWStringFromString(std::string s) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring ws = converter.from_bytes(s.c_str());
+    return ws;
+}

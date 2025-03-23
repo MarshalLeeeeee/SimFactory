@@ -144,6 +144,15 @@
     <ClCompile Include="external_lib\tinyxml2\tinyxml2.cpp">
       <Filter>External Lib\tinyxml2</Filter>
     </ClCompile>
+    <ClCompile Include="script\Render\Model.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Render\Mesh.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Render\Material.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\App\DxApp.h">
@@ -229,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="external_lib\tinyxml2\tinyxml2.h">
       <Filter>External Lib\tinyxml2</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\Model.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\Mesh.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\Material.h">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

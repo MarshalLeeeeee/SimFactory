@@ -68,4 +68,7 @@ struct PixelBuffer {
     DirectX::XMFLOAT4 data;
 };
 
+/* convert string to wstring */
+std::wstring getWStringFromString(std::string s);
+
 #endif

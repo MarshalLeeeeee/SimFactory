@@ -33,6 +33,9 @@
     <ClCompile Include="script\Case\SimCase.cpp" />
     <ClCompile Include="script\Case\SimpleShapeCase.cpp" />
     <ClCompile Include="script\main.cpp" />
+    <ClCompile Include="script\Render\Material.cpp" />
+    <ClCompile Include="script\Render\Mesh.cpp" />
+    <ClCompile Include="script\Render\Model.cpp" />
     <ClCompile Include="script\Render\RenderEntity.cpp" />
     <ClCompile Include="script\Render\RenderObj.cpp" />
     <ClCompile Include="script\Sim\SimEntity.cpp" />
@@ -63,6 +66,9 @@
     <ClInclude Include="script\Case\FadingTriangleCase.h" />
     <ClInclude Include="script\Case\SimCase.h" />
     <ClInclude Include="script\Case\SimpleShapeCase.h" />
+    <ClInclude Include="script\Render\Material.h" />
+    <ClInclude Include="script\Render\Mesh.h" />
+    <ClInclude Include="script\Render\Model.h" />
     <ClInclude Include="script\Render\RenderEntity.h" />
     <ClInclude Include="script\Render\RenderObj.h" />
     <ClInclude Include="script\Sim\SimEntity.h" />

@@ -62,9 +62,11 @@ std::string getModelFilepath(std::string fileName) {
     return p;
 }
 
+
+
 MeshMeta::MeshMeta(std::string name_, int primitiveType_, std::string vs, std::string ps, std::vector<int>& ids) :
     name(name_), primitiveType(primitiveType_),
-    vertexShader(vs), pixelShader(ps) {
+    vertexShader(vs), pixelShader(ps), indiceCnt(0) {
     if (!ids.empty()) {
         indiceCnt = ids.size();
         indices = std::shared_ptr<DWORD[]>(new DWORD[indiceCnt]);
@@ -72,6 +74,22 @@ MeshMeta::MeshMeta(std::string name_, int primitiveType_, std::string vs, std::s
             indices[i] = ids[i];
         }
     }
+}
+
+int MeshMeta::getPrimitiveType() const {
+    return primitiveType;
+}
+
+std::wstring MeshMeta::getVertexShaderW() const {
+    return getWStringFromString(vertexShader);
+}
+
+std::wstring MeshMeta::getPixelShaderW() const {
+    return getWStringFromString(pixelShader);
+}
+
+std::string MeshMeta::getVertexLayout() const {
+    return vertexLayout;
 }
 
 void MeshMeta::setVertexLayout(std::string layout) {
@@ -82,6 +100,17 @@ std::string MeshMeta::getName() const {
     return name;
 }
 
+std::shared_ptr<DWORD[]> MeshMeta::getIndices() const {
+    return indices;
+}
+
+uint32_t MeshMeta::getIndiceCnt() const {
+    return indiceCnt;
+}
+
+
+
+
 void ModelMetaBase::addMesh(std::shared_ptr<MeshMeta> pMeshMeta) {
     if (!pMeshMeta) return;
     pMeshMetaVec.emplace_back(pMeshMeta);
@@ -91,9 +120,20 @@ std::string ModelMetaBase::getVertexLayout() const {
     return vertexLayout;
 }
 
-std::shared_ptr<ModelMetaBase> loadVertexFromFile(const char* fileName) {
+std::string ModelMetaBase::getVertexFileName() const {
+    return vertexFileName;
+}
+
+const std::vector<std::shared_ptr<MeshMeta>>& ModelMetaBase::getMeshMetaVec() const {
+    return pMeshMetaVec;
+}
+
+
+
+
+std::shared_ptr<ModelMetaBase> loadVertexFromFile(std::string fileName) {
     tinyxml2::XMLDocument doc;
-    doc.LoadFile(fileName);
+    doc.LoadFile(getVertexFilepath(fileName).c_str());
     tinyxml2::XMLElement* vertexData = doc.FirstChildElement("VertexData");
     if (!vertexData)
         return nullptr;
@@ -103,15 +143,16 @@ std::shared_ptr<ModelMetaBase> loadVertexFromFile(const char* fileName) {
     std::string layout(vertexLayout->GetText());
     if (layout == "poscolor") {
         std::shared_ptr<ModelMeta<VertexPosColor>> pModelMeta = std::make_shared<ModelMeta<VertexPosColor>>();
-        pModelMeta->parse(vertexData, layout);
+        pModelMeta->parse(vertexData, layout, fileName);
         return pModelMeta;
     }
     return nullptr;
 }
 
-void loadModelFromFileAsync(const char* fileName, std::function<void(std::shared_ptr<ModelMetaBase>)> callback) {
+template <typename T>
+void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMeta<T>>)> callback) {
     tinyxml2::XMLDocument doc;
-    doc.LoadFile(fileName);
+    doc.LoadFile(getModelFilepath(fileName).c_str());
     tinyxml2::XMLElement* model = doc.FirstChildElement("Model");
     if (!model)
         return;
@@ -119,7 +160,7 @@ void loadModelFromFileAsync(const char* fileName, std::function<void(std::shared
     if (!vertexData)
         return;
     std::string vertexFilePath(vertexData->GetText());
-    std::shared_ptr<ModelMetaBase> pModelMeta = loadVertexFromFile(getVertexFilepath(vertexFilePath).c_str());
+    std::shared_ptr<ModelMeta<T>> pModelMeta = static_cast<std::shared_ptr<ModelMeta<T>>>(loadVertexFromFile(vertexFilePath));
     if (!pModelMeta)
         return;
 

@@ -5,6 +5,7 @@
 
 // No project header is allowed
 #include <windows.h>
+#include <vector>
 #include <memory>
 #include <string>
 #include <chrono>
@@ -36,8 +37,14 @@ std::string getModelFilepath(std::string fileName);
 class MeshMeta {
 public:
     MeshMeta(std::string, int, std::string, std::string, std::vector<int>&);
+    int getPrimitiveType() const;
+    std::wstring getVertexShaderW() const;
+    std::wstring getPixelShaderW() const;
+    std::string getVertexLayout() const;
     void setVertexLayout(std::string);
     std::string getName() const;
+    std::shared_ptr<DWORD[]> getIndices() const;
+    uint32_t getIndiceCnt() const;
 private:
     std::string name;
     int primitiveType;
@@ -53,9 +60,12 @@ class ModelMetaBase {
 public:
     void addMesh(std::shared_ptr<MeshMeta>);
     std::string getVertexLayout() const;
+    std::string getVertexFileName() const;
+    const std::vector<std::shared_ptr<MeshMeta>>& getMeshMetaVec() const;
 protected:
     std::vector<std::shared_ptr<MeshMeta>> pMeshMetaVec;
     std::string vertexLayout;
+    std::string vertexFileName;
 };
 template <typename T>
 class ModelMeta : public ModelMetaBase {
@@ -63,8 +73,9 @@ public:
     std::shared_ptr<T[]> getData() { return vertexData; }
     size_t getSize() { return sizeof(T); }
     size_t getByteWidth() { return sizeof(T) * vertexCnt; }
-    void parse(tinyxml2::XMLElement* vertexDataNode, std::string layout) {
+    void parse(tinyxml2::XMLElement* vertexDataNode, std::string layout, std::string vertexFileName) {
         vertexLayout = layout;
+        vertexFileName = vertexFileName;
         std::vector<T> vertices;
         for (tinyxml2::XMLNode* vertex = vertexDataNode->FirstChildElement("Vertices")->FirstChild(); vertex; vertex = vertex->NextSibling()) {
             vertices.emplace_back(vertex);
@@ -81,9 +92,10 @@ private:
 };
 
 /* load vertex resource sync */
-std::shared_ptr<ModelMetaBase> loadVertexFromFile(const char* fileName);
+std::shared_ptr<ModelMetaBase> loadVertexFromFile(std::string fileName);
 
 /* load model resource async */
-void loadModelFromFileAsync(const char* fileName, std::function<void(std::shared_ptr<ModelMetaBase>)> callback);
+template <typename T>
+void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMeta<T>>)> callback);
 
 #endif

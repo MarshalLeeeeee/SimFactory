@@ -16,6 +16,7 @@
 #include <string>
 #include <memory>
 
+#include "GraphicsUtil.h"
 #include "TypeUtil.h"
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -97,11 +98,14 @@ private:
         // vertex buffer
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
-        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.Usage = D3D11_USAGE_IMMUTABLE;
         bd.ByteWidth = sizeof(T) * vertexCnt;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        if (FAILED(dev->CreateBuffer(&bd, NULL, vBuffer.GetAddressOf()))) {
+        bd.CPUAccessFlags = 0;
+        D3D11_SUBRESOURCE_DATA initDataV;
+        ZeroMemory(&initDataV, sizeof(initDataV));
+        initDataV.pSysMem = vertices.get();
+        if (FAILED(dev->CreateBuffer(&bd, &initDataV, vBuffer.GetAddressOf()))) {
             return false;
         }
         // index buffer
@@ -118,23 +122,11 @@ private:
             return false;
         }
         // transform buffer
-        D3D11_BUFFER_DESC tfbd;
-        ZeroMemory(&tfbd, sizeof(tfbd));
-        tfbd.Usage = D3D11_USAGE_DYNAMIC;
-        tfbd.ByteWidth = sizeof(TransformBuffer);
-        tfbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        tfbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        if (FAILED(dev->CreateBuffer(&tfbd, NULL, tfBuffer.GetAddressOf()))) {
+        if (!initConstantBuffer(dev, tfBuffer, sizeof(TransformBuffer))) {
             return false;
         }
         // pixel buffer
-        D3D11_BUFFER_DESC pxbd;
-        ZeroMemory(&pxbd, sizeof(pxbd));
-        pxbd.Usage = D3D11_USAGE_DYNAMIC;
-        pxbd.ByteWidth = sizeof(PixelBuffer);
-        pxbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        pxbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        if (FAILED(dev->CreateBuffer(&pxbd, NULL, pxBuffer.GetAddressOf()))) {
+        if (!initConstantBuffer(dev, pxBuffer, sizeof(PixelBuffer))) {
             return false;
         }
         return true;
@@ -155,21 +147,10 @@ private:
 
 private:
 	void doRender(ComPtr<ID3D11DeviceContext> devCon) const {
-        // buff data
-        D3D11_MAPPED_SUBRESOURCE ms;
-        devCon->Map(vBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms); // map the buffer
-        memcpy(ms.pData, vertices.get(), sizeof(T) * vertexCnt); // copy the data
-        devCon->Unmap(vBuffer.Get(), NULL); // unmap the buffer
         // transform data
-        D3D11_MAPPED_SUBRESOURCE tfms;
-        devCon->Map(tfBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &tfms); // map the buffer
-        memcpy(tfms.pData, pTfBufferData.get(), sizeof(TransformBuffer)); // copy the data
-        devCon->Unmap(tfBuffer.Get(), NULL); // unmap the buffer
+        mapConstantBuffer(devCon, tfBuffer.Get(), pTfBufferData.get(), sizeof(TransformBuffer));
         // pixel data
-        D3D11_MAPPED_SUBRESOURCE pxms;
-        devCon->Map(pxBuffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &pxms); // map the buffer
-        memcpy(pxms.pData, pPxBufferData.get(), sizeof(PixelBuffer)); // copy the data
-        devCon->Unmap(pxBuffer.Get(), NULL); // unmap the buffer
+        mapConstantBuffer(devCon, pxBuffer.Get(), pPxBufferData.get(), sizeof(PixelBuffer));
         // draw
         UINT stride = sizeof(T);
         UINT offset = 0;

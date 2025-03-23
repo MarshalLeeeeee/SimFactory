@@ -23,3 +23,55 @@ HRESULT CreateShaderFromFile(
 	);
 	return hr;
 }
+
+bool initConstantBuffer(ComPtr<ID3D11Device> dev, ComPtr<ID3D11Buffer>& buffer, size_t bufferDataSz) {
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = bufferDataSz;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	if (FAILED(dev->CreateBuffer(&bd, NULL, buffer.GetAddressOf()))) {
+		return false;
+	}
+	return true;
+}
+
+void mapConstantBuffer(ComPtr<ID3D11DeviceContext> devCon, ID3D11Resource* buffer, void* data, size_t dataSize) {
+	D3D11_MAPPED_SUBRESOURCE ms;
+	devCon->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	memcpy(ms.pData, data, dataSize);
+	devCon->Unmap(buffer, NULL);
+}
+
+/////////////////////////////////
+
+template<typename T>
+bool VertexBuffer::init(std::shared_ptr<ModelMeta<T>> pModelMeta, ComPtr<ID3D11Device> dev) {
+	if (!pModelMeta) return false;
+
+	// vertex buffer
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_IMMUTABLE;
+	bd.ByteWidth = pModelMeta->getByteWidth();
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+	D3D11_SUBRESOURCE_DATA initData;
+	ZeroMemory(&initData, sizeof(initData));
+	initData.pSysMem = pModelMeta->getData.get();
+	if (FAILED(dev->CreateBuffer(&bd, &initData, vBuffer.GetAddressOf()))) {
+		return false;
+	}
+	stride = pModelMeta->getSize();
+	return true;
+}
+
+ComPtr<ID3D11Buffer> VertexBuffer::getVBuffer() const {
+	return vBuffer;
+}
+
+void VertexBuffer::render(ComPtr<ID3D11DeviceContext> devCon) const {
+	UINT offset = 0;
+	devCon->IASetVertexBuffers(0, 1, vBuffer.GetAddressOf(), &stride, &offset);
+}
