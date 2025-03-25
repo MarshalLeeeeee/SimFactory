@@ -13,14 +13,18 @@
 
 class Model {
 public:
-    template <typename T>
-    Model(const char* fileName, ComPtr<ID3D11Device> dev);
+    Model(ComPtr<ID3D11Device> dev, const char* fileName);
 private:
-    template <typename T>
-    void onLoadedFromFile(std::shared_ptr<ModelMeta<T>> pModelMeta, ComPtr<ID3D11Device> dev);
+    /* do load model given ModelMeta<T> */
+    void doLoadFromModelMeta(ComPtr<ID3D11Device> dev, std::shared_ptr<ModelMetaBase> pModelMeta);
+
+public:
+    void render(ComPtr<ID3D11DeviceContext> devCon) const;
 private:
     std::unordered_map<std::string, std::shared_ptr<Mesh>> pMeshes;
     std::shared_ptr<TransformBuffer> pTransformData;
+    bool awaken;
+    bool loaded;
 };
 
 #endif

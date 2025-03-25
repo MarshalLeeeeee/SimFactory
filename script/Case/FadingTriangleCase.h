@@ -87,13 +87,13 @@ public:
 
 private:
     /* intialization of render entity */
-    bool initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev);
+    void initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase);
 
 private:
     /* update the logic property */
     void updateProperty(SimCase* pSimCase, double simTime, double frameTime);
     /* update the render entity property */
-    void updateRenderEntity();
+    void updateModel();
 
 private:
     /* color opacity */

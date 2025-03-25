@@ -62,7 +62,7 @@ void SimCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 }
 
 void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
-	for (auto itr = renderObjs.begin(); itr != renderObjs.end(); ++itr) {
+	for (auto itr = entities.begin(); itr != entities.end(); ++itr) {
 		itr->second->render(devCon);
 	}
 	if (pUI) pUI->render();
@@ -70,13 +70,13 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 
 void SimCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {}
 
-bool SimCase::addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev) {
+bool SimCase::addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<SimEntity> pSimEntity) {
 	std::string uuid = generateUUID();
 	if (hasEntity(uuid)) {
 		Logger::getInstance().error("[SimCase::addEntity] duplicate uuid...");
 		return false;
 	}
-	if (!pSimEntity->init(this, uuid, dev)) {
+	if (!pSimEntity->init(dev, this, uuid)) {
 		Logger::getInstance().error("[SimCase::addEntity] fail to init sim entity...");
 		return false;
 	}
@@ -109,7 +109,7 @@ void SimCase::updateEntities(double simTime, double frameTime) {
 	}
 }
 
-bool SimCase::addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev) {
+bool SimCase::addRenderObj(ComPtr<ID3D11Device> dev, std::shared_ptr<RenderObjBase> pRenderObj) {
 	std::string uuid = pRenderObj->getUUID();
 	if (hasRenderObj(uuid)) return false;
 	if (!pRenderObj->init(dev)) return false;

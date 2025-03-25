@@ -62,16 +62,35 @@ std::string getModelFilepath(std::string fileName) {
     return p;
 }
 
+std::string getShaderFilepath(std::string fileName) {
+    std::string p("./res/shader/");
+    p += fileName;
+    p += ".hlsl";
+    return p;
+}
 
 
-MeshMeta::MeshMeta(std::string name_, int primitiveType_, std::string vs, std::string ps, std::vector<int>& ids) :
-    name(name_), primitiveType(primitiveType_),
-    vertexShader(vs), pixelShader(ps), indiceCnt(0) {
-    if (!ids.empty()) {
-        indiceCnt = ids.size();
-        indices = std::shared_ptr<DWORD[]>(new DWORD[indiceCnt]);
-        for (uint32_t i = 0; i < indiceCnt; ++i) {
-            indices[i] = ids[i];
+
+MeshMeta::MeshMeta(std::string name_, int primitiveType_,
+    std::string vertexShader_, std::string pixelShader_, std::string vertexLayout_,
+    std::vector<int>& indices_) :
+    name(name_), primitiveType(primitiveType_), indexCnt(0) {
+    // init vertex shader fullname
+    vertexShader = std::string("vs_");
+    vertexShader += vertexLayout_;
+    vertexShader += "_";
+    vertexShader += vertexShader_;
+    // init pixel shader fullname
+    pixelShader = std::string("ps_");
+    pixelShader += vertexLayout_;
+    pixelShader += "_";
+    pixelShader += pixelShader_;
+    // init indices
+    if (!indices_.empty()) {
+        indexCnt = indices_.size();
+        indices = std::shared_ptr<DWORD[]>(new DWORD[indexCnt]);
+        for (uint32_t i = 0; i < indexCnt; ++i) {
+            indices[i] = indices_[i];
         }
     }
 }
@@ -80,20 +99,16 @@ int MeshMeta::getPrimitiveType() const {
     return primitiveType;
 }
 
-std::wstring MeshMeta::getVertexShaderW() const {
-    return getWStringFromString(vertexShader);
+std::string MeshMeta::getVertexShader() const {
+    return vertexShader;
 }
 
-std::wstring MeshMeta::getPixelShaderW() const {
-    return getWStringFromString(pixelShader);
+std::string MeshMeta::getPixelShader() const {
+    return pixelShader;
 }
 
 std::string MeshMeta::getVertexLayout() const {
     return vertexLayout;
-}
-
-void MeshMeta::setVertexLayout(std::string layout) {
-    vertexLayout = layout;
 }
 
 std::string MeshMeta::getName() const {
@@ -104,8 +119,8 @@ std::shared_ptr<DWORD[]> MeshMeta::getIndices() const {
     return indices;
 }
 
-uint32_t MeshMeta::getIndiceCnt() const {
-    return indiceCnt;
+uint32_t MeshMeta::getIndexCnt() const {
+    return indexCnt;
 }
 
 
@@ -126,6 +141,26 @@ std::string ModelMetaBase::getVertexFileName() const {
 
 const std::vector<std::shared_ptr<MeshMeta>>& ModelMetaBase::getMeshMetaVec() const {
     return pMeshMetaVec;
+}
+
+void* ModelMetaBase::getData() const {
+    return nullptr;
+}
+
+size_t ModelMetaBase::getSize() const {
+    return 0;
+}
+
+size_t ModelMetaBase::getByteWidth() const {
+    return 0;
+}
+
+const D3D11_INPUT_ELEMENT_DESC* ModelMetaBase::getVertexLayoutDesc() const {
+    return nullptr;
+}
+
+UINT ModelMetaBase::getVertexLayoutDescSize() const {
+    return 0;
 }
 
 
@@ -149,8 +184,7 @@ std::shared_ptr<ModelMetaBase> loadVertexFromFile(std::string fileName) {
     return nullptr;
 }
 
-template <typename T>
-void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMeta<T>>)> callback) {
+void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMetaBase>)> callback) {
     tinyxml2::XMLDocument doc;
     doc.LoadFile(getModelFilepath(fileName).c_str());
     tinyxml2::XMLElement* model = doc.FirstChildElement("Model");
@@ -160,10 +194,11 @@ void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared
     if (!vertexData)
         return;
     std::string vertexFilePath(vertexData->GetText());
-    std::shared_ptr<ModelMeta<T>> pModelMeta = static_cast<std::shared_ptr<ModelMeta<T>>>(loadVertexFromFile(vertexFilePath));
+    std::shared_ptr<ModelMetaBase> pModelMeta = loadVertexFromFile(vertexFilePath);
     if (!pModelMeta)
         return;
 
+    std::string vertexLayout = pModelMeta->getVertexLayout();
     for (tinyxml2::XMLNode* mesh = model->FirstChildElement("Meshes")->FirstChild(); mesh; mesh = mesh->NextSibling()) {
         std::string meshName(mesh->FirstChildElement("Name")->GetText());
         int primitiveType = 0;
@@ -180,9 +215,9 @@ void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared
             primitiveType,
             vsFile,
             psFile,
+            vertexLayout,
             indices
         );
-        pMeshMeta->setVertexLayout(pModelMeta->getVertexLayout());
         pModelMeta->addMesh(pMeshMeta);
     }
 

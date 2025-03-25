@@ -8,23 +8,38 @@ const std::vector<ComPtr<ID3D11Buffer>>& Material::getBuffers() const {
 	return buffers;
 }
 
-const std::vector<size_t>& Material::getBufferSizes() const {
-	return bufferSizes;
+const std::vector<size_t>& Material::getBufferDataSizes() const {
+	return bufferDataSizes;
 }
 
 uint32_t Material::getBufferCnt() const {
 	return bufferCnt;
 }
 
+bool Material::initBuffers(ComPtr<ID3D11Device> dev, std::vector<size_t>& bufferDataSizes_) {
+	bufferCnt = bufferDataSizes_.size();
+	buffers.resize(bufferCnt);
+	bufferDataSizes.resize(bufferCnt);
+	for (uint32_t i = 0; i < bufferCnt; ++i) {
+		if (!initConstantBuffer(dev, buffers[i], bufferDataSizes_[i])) {
+			return false;
+		}
+		bufferDataSizes[i] = bufferDataSizes_[i];
+	}
+	return true;
+}
+
 ////////////////////////////////////////
 
 VertexMaterial::VertexMaterial() : Material() {}
 
-bool VertexMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, const D3D11_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSz, std::vector<size_t>& bufferDataSzs) {
+bool VertexMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, 
+	const D3D11_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSz, std::vector<size_t>& bufferDataSizes_) {
 	if (!pMeshMeta) return false;
 
 	ComPtr<ID3DBlob> blob;
-	std::wstring vsHLSL = pMeshMeta->getVertexShaderW();
+	vertexShaderFullname = pMeshMeta->getVertexShader();
+	std::wstring vsHLSL = getWStringFromString(getShaderFilepath(vertexShaderFullname));
 
 	if (FAILED(CreateShaderFromFile(vsHLSL.c_str(), "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()))) {
 		Logger::getInstance().error("[VertexMaterial::init] Create vertex shader failed...");
@@ -36,27 +51,25 @@ bool VertexMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pM
 	}
 
 	if (FAILED(dev->CreateInputLayout(inputLayout, inputLayoutSz,
-		blob->GetBufferPointer(), blob->GetBufferSize(), vLayout.GetAddressOf()))) {
+		blob->GetBufferPointer(), blob->GetBufferSize(), vertexLayout.GetAddressOf()))) {
 		Logger::getInstance().error("[VertexMaterial::init] Init vertex shader layout failed...");
 		return false;
 	}
-
-	bufferCnt = bufferDataSzs.size();
-	buffers.resize(bufferCnt);
-	bufferSizes.resize(bufferCnt);
-	for (uint32_t i = 0; i < bufferCnt; ++i) {
-		if (!initConstantBuffer(dev, buffers[i], bufferDataSzs[i])) {
-			return false;
-		}
-		bufferSizes[i] = bufferDataSzs[i];
+	
+	if (!initBuffers(dev, bufferDataSizes_)) {
+		Logger::getInstance().error("[VertexMaterial::init] Init vertex shader buffer failed...");
+		return false;
 	}
 
 	return true;
 }
 
-void VertexMaterial::render(ComPtr<ID3D11DeviceContext> devCon) const {
+void VertexMaterial::enableMaterial(ComPtr<ID3D11DeviceContext> devCon) const {
 	devCon->VSSetShader(vertexShader.Get(), nullptr, 0);
-	devCon->IASetInputLayout(vLayout.Get());
+	devCon->IASetInputLayout(vertexLayout.Get());
+}
+
+void VertexMaterial::enableBuffer(ComPtr<ID3D11DeviceContext> devCon) const {
 	std::vector<ID3D11Buffer*> rawBuffers(bufferCnt);
 	for (uint32_t i = 0; i < bufferCnt; ++i) {
 		rawBuffers[i] = buffers[i].Get();
@@ -76,11 +89,13 @@ void VertexMaterialBuffer::mapBuffer(ComPtr<ID3D11DeviceContext> devCon, std::sh
 
 PixelMaterial::PixelMaterial() : Material() {}
 
-bool PixelMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, std::vector<size_t>& bufferDataSzs) {
+bool PixelMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, 
+	std::vector<size_t>& bufferDataSizes_) {
 	if (!pMeshMeta) return false;
 
 	ComPtr<ID3DBlob> blob;
-	std::wstring psHLSL = pMeshMeta->getPixelShaderW();
+	pixelShaderFullname = pMeshMeta->getPixelShader();
+	std::wstring psHLSL = getWStringFromString(getShaderFilepath(pixelShaderFullname));
 
 	if (FAILED(CreateShaderFromFile(psHLSL.c_str(), "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()))) {
 		Logger::getInstance().error("[PixelMaterial::init] Create pixel shader failed...");
@@ -91,26 +106,24 @@ bool PixelMaterial::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMe
 		return false;
 	}
 
-	bufferCnt = bufferDataSzs.size();
-	buffers.resize(bufferCnt);
-	bufferSizes.resize(bufferCnt);
-	for (uint32_t i = 0; i < bufferCnt; ++i) {
-		if (!initConstantBuffer(dev, buffers[i], bufferDataSzs[i])) {
-			return false;
-		}
-		bufferSizes[i] = bufferDataSzs[i];
+	if (!initBuffers(dev, bufferDataSizes_)) {
+		Logger::getInstance().error("[PixelMaterial::init] Init pixel shader buffer failed...");
+		return false;
 	}
 
 	return true;
 }
 
-void PixelMaterial::render(ComPtr<ID3D11DeviceContext> devCon) const {
+void PixelMaterial::enableMaterial(ComPtr<ID3D11DeviceContext> devCon) const {
 	devCon->PSSetShader(pixelShader.Get(), nullptr, 0);
+}
+
+void PixelMaterial::enableBuffer(ComPtr<ID3D11DeviceContext> devCon) const {
 	std::vector<ID3D11Buffer*> rawBuffers(bufferCnt);
 	for (uint32_t i = 0; i < bufferCnt; ++i) {
 		rawBuffers[i] = buffers[i].Get();
 	}
-	devCon->VSSetConstantBuffers(0, bufferCnt, rawBuffers.data());
+	devCon->PSSetConstantBuffers(0, bufferCnt, rawBuffers.data());
 }
 
 PixelMaterialBuffer::PixelMaterialBuffer() {}

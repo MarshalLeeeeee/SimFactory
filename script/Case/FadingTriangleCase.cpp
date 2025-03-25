@@ -94,7 +94,7 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 #endif
 
 	if (entities.empty()) {
-		addEntity(std::make_shared<FadingTriangle>(), dev);
+		addEntity(dev, std::make_shared<FadingTriangle>());
 	}
 	else {
 		updateEntities(simTime, frameTime);
@@ -131,40 +131,8 @@ FadingTriangle::FadingTriangle() :
 
 FadingTriangle::~FadingTriangle() {}
 
-bool FadingTriangle::initRenderEntity(SimCase* pSimCase, ComPtr<ID3D11Device> dev) {
-	VertexPosColor vData[3] = {
-		VertexPosColor(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f),
-		VertexPosColor(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f),
-		VertexPosColor(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f)
-	};
-	pRenderEntity = std::make_unique<RenderEntity<VertexPosColor>>(
-		uuid,
-		pSimCase->x2y,
-		vData,
-		3
-	);
-	D3D_PRIMITIVE_TOPOLOGY primitiveTopologyData[1] = {
-		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-	};
-	DWORD iData[3] = {
-		0, 1, 2
-	};
-	DWORD* indicesData[1] = {
-		iData
-	};
-	uint32_t indicesLenData[1] = {
-		3
-	};
-	bool res = pRenderEntity->init(
-		pSimCase,
-		dev,
-		primitiveTopologyData,
-		indicesData,
-		indicesLenData,
-		1
-	);
-	if (!res) pRenderEntity = nullptr;
-	return res;
+void FadingTriangle::initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase) {
+	pModel = std::make_unique<Model>(dev, "triangle");
 }
 
 void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double frameTime) {
@@ -183,13 +151,8 @@ void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double fr
     else if (a < 0.) a += PI_2;
 }
 
-void FadingTriangle::updateRenderEntity() {
-	if (!pRenderEntity) return;
-	pRenderEntity->setAngle(a);
-	pRenderEntity->updateTranformBuffer();
-	pRenderEntity->setOpacity(co);
-	pRenderEntity->setIntensity(co);
-	pRenderEntity->updatePixelBuffer();
+void FadingTriangle::updateModel() {
+	if (!pModel) return;
 }
 
 

@@ -117,6 +117,7 @@ private:
         for (uint32_t i = 0; i < renderObjCnt; ++i) {
             std::string renderObjUUID = uuid + "-" + generateSubUUID();
             res &= pSimCase->addRenderObj(
+                dev,
                 std::make_shared<RenderObj<T>>(
                     renderObjUUID,
                     L"./res/shader/vs_poscolor_raw.hlsl",
@@ -128,8 +129,7 @@ private:
                     indicesLenData[i],
                     pTfBufferData,
                     pPxBufferData
-                ),
-                dev
+                )
             );
             if (!res) {
                 break;

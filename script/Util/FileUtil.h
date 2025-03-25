@@ -12,6 +12,8 @@
 #include <ctime>
 #include <unordered_map>
 #include <functional>
+#include <d3d11.h>
+#include <DirectXMath.h>
 #include "tinyxml2/tinyxml2.h"
 // No project header is allowed
 
@@ -27,24 +29,28 @@ bool directoryExists(const char* dir);
 /* create the directory and return the result*/
 bool createDirectory(const char* dir);
 
-/* get vertex file name */
+/* get vertex file name (relative to root) */
 std::string getVertexFilepath(std::string fileName);
 
-/* get model file name */
+/* get model file name (relative to root) */
 std::string getModelFilepath(std::string fileName);
+
+/* get shader file name (relative to root) */
+std::string getShaderFilepath(std::string fileName);
 
 /* Mesh resource meta data */
 class MeshMeta {
 public:
-    MeshMeta(std::string, int, std::string, std::string, std::vector<int>&);
+    MeshMeta(std::string name, int primitiveType,
+        std::string vertexShader, std::string pixelShader, std::string vertexLayout,
+        std::vector<int>& indices);
     int getPrimitiveType() const;
-    std::wstring getVertexShaderW() const;
-    std::wstring getPixelShaderW() const;
+    std::string getVertexShader() const;
+    std::string getPixelShader() const;
     std::string getVertexLayout() const;
-    void setVertexLayout(std::string);
     std::string getName() const;
     std::shared_ptr<DWORD[]> getIndices() const;
-    uint32_t getIndiceCnt() const;
+    uint32_t getIndexCnt() const;
 private:
     std::string name;
     int primitiveType;
@@ -52,16 +58,22 @@ private:
     std::string vertexLayout;
     std::string pixelShader;
     std::shared_ptr<DWORD[]> indices;
-    uint32_t indiceCnt;
+    uint32_t indexCnt;
 };
 
 /* Model resource meta data */
 class ModelMetaBase {
 public:
-    void addMesh(std::shared_ptr<MeshMeta>);
+    void addMesh(std::shared_ptr<MeshMeta> pMeshMeta);
     std::string getVertexLayout() const;
     std::string getVertexFileName() const;
     const std::vector<std::shared_ptr<MeshMeta>>& getMeshMetaVec() const;
+
+    virtual void* getData() const;
+    virtual size_t getSize() const;
+    virtual size_t getByteWidth() const;
+    virtual const D3D11_INPUT_ELEMENT_DESC* getVertexLayoutDesc() const;
+    virtual UINT getVertexLayoutDescSize() const;
 protected:
     std::vector<std::shared_ptr<MeshMeta>> pMeshMetaVec;
     std::string vertexLayout;
@@ -70,9 +82,11 @@ protected:
 template <typename T>
 class ModelMeta : public ModelMetaBase {
 public:
-    std::shared_ptr<T[]> getData() { return vertexData; }
-    size_t getSize() { return sizeof(T); }
-    size_t getByteWidth() { return sizeof(T) * vertexCnt; }
+    void* getData() const { return vertexData.get(); }
+    size_t getSize() const { return sizeof(T); }
+    size_t getByteWidth() const { return sizeof(T) * vertexCnt; }
+    const D3D11_INPUT_ELEMENT_DESC* getVertexLayoutDesc() const { return T::inputLayout; }
+    UINT getVertexLayoutDescSize() const { return ARRAYSIZE(T::inputLayout); }
     void parse(tinyxml2::XMLElement* vertexDataNode, std::string layout, std::string vertexFileName) {
         vertexLayout = layout;
         vertexFileName = vertexFileName;
@@ -82,12 +96,12 @@ public:
         }
         vertexCnt = vertices.size();
         if (vertexCnt) {
-            vertexData = std::shared_ptr<T[]>(new T[vertexCnt]);
+            vertexData = std::make_unique<T[]>(vertexCnt);
             std::copy(vertices.begin(), vertices.end(), vertexData.get());
         }
     }
 private:
-    std::shared_ptr<T[]> vertexData;
+    std::unique_ptr<T[]> vertexData;
     uint32_t vertexCnt;
 };
 
@@ -95,7 +109,6 @@ private:
 std::shared_ptr<ModelMetaBase> loadVertexFromFile(std::string fileName);
 
 /* load model resource async */
-template <typename T>
-void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMeta<T>>)> callback);
+void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared_ptr<ModelMetaBase>)> callback);
 
 #endif

@@ -37,7 +37,7 @@ bool initConstantBuffer(ComPtr<ID3D11Device> dev, ComPtr<ID3D11Buffer>& buffer, 
 	return true;
 }
 
-void mapConstantBuffer(ComPtr<ID3D11DeviceContext> devCon, ID3D11Resource* buffer, void* data, size_t dataSize) {
+void mapConstantBuffer(ComPtr<ID3D11DeviceContext>& devCon, ID3D11Resource* buffer, void* data, size_t dataSize) {
 	D3D11_MAPPED_SUBRESOURCE ms;
 	devCon->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 	memcpy(ms.pData, data, dataSize);
@@ -46,9 +46,19 @@ void mapConstantBuffer(ComPtr<ID3D11DeviceContext> devCon, ID3D11Resource* buffe
 
 /////////////////////////////////
 
-template<typename T>
-bool VertexBuffer::init(std::shared_ptr<ModelMeta<T>> pModelMeta, ComPtr<ID3D11Device> dev) {
+VertexBuffer::~VertexBuffer() {
+	if (vertices) {
+		::operator delete(vertices);
+	}
+}
+
+bool VertexBuffer::init(ComPtr<ID3D11Device> dev, std::shared_ptr<ModelMetaBase> pModelMeta) {
 	if (!pModelMeta) return false;
+
+	// vertices data
+	vertices = ::operator new(pModelMeta->getByteWidth());
+	if (!vertices) return false;
+	memcpy(vertices, pModelMeta->getData(), pModelMeta->getByteWidth());
 
 	// vertex buffer
 	D3D11_BUFFER_DESC bd;
@@ -59,7 +69,7 @@ bool VertexBuffer::init(std::shared_ptr<ModelMeta<T>> pModelMeta, ComPtr<ID3D11D
 	bd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA initData;
 	ZeroMemory(&initData, sizeof(initData));
-	initData.pSysMem = pModelMeta->getData.get();
+	initData.pSysMem = vertices;
 	if (FAILED(dev->CreateBuffer(&bd, &initData, vBuffer.GetAddressOf()))) {
 		return false;
 	}
@@ -71,7 +81,7 @@ ComPtr<ID3D11Buffer> VertexBuffer::getVBuffer() const {
 	return vBuffer;
 }
 
-void VertexBuffer::render(ComPtr<ID3D11DeviceContext> devCon) const {
+void VertexBuffer::enableVertexBuffer(ComPtr<ID3D11DeviceContext> devCon) const {
 	UINT offset = 0;
 	devCon->IASetVertexBuffers(0, 1, vBuffer.GetAddressOf(), &stride, &offset);
 }

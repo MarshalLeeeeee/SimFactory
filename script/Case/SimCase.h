@@ -68,7 +68,7 @@ public:
 	/* pre stage of render */
 	virtual void preRender(ComPtr<ID3D11Device> dev, HWND hWindow);
 	/* stage of render 
-	* draw renderobjs and ui
+	* draw meshes and ui
 	*/
 	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 	/* post stage of render */
@@ -79,7 +79,7 @@ protected:
 
 public:
 	/* add sim entity */
-	bool addEntity(std::shared_ptr<SimEntity> pSimEntity, ComPtr<ID3D11Device> dev);
+	bool addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<SimEntity> pSimEntity);
 	/* remove sim entity */
 	bool removeEntity(std::string uuid);
 	/* if has sim entity */
@@ -94,7 +94,7 @@ protected:
 
 public:
 	/* add render obj */
-	bool addRenderObj(std::shared_ptr<RenderObjBase> pRenderObj, ComPtr<ID3D11Device> dev);
+	bool addRenderObj(ComPtr<ID3D11Device> dev, std::shared_ptr<RenderObjBase> pRenderObj);
 	/* remove render obj */
 	bool removeRenderObj(std::string uuid);
 	/* if has render obj */

@@ -21,17 +21,31 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 class Mesh {
 public:
 	Mesh();
-	bool init(std::shared_ptr<MeshMeta>, std::shared_ptr<VertexBuffer>, ComPtr<ID3D11Device>, const D3D11_INPUT_ELEMENT_DESC*, UINT, std::shared_ptr<TransformBuffer>);
+	/* initialization of mesh */
+	bool init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, std::shared_ptr<VertexBuffer> pVertexBuffer,
+		const D3D11_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, std::shared_ptr<TransformBuffer> pTransformData);
+	/* render mesh */
 	void render(ComPtr<ID3D11DeviceContext> devCon) const;
 private:
-	std::shared_ptr<VertexBuffer> pVertexBuffer;
-	ComPtr<ID3D11Buffer> iBuffer;
-	uint32_t indiceCnt;
-	std::shared_ptr<VertexMaterial> pVertexMaterial;
-	std::shared_ptr<VertexMaterialBuffer> pVertexMaterialBuffer;
-	std::shared_ptr<PixelMaterial> pPixelMaterial;
-	std::shared_ptr<PixelMaterialBuffer> pPixelMaterialBuffer;
+	/* index buffer */
+	ComPtr<ID3D11Buffer> indexBuffer;
+	/* index data */
+	std::unique_ptr<DWORD[]> indices;
+	/* index count */
+	uint32_t indexCnt;
+	/* primitive topology */
 	D3D_PRIMITIVE_TOPOLOGY primitiveTopology;
+	/* reference of vertex buffer instance */
+	std::shared_ptr<VertexBuffer> pVertexBuffer;
+	/* reference of vertex material instance */
+	std::shared_ptr<VertexMaterial> pVertexMaterial;
+	/* reference of vertex material buffer instance */
+	std::shared_ptr<VertexMaterialBuffer> pVertexMaterialBuffer;
+	/* reference of pixel material instance */
+	std::shared_ptr<PixelMaterial> pPixelMaterial;
+	/* reference of pixel material buffer instance */
+	std::shared_ptr<PixelMaterialBuffer> pPixelMaterialBuffer;
+	/* if is ready to be rendered */
 	bool loaded;
 };
 
