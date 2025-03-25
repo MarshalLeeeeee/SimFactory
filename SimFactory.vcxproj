@@ -36,8 +36,6 @@
     <ClCompile Include="script\Render\Material.cpp" />
     <ClCompile Include="script\Render\Mesh.cpp" />
     <ClCompile Include="script\Render\Model.cpp" />
-    <ClCompile Include="script\Render\RenderEntity.cpp" />
-    <ClCompile Include="script\Render\RenderObj.cpp" />
     <ClCompile Include="script\Sim\SimEntity.cpp" />
     <ClCompile Include="script\UI\UI.cpp" />
     <ClCompile Include="script\UI\UIPanel.cpp" />
@@ -69,8 +67,6 @@
     <ClInclude Include="script\Render\Material.h" />
     <ClInclude Include="script\Render\Mesh.h" />
     <ClInclude Include="script\Render\Model.h" />
-    <ClInclude Include="script\Render\RenderEntity.h" />
-    <ClInclude Include="script\Render\RenderObj.h" />
     <ClInclude Include="script\Sim\SimEntity.h" />
     <ClInclude Include="script\UI\UI.h" />
     <ClInclude Include="script\UI\UIPanel.h" />

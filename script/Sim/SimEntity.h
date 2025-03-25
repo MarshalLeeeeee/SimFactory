@@ -17,8 +17,6 @@
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-// class RenderEntityBase;
-
 class SimEntity {
 public:
     SimEntity();
@@ -58,7 +56,5 @@ protected:
     std::string uuid;
 
 };
-
-// #include "RenderEntity.h"
 
 #endif

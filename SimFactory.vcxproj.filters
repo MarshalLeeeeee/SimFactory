@@ -81,12 +81,6 @@
     <ClCompile Include="script\Case\SimpleShapeCase.cpp">
       <Filter>Source Files\Case</Filter>
     </ClCompile>
-    <ClCompile Include="script\Render\RenderEntity.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="script\Render\RenderObj.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="script\UI\UI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -169,12 +163,6 @@
     </ClInclude>
     <ClInclude Include="script\Case\SimpleShapeCase.h">
       <Filter>Header Files\Case</Filter>
-    </ClInclude>
-    <ClInclude Include="script\Render\RenderEntity.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="script\Render\RenderObj.h">
-      <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="script\UI\UI.h">
       <Filter>Header Files\UI</Filter>

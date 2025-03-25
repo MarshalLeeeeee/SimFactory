@@ -9,7 +9,6 @@
 #ifndef __SIMCASE_H__
 #define __SIMCASE_H__
 
-#include "RenderObj.h"
 #include "UI.h"
 
 #include <memory>
@@ -91,19 +90,6 @@ protected:
 	void updateEntities(double simTime, double frameTime);
 	/* uuid -> sim entity */
 	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
-
-public:
-	/* add render obj */
-	bool addRenderObj(ComPtr<ID3D11Device> dev, std::shared_ptr<RenderObjBase> pRenderObj);
-	/* remove render obj */
-	bool removeRenderObj(std::string uuid);
-	/* if has render obj */
-	bool hasRenderObj(std::string uuid) const;
-	/* get render obj, nullptr if not exist */
-	std::shared_ptr<RenderObjBase> getRenderObj(std::string uuid) const;
-protected:
-	/* uuid -> render obj */
-	std::unordered_map<std::string, std::shared_ptr<RenderObjBase>> renderObjs;
 };
 
 #include "SimEntity.h"

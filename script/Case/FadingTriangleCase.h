@@ -5,7 +5,6 @@
 
 #include "SimCase.h"
 #include "SimEntity.h"
-#include "RenderObj.h"
 #include "UIPanel.h"
 #include "UIWidget.h"
 
