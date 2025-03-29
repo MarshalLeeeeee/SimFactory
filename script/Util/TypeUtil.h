@@ -11,7 +11,7 @@
 #include "tinyxml2/tinyxml2.h"
 // No project header is allowed
 
-/* class holding arbitary type */
+/* class holding arbitrary type */
 class Any {
 public:
     Any() : content(nullptr) {}

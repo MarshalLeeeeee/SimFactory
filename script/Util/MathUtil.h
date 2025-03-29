@@ -30,9 +30,9 @@ DirectX::XMMATRIX getTranslationMatrix(float x, float y);
 DirectX::XMMATRIX getTranslationMatrix(float x, float y, float z);
 
 /* Get transform matrix 4*4 for axis-X, axis-Y, axis-Z */
-DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float x2y);
+DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float width2height);
 
 /* Get transform matrix 4*4 for axis-X, axis-Y, axis-Z */
-DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float scX, float scY, float x2y);
+DirectX::XMMATRIX getTransformMatrix(float x, float y, float angle, float scX, float scY, float width2height);
 
 #endif

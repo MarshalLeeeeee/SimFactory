@@ -19,7 +19,7 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 #include "FileUtil.h"
 // No project header is allowed
 
-// compile shader
+/* compile shader given shader filename */
 HRESULT CreateShaderFromFile(
 	const WCHAR* hlslFileName,
 	LPCSTR entryPoint,
@@ -32,18 +32,5 @@ bool initConstantBuffer(ComPtr<ID3D11Device> dev, ComPtr<ID3D11Buffer>& buffer, 
 
 /* map constant buffer */
 void mapConstantBuffer(ComPtr<ID3D11DeviceContext>& devCon, ID3D11Resource* buffer, void* data, size_t dataSize);
-
-/* Vertex buffer */
-class VertexBuffer {
-public:
-	virtual ~VertexBuffer();
-	bool init(ComPtr<ID3D11Device> dev, std::shared_ptr<ModelMetaBase> pModelMeta);
-	ComPtr<ID3D11Buffer> getVBuffer() const;
-	void enableVertexBuffer(ComPtr<ID3D11DeviceContext> devCon) const;
-private:
-	ComPtr<ID3D11Buffer> vBuffer;
-	void* vertices;
-	UINT stride;
-};
 
 #endif

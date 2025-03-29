@@ -33,7 +33,7 @@ public:
 	/* screen height defined by specific sim case */
 	virtual int getScreenHeight() const;
 	/* screen resolution x : y */
-	float x2y;
+	float width2height;
 protected:
 	/* start time of the simulation */
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
@@ -59,7 +59,7 @@ protected:
 	/* if sim case needs ui */
 	virtual bool needUI() const;
 	/* ptr of UI */
-	std::shared_ptr<UI> pUI;
+	std::unique_ptr<UI> pUI;
 
 public:
 	/* update of the logic properties */

@@ -20,6 +20,8 @@
 #include "renderdoc/renderdoc_app.h"
 #endif
 
+#define LIFESPAN 5.0
+
 class FadingTriangleCase : public SimCase {
 public:
     FadingTriangleCase();
@@ -35,6 +37,12 @@ public:
 private:
     /* changing period */
     float period;
+
+public:
+    void setRefreshTime(double t);
+    double getRefreshTime() const;
+private:
+    double refreshTime;
 
 #ifndef NDEBUG
 public:
@@ -81,26 +89,25 @@ private:
 
 class FadingTriangle : public SimEntity {
 public:
-    FadingTriangle();
+    FadingTriangle(double simTime);
+    FadingTriangle(float posX, float poxY, float angle, float scaleX, float scaleY, double simTime);
     virtual ~FadingTriangle();
+    bool expired(double simTime) const;
+private:
+    double expireTime;
 
 private:
-    /* intialization of render entity */
+    /* initialization of model */
     void initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase);
 
 private:
     /* update the logic property */
     void updateProperty(SimCase* pSimCase, double simTime, double frameTime);
-    /* update the render entity property */
-    void updateModel();
-
+    /* update model (only when loaded) */
+    void doUpdateModel(SimCase* pSimCase);
 private:
     /* color opacity */
-    float co;
-    /* change direction */
-    float d;
-    /* angle */
-    float a;
+    float opacity;
 };
 
 class FadingTriangleControlPanel : public UIPanel {

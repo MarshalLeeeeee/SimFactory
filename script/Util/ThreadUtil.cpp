@@ -62,15 +62,15 @@ void Dispatcher::submit(uint32_t priority, std::function<void()> func) {
 /////////////////////////////////////
 
 MainthreadCallbackHub::MainthreadCallbackHub() :
-    stop(false), invokeBatch(0), funcCnt(0) {}
+    stop(false), invokeBatch(0), accumulatedFuncCnt(0) {}
 
 MainthreadCallbackHub::~MainthreadCallbackHub() {
     stop = true;
-    while (!funcs.empty()) {
+    /*while (!funcs.empty()) {
         std::function<void()> func = funcs.front();
         funcs.pop();
         func();
-    }
+    }*/
 }
 
 void MainthreadCallbackHub::submit(std::function<void()> func) {
@@ -86,7 +86,7 @@ void MainthreadCallbackHub::invoke() {
         uint32_t cnt = funcs.size();
         if (cnt == 0) return;
 
-        if (cnt >= funcCnt) {
+        if (cnt >= accumulatedFuncCnt) {
             invokeBatch *= 2;
         }
         else {
@@ -95,6 +95,7 @@ void MainthreadCallbackHub::invoke() {
         if (invokeBatch <= 0) {
             invokeBatch = 1;
         }
+        accumulatedFuncCnt = cnt;
         
         uint32_t i = 0;
         while (!funcs.empty() && i < invokeBatch) {

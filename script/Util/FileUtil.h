@@ -38,58 +38,92 @@ std::string getModelFilepath(std::string fileName);
 /* get shader file name (relative to root) */
 std::string getShaderFilepath(std::string fileName);
 
+/* get shader file name (relative to root) */
+std::string getShaderConfFilepath(std::string fileName);
+
 /* Mesh resource meta data */
 class MeshMeta {
 public:
     MeshMeta(std::string name, int primitiveType,
-        std::string vertexShader, std::string pixelShader, std::string vertexLayout,
+        std::string vertexShaderName, std::string pixelShaderName, std::string vertexLayoutName,
         std::vector<int>& indices);
-    int getPrimitiveType() const;
-    std::string getVertexShader() const;
-    std::string getPixelShader() const;
-    std::string getVertexLayout() const;
+    /* get mesh name (defined in model xml) */
     std::string getName() const;
+    /* get primitive type */
+    int getPrimitiveType() const;
+    /* get vertex shader file name */
+    const std::string& getVertexShaderFilename() const;
+    /* get pixel shader file name */
+    const std::string& getPixelShaderFilename() const;
+    /* get indices data */
     std::shared_ptr<DWORD[]> getIndices() const;
+    /* get index cnt */
     uint32_t getIndexCnt() const;
 private:
+    /* mesh name */
     std::string name;
+    /* primitive type */
     int primitiveType;
-    std::string vertexShader;
-    std::string vertexLayout;
-    std::string pixelShader;
+    /* vertex shader file name */
+    std::string vertexShaderFilename;
+    /* pixel shader file name */
+    std::string pixelShaderFilename;
+    /* indices data */
     std::shared_ptr<DWORD[]> indices;
+    /* index cnt */
     uint32_t indexCnt;
 };
 
 /* Model resource meta data */
 class ModelMetaBase {
 public:
-    void addMesh(std::shared_ptr<MeshMeta> pMeshMeta);
-    std::string getVertexLayout() const;
-    std::string getVertexFileName() const;
-    const std::vector<std::shared_ptr<MeshMeta>>& getMeshMetaVec() const;
+    /* add mesh meta */
+    void addMeshMeta(std::shared_ptr<MeshMeta> pMeshMeta);
+    /* get mesh metas */
+    const std::vector<std::shared_ptr<MeshMeta>>& getMeshMetas() const;
+    /* get vertex layout name */
+    std::string getVertexLayoutName() const;
+    /* get vertex filename */
+    std::string getVertexFilename() const;
 
-    virtual void* getData() const;
-    virtual size_t getSize() const;
-    virtual size_t getByteWidth() const;
+    /* get vertex data */
+    virtual void* getVertexData() const;
+    /* get size of vertex data type */
+    virtual size_t getVertexDataTypeSize() const;
+    /* get byte width of vertex data */
+    virtual size_t getVertexDataByteWidth() const;
+    /* get vertex layout desc */
     virtual const D3D11_INPUT_ELEMENT_DESC* getVertexLayoutDesc() const;
+    /* get length of vertex layout desc */
     virtual UINT getVertexLayoutDescSize() const;
 protected:
-    std::vector<std::shared_ptr<MeshMeta>> pMeshMetaVec;
-    std::string vertexLayout;
-    std::string vertexFileName;
+    /* mesh metas */
+    std::vector<std::shared_ptr<MeshMeta>> pMeshMetas;
+    /* vertex layout name */
+    std::string vertexLayoutName;
+    /* vertex file name */
+    std::string vertexFilename;
 };
 template <typename T>
 class ModelMeta : public ModelMetaBase {
 public:
-    void* getData() const { return vertexData.get(); }
-    size_t getSize() const { return sizeof(T); }
-    size_t getByteWidth() const { return sizeof(T) * vertexCnt; }
+    /* get vertex data */
+    void* getVertexData() const { 
+        if (!vertexData) return nullptr;
+        return vertexData.get(); 
+    }
+    /* get size of vertex data type */
+    size_t getVertexDataTypeSize() const { return sizeof(T); }
+    /* get byte width of vertex data */
+    size_t getVertexDataByteWidth() const { return sizeof(T) * vertexCnt; }
+    /* get vertex layout desc */
     const D3D11_INPUT_ELEMENT_DESC* getVertexLayoutDesc() const { return T::inputLayout; }
+    /* get length of vertex layout desc */
     UINT getVertexLayoutDescSize() const { return ARRAYSIZE(T::inputLayout); }
-    void parse(tinyxml2::XMLElement* vertexDataNode, std::string layout, std::string vertexFileName) {
-        vertexLayout = layout;
-        vertexFileName = vertexFileName;
+    /* initialize from xml node */
+    void parse(tinyxml2::XMLElement* vertexDataNode, std::string vertexLayoutName_, std::string vertexFilename_) {
+        vertexLayoutName = vertexLayoutName_;
+        vertexFilename = vertexFilename_;
         std::vector<T> vertices;
         for (tinyxml2::XMLNode* vertex = vertexDataNode->FirstChildElement("Vertices")->FirstChild(); vertex; vertex = vertex->NextSibling()) {
             vertices.emplace_back(vertex);
@@ -101,7 +135,9 @@ public:
         }
     }
 private:
+    /* vertex data */
     std::unique_ptr<T[]> vertexData;
+    /* vertex cnt */
     uint32_t vertexCnt;
 };
 

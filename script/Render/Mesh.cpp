@@ -1,7 +1,22 @@
 #include "Mesh.h"
 #include "TypeUtil.h"
 
-Mesh::Mesh() : loaded(false), primitiveTopology(D3D_PRIMITIVE_TOPOLOGY_UNDEFINED), indexCnt(0) {}
+Mesh::Mesh() : loaded(false), primitiveTopology(D3D_PRIMITIVE_TOPOLOGY_UNDEFINED) {}
+
+Mesh::~Mesh() {
+    if (pVertexBuffer) {
+        VertexBufferPool::getInstance().deRefVertexBuffer(pVertexBuffer->getVertexFilename());
+    }
+    if (pIndexBuffer) {
+        IndexBufferPool::getInstance().deRefIndexBuffer(pIndexBuffer->getIndexAssetName());
+    }
+    if (pVertexMaterial) {
+        VertexMaterialPool::getInstance().deRefVertexMaterial(pVertexMaterial->getVertexShaderFilename());
+    }
+    if (pPixelMaterial) {
+        PixelMaterialPool::getInstance().deRefPixelMaterial(pPixelMaterial->getPixelShaderFilename());
+    }
+}
 
 bool Mesh::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, std::shared_ptr<VertexBuffer> pVertexBuffer_, 
     const D3D11_INPUT_ELEMENT_DESC* inputLayout, UINT inputLayoutSize, std::shared_ptr<TransformBuffer> pTransformData) {
@@ -15,42 +30,60 @@ bool Mesh::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, s
     pVertexBuffer = pVertexBuffer_;
 
     // index buffer
-    indexCnt = pMeshMeta->getIndexCnt();
-    indices = std::make_unique<DWORD[]>(indexCnt);
-    std::shared_ptr<DWORD[]> tmp = pMeshMeta->getIndices();
-    std::copy(tmp.get(), tmp.get() + indexCnt, indices.get());
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
-    bd.Usage = D3D11_USAGE_IMMUTABLE;
-    bd.ByteWidth = sizeof(DWORD) * indexCnt;
-    bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    bd.CPUAccessFlags = 0;
-    D3D11_SUBRESOURCE_DATA initDataI;
-    ZeroMemory(&initDataI, sizeof(initDataI));
-    initDataI.pSysMem = indices.get();
-    if (FAILED(dev->CreateBuffer(&bd, &initDataI, indexBuffer.GetAddressOf()))) {
-        return false;
+    std::string indexAssetName = pMeshMeta->getName();
+    pIndexBuffer = IndexBufferPool::getInstance().getIndexBuffer(indexAssetName);
+    if (!pIndexBuffer) {
+        pIndexBuffer = std::make_shared<IndexBuffer>(indexAssetName);
+        if (pIndexBuffer->init(dev, pMeshMeta->getIndexCnt(), pMeshMeta->getIndices())) {
+            IndexBufferPool::getInstance().addIndexBuffer(indexAssetName, pIndexBuffer);
+        }
+        else {
+            pIndexBuffer = nullptr;
+        }
     }
+    if (!pIndexBuffer) return false;
 
     // vertex material
-    std::vector<size_t> vertexShaderBufferDataSizes;
-    vertexShaderBufferDataSizes.emplace_back(sizeof(TransformBuffer));
-    pVertexMaterial = std::make_shared<VertexMaterial>();
-    if (!pVertexMaterial->init(dev, pMeshMeta, inputLayout, inputLayoutSize, vertexShaderBufferDataSizes)) {
+    std::string vertexShaderFilename = pMeshMeta->getVertexShaderFilename();
+    pVertexMaterial = VertexMaterialPool::getInstance().getVertexMaterial(vertexShaderFilename);
+    if (!pVertexMaterial) {
+        pVertexMaterial = std::make_shared<VertexMaterial>(vertexShaderFilename);
+        if (pVertexMaterial->initShader(dev, inputLayout, inputLayoutSize)) {
+            VertexMaterialPool::getInstance().addVertexMaterial(vertexShaderFilename, pVertexMaterial);
+        }
+        else {
+            pVertexMaterial = nullptr;
+        }
+    }
+    if (!pVertexMaterial) return false;
+    pVertexMaterialBuffer = std::move(createVertexMaterialBuffer(pMeshMeta->getVertexShaderFilename(), pTransformData));
+    if (!pVertexMaterialBuffer) return false;
+    if (!pVertexMaterialBuffer->initMaterialBuffer(dev, pVertexMaterial)) {
         pVertexMaterial = nullptr;
+        pVertexMaterialBuffer = nullptr;
         return false;
     }
-    pVertexMaterialBuffer = std::make_shared<VMBPosColorRaw>(pTransformData);
 
     // pixel material
-    std::vector<size_t> pixelShaderBufferDataSizes;
-    pixelShaderBufferDataSizes.emplace_back(sizeof(PixelBuffer));
-    pPixelMaterial = std::make_shared<PixelMaterial>();
-    if (!pPixelMaterial->init(dev, pMeshMeta, pixelShaderBufferDataSizes)) {
+    std::string pixelShaderFilename = pMeshMeta->getPixelShaderFilename();
+    pPixelMaterial = PixelMaterialPool::getInstance().getPixelMaterial(pixelShaderFilename);
+    if (!pPixelMaterial) {
+        pPixelMaterial = std::make_shared<PixelMaterial>(pixelShaderFilename);
+        if (pPixelMaterial->initShader(dev)) {
+            PixelMaterialPool::getInstance().addPixelMaterial(pixelShaderFilename, pPixelMaterial);
+        }
+        else {
+            pPixelMaterial = nullptr;
+        }
+    }
+    if (!pPixelMaterial) return false;
+    pPixelMaterialBuffer = std::move(createPixelMaterialBuffer(pMeshMeta->getPixelShaderFilename()));
+    if (!pPixelMaterialBuffer) return false;
+    if (!pPixelMaterialBuffer->initMaterialBuffer(dev, pPixelMaterial)) {
         pPixelMaterial = nullptr;
+        pPixelMaterialBuffer = nullptr;
         return false;
     }
-    pPixelMaterialBuffer = std::make_shared<PMBPosColorRaw>();
 
     // everything is okay
     loaded = true;
@@ -59,14 +92,30 @@ bool Mesh::init(ComPtr<ID3D11Device> dev, std::shared_ptr<MeshMeta> pMeshMeta, s
 
 void Mesh::render(ComPtr<ID3D11DeviceContext> devCon) const {
     if (!loaded) return;
+    // enable material
     pVertexMaterial->enableMaterial(devCon);
     pPixelMaterial->enableMaterial(devCon);
+    // set primitive topology
     devCon->IASetPrimitiveTopology(primitiveTopology);
+    // map material buffer data
     pVertexMaterialBuffer->mapBuffer(devCon, pVertexMaterial);
     pPixelMaterialBuffer->mapBuffer(devCon, pPixelMaterial);
+    // enable vertex buffer and index buffer
     pVertexBuffer->enableVertexBuffer(devCon);
-    devCon->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+    pIndexBuffer->enableIndexBuffer(devCon);
+    // enable material buffer
     pVertexMaterial->enableBuffer(devCon);
     pPixelMaterial->enableBuffer(devCon);
-    devCon->DrawIndexed(indexCnt, 0, 0);
+    // draw
+    pIndexBuffer->drawIndex(devCon);
+}
+
+void Mesh::updateVertexMaterialBuffer(std::string& bufferName, const Any& any) {
+    if (!pVertexMaterialBuffer) return;
+    pVertexMaterialBuffer->updateBufferData(bufferName, any);
+}
+
+void Mesh::updatePixelMaterialBuffer(std::string& bufferName, const Any& any) {
+    if (!pPixelMaterialBuffer) return;
+    pPixelMaterialBuffer->updateBufferData(bufferName, any);
 }

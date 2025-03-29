@@ -24,7 +24,7 @@ bool SimCase::preInit() {
 
 bool SimCase::init(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
 	if (!initUI(hWindow, dev, devCon)) return false;
-	x2y = static_cast<float>(getScreenWidth()) / static_cast<float>(getScreenHeight());
+	width2height = static_cast<float>(getScreenWidth()) / static_cast<float>(getScreenHeight());
 	return true;
 }
 
@@ -34,7 +34,7 @@ LRESULT CALLBACK SimCase::simProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 }
 
 bool SimCase::initUI(HWND hWindow, ComPtr<ID3D11Device> dev, ComPtr<ID3D11DeviceContext> devCon) {
-	if (needUI()) pUI = std::make_shared<UI>(hWindow, dev, devCon);
+	if (needUI()) pUI = std::make_unique<UI>(hWindow, dev, devCon);
 	return true;
 }
 

@@ -1,9 +1,3 @@
-/*
- * SimEntity
- * Holding model
- * Holding simulation property
- */
-
 #pragma once
 
 #ifndef __SIMENTITY_H__
@@ -17,22 +11,28 @@
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+/*
+ * SimEntity
+ * Holding model
+ * Holding simulation property
+ */
 class SimEntity {
 public:
     SimEntity();
+    SimEntity(float posX, float poxY, float angle, float scaleX, float scaleY);
     virtual ~SimEntity();
 
 public:
     /* initialization of sim entity
-     * uuid
-     * init model
      * specific initialization
+     * init uuid
+     * init model
      */
     bool init(ComPtr<ID3D11Device> dev, SimCase* pSimCase, std::string uuid);
 protected:
-    /* intialization of model */
+    /* initialization of model */
     virtual void initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase);
-    /* intialization of specific demand */
+    /* initialization of specific demand */
     virtual bool initEntity();
     /* ptr of model */
     std::unique_ptr<Model> pModel;
@@ -45,8 +45,10 @@ public:
 protected:
     /* update the logic property */
     virtual void updateProperty(SimCase* pSimCase, double simTime, double frameTime) = 0;
-    /* update the render entity property */
-    virtual void updateModel();
+    /* update model */
+    void updateModel(SimCase* pSimCase);
+    /* update model (only when loaded) */
+    virtual void doUpdateModel(SimCase* pSimCase);
 
 public:
     /* get uuid */
@@ -55,6 +57,28 @@ protected:
     /* uuid */
     std::string uuid;
 
+public:
+    float getPosX() const;
+    float getPosY() const;
+    float getAngle() const;
+    float getScaleX() const;
+    float getScaleY() const;
+    void setPosX(float posX);
+    void setPosY(float posY);
+    void setAngle(float angle);
+    void setScaleX(float scaleX);
+    void setScaleY(float scaleY);
+protected:
+    /* pos x in world coordinate */
+    float posX;
+    /* pos y in world coordinate */
+    float posY;
+    /* angle in world coordinate */
+    float angle;
+    /* scale x in world coordinate */
+    float scaleX;
+    /* scale y in world coordinate */
+    float scaleY;
 };
 
 #endif

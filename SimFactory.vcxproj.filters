@@ -147,6 +147,12 @@
     <ClCompile Include="script\Render\Material.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="script\Render\IndexBuffer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="script\Render\VertexBuffer.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\App\DxApp.h">
@@ -234,6 +240,12 @@
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="script\Render\Material.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\IndexBuffer.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Render\VertexBuffer.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@
 #include "UIWidget.h"
 
 FadingTriangleCase::FadingTriangleCase() :
-    SimCase(), period(1.0f)
+    SimCase(), period(1.0f), refreshTime(-99.0)
 #ifndef NDEBUG
 	, showDebugPnl(false)
 	, renderDocApi(nullptr), captureFrameSwitch(false), captureFraming(false) 
@@ -93,12 +93,32 @@ void FadingTriangleCase::doUpdate(ComPtr<ID3D11Device> dev, double simTime, doub
 	}
 #endif
 
-	if (entities.empty()) {
-		addEntity(dev, std::make_shared<FadingTriangle>());
+	if (simTime > refreshTime + 1.0) {
+		float posX = static_cast<float>(uniformRandom() * 2.0 - 1.0);
+		float posY = static_cast<float>(uniformRandom() * 2.0 - 1.0);
+		float angle = static_cast<float>(uniformRandom() * PI_2);
+		float scale = static_cast<float>(uniformRandom());
+		addEntity(dev, std::make_shared<FadingTriangle>(
+			posX,
+			posY,
+			angle,
+			scale,
+			scale,
+			simTime
+		));
+		refreshTime = simTime;
 	}
-	else {
-		updateEntities(simTime, frameTime);
+	std::vector<std::string> expiredUUID;
+	for (auto itr = entities.begin(); itr != entities.end(); ++itr) {
+		std::shared_ptr<FadingTriangle> pFadingTriangle = std::dynamic_pointer_cast<FadingTriangle>(itr->second);
+		if (pFadingTriangle->expired(simTime)) {
+			expiredUUID.emplace_back(itr->first);
+		}
 	}
+	for (std::string& uuid : expiredUUID) {
+		removeEntity(uuid);
+	}
+	updateEntities(simTime, frameTime);
 }
 
 void FadingTriangleCase::preRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
@@ -126,10 +146,17 @@ void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 
 
 
-FadingTriangle::FadingTriangle() :
-	SimEntity(), co(1.f), d(1.f), a(0.f) {}
+FadingTriangle::FadingTriangle(double simTime) :
+	SimEntity(), opacity(1.f), expireTime(simTime+LIFESPAN) {}
+
+FadingTriangle::FadingTriangle(float posX, float posY, float angle, float scaleX, float scaleY, double simTime) :
+	SimEntity(posX, posY, angle, scaleX, scaleY), opacity(1.f), expireTime(simTime+LIFESPAN) {}
 
 FadingTriangle::~FadingTriangle() {}
+
+bool FadingTriangle::expired(double simTime) const {
+	return simTime > expireTime;
+}
 
 void FadingTriangle::initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase) {
 	pModel = std::make_unique<Model>(dev, "triangle");
@@ -137,22 +164,17 @@ void FadingTriangle::initModel(ComPtr<ID3D11Device> dev, SimCase* pSimCase) {
 
 void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double frameTime) {
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
-	co += d * float(frameTime) * period;
-	if (co > 1.0f) {
-		d = -1.0f;
-		co = 2.0f - co;
-	}
-	else if (co < 0.0f) {
-		d = 1.0f;
-		co = -co;
-	}
-	a += float(frameTime) * period;
-	if (a > PI_2) a -= PI_2;
-    else if (a < 0.) a += PI_2;
+	opacity -= float(1.0 / LIFESPAN) * float(frameTime);
+	if (opacity < 0.f) opacity = 0.f;
+	angle += float(frameTime) * period;
+	if (angle > PI_2) angle -= PI_2;
+    else if (angle < 0.) angle += PI_2;
 }
 
-void FadingTriangle::updateModel() {
-	if (!pModel) return;
+void FadingTriangle::doUpdateModel(SimCase* pSimCase) {
+	pModel->updateTransformData(getTransformMatrix(posX, posY, angle, scaleX, scaleY, pSimCase->width2height));
+	Any any(DirectX::XMFLOAT4(opacity, opacity, 0.0f, 0.0f));
+	pModel->updateMeshPixelMaterialBuffer("triangle_main", "pixelbuffer", any);
 }
 
 
@@ -160,9 +182,9 @@ void FadingTriangle::updateModel() {
 FadingTriangleControlPanel::FadingTriangleControlPanel(std::string name, FadingTriangleCase* pSimCase) :
 	UIPanel(name) {
 		addUIWidget(std::make_shared<UISliderFloat>(
-			"PeriodSlider",
+			"SpeedSlider",
 			0.0,
-			10.0,
+			5.0,
 			std::bind(&FadingTriangleCase::setPeriod, pSimCase, std::placeholders::_1)
 		));
 #ifndef NDEBUG

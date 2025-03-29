@@ -60,9 +60,11 @@ private:
     Dispatcher& operator=(Dispatcher&&) = delete;
 
 public:
-    void work();
+    /* called by main thread, submit function (to be done by sub threads) */
     void submit(uint32_t priority, std::function<void()> func);
 private:
+    /* work function of sub threads */
+    void work();
     std::priority_queue<Task, std::vector<Task>, CmpTask> tasks;
     uint32_t taskId;
 };
@@ -72,7 +74,6 @@ private:
 /*
  * Universal mainthread callcack hub
  */
-
 class MainthreadCallbackHub {
 public:
     static MainthreadCallbackHub& getInstance() {
@@ -88,15 +89,18 @@ private:
     MainthreadCallbackHub& operator=(MainthreadCallbackHub&&) = delete;
 
 public:
+    /* called by sub thread, submit function (to be done by main thread) */
     void submit(std::function<void()> func);
+    /* called by main thread, consume functions (adaptive consume speed) */
     void invoke();
 private:
     std::mutex m;
     std::queue<std::function<void()>> funcs;
     std::atomic<bool> stop;
+    /* max consume function count in one invoke */
     uint32_t invokeBatch;
-    uint32_t funcCnt;
+    /* the accumulated function cnt */
+    uint32_t accumulatedFuncCnt;
 };
-
 
 #endif

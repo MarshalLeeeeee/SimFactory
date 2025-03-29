@@ -69,22 +69,28 @@ std::string getShaderFilepath(std::string fileName) {
     return p;
 }
 
+std::string getShaderConfFilepath(std::string fileName) {
+    std::string p("./res/shader/");
+    p += fileName;
+    p += ".xml";
+    return p;
+}
 
 
 MeshMeta::MeshMeta(std::string name_, int primitiveType_,
-    std::string vertexShader_, std::string pixelShader_, std::string vertexLayout_,
+    std::string vertexShaderName, std::string pixelShaderName, std::string vertexLayoutName,
     std::vector<int>& indices_) :
     name(name_), primitiveType(primitiveType_), indexCnt(0) {
-    // init vertex shader fullname
-    vertexShader = std::string("vs_");
-    vertexShader += vertexLayout_;
-    vertexShader += "_";
-    vertexShader += vertexShader_;
-    // init pixel shader fullname
-    pixelShader = std::string("ps_");
-    pixelShader += vertexLayout_;
-    pixelShader += "_";
-    pixelShader += pixelShader_;
+    // init vertex shader filename
+    vertexShaderFilename = std::string("vs_");
+    vertexShaderFilename += vertexLayoutName;
+    vertexShaderFilename += "_";
+    vertexShaderFilename += vertexShaderName;
+    // init pixel shader filename
+    pixelShaderFilename = std::string("ps_");
+    pixelShaderFilename += vertexLayoutName;
+    pixelShaderFilename += "_";
+    pixelShaderFilename += pixelShaderName;
     // init indices
     if (!indices_.empty()) {
         indexCnt = indices_.size();
@@ -99,16 +105,12 @@ int MeshMeta::getPrimitiveType() const {
     return primitiveType;
 }
 
-std::string MeshMeta::getVertexShader() const {
-    return vertexShader;
+const std::string& MeshMeta::getVertexShaderFilename() const {
+    return vertexShaderFilename;
 }
 
-std::string MeshMeta::getPixelShader() const {
-    return pixelShader;
-}
-
-std::string MeshMeta::getVertexLayout() const {
-    return vertexLayout;
+const std::string& MeshMeta::getPixelShaderFilename() const {
+    return pixelShaderFilename;
 }
 
 std::string MeshMeta::getName() const {
@@ -126,32 +128,32 @@ uint32_t MeshMeta::getIndexCnt() const {
 
 
 
-void ModelMetaBase::addMesh(std::shared_ptr<MeshMeta> pMeshMeta) {
+void ModelMetaBase::addMeshMeta(std::shared_ptr<MeshMeta> pMeshMeta) {
     if (!pMeshMeta) return;
-    pMeshMetaVec.emplace_back(pMeshMeta);
+    pMeshMetas.emplace_back(pMeshMeta);
 }
 
-std::string ModelMetaBase::getVertexLayout() const {
-    return vertexLayout;
+std::string ModelMetaBase::getVertexLayoutName() const {
+    return vertexLayoutName;
 }
 
-std::string ModelMetaBase::getVertexFileName() const {
-    return vertexFileName;
+std::string ModelMetaBase::getVertexFilename() const {
+    return vertexFilename;
 }
 
-const std::vector<std::shared_ptr<MeshMeta>>& ModelMetaBase::getMeshMetaVec() const {
-    return pMeshMetaVec;
+const std::vector<std::shared_ptr<MeshMeta>>& ModelMetaBase::getMeshMetas() const {
+    return pMeshMetas;
 }
 
-void* ModelMetaBase::getData() const {
+void* ModelMetaBase::getVertexData() const {
     return nullptr;
 }
 
-size_t ModelMetaBase::getSize() const {
+size_t ModelMetaBase::getVertexDataTypeSize() const {
     return 0;
 }
 
-size_t ModelMetaBase::getByteWidth() const {
+size_t ModelMetaBase::getVertexDataByteWidth() const {
     return 0;
 }
 
@@ -193,18 +195,19 @@ void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared
     tinyxml2::XMLElement* vertexData = model->FirstChildElement("VertexData");
     if (!vertexData)
         return;
-    std::string vertexFilePath(vertexData->GetText());
-    std::shared_ptr<ModelMetaBase> pModelMeta = loadVertexFromFile(vertexFilePath);
+    std::string vertexName(vertexData->GetText());
+    std::shared_ptr<ModelMetaBase> pModelMeta = loadVertexFromFile(vertexName);
     if (!pModelMeta)
         return;
 
-    std::string vertexLayout = pModelMeta->getVertexLayout();
+    std::string vertexLayoutName = pModelMeta->getVertexLayoutName();
     for (tinyxml2::XMLNode* mesh = model->FirstChildElement("Meshes")->FirstChild(); mesh; mesh = mesh->NextSibling()) {
         std::string meshName(mesh->FirstChildElement("Name")->GetText());
+        meshName = vertexName + "_" + meshName;
         int primitiveType = 0;
         mesh->FirstChildElement("PrimitiveType")->QueryIntText(&primitiveType);
-        std::string vsFile(mesh->FirstChildElement("VertexShader")->GetText());
-        std::string psFile(mesh->FirstChildElement("PixelShader")->GetText());
+        std::string vertexShaderName(mesh->FirstChildElement("VertexShader")->GetText());
+        std::string pixelShaderName(mesh->FirstChildElement("PixelShader")->GetText());
         std::vector<int> indices;
         for (tinyxml2::XMLElement* i = mesh->FirstChildElement("Indices")->FirstChildElement(); i; i = i->NextSiblingElement()) {
             indices.emplace_back(0);
@@ -213,12 +216,12 @@ void loadModelFromFileAsync(std::string fileName, std::function<void(std::shared
         std::shared_ptr<MeshMeta> pMeshMeta = std::make_shared<MeshMeta>(
             meshName,
             primitiveType,
-            vsFile,
-            psFile,
-            vertexLayout,
+            vertexShaderName,
+            pixelShaderName,
+            vertexLayoutName,
             indices
         );
-        pModelMeta->addMesh(pMeshMeta);
+        pModelMeta->addMeshMeta(pMeshMeta);
     }
 
     MainthreadCallbackHub::getInstance().submit([callback, pModelMeta] {

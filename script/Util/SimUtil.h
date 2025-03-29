@@ -11,21 +11,22 @@
 #include <Windows.h>
 // No project header is allowed
 
-// random generator
+/* random generator */
 static std::mt19937 generator(std::random_device{}());
-// uniform distribution within [0., 1.]
+
+/* uniform distribution within [0., 1.] */
 static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
-// Generate uuid
+/* generate uuid */
 std::string generateUUID();
 
-// Generate sub uuid
+/* generate sub uuid */
 std::string generateSubUUID();
 
-// Generate uniform random within [0,1]
+/* Generate uniform random within [0,1] */
 double uniformRandom();
 
-// Unparse lpCmdLine
+/* Unparse lpCmdLine */
 void unparseLpCmdLine(LPSTR lpCmdLine, std::vector<std::string>& cmdArgs);
 
 #endif
