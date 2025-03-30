@@ -166,6 +166,7 @@ void FadingTriangle::updateProperty(SimCase* pSimCase, double simTime, double fr
 	float period = static_cast<FadingTriangleCase*>(pSimCase)->getPeriod();
 	opacity -= float(1.0 / LIFESPAN) * float(frameTime);
 	if (opacity < 0.f) opacity = 0.f;
+	if (opacity < 0.1) Logger::getInstance().info("FadingTriangle opacity low: ", opacity);
 	angle += float(frameTime) * period;
 	if (angle > PI_2) angle -= PI_2;
     else if (angle < 0.) angle += PI_2;

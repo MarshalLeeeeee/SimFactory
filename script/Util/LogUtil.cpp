@@ -1,8 +1,8 @@
 #include "LogUtil.h"
 #include "FileUtil.h"
 
-Log::Log(std::string prefix, std::string txt, std::chrono::time_point<std::chrono::system_clock> now) :
-    prefix(prefix), txt(txt), now(now) {}
+// Log::Log(std::string prefix, std::string txt, std::chrono::time_point<std::chrono::system_clock> now) :
+//     prefix(prefix), txt(txt), now(now) {}
 
 Logger::Logger() : ThreadPool() {
     // initialize file stream
@@ -23,12 +23,12 @@ Logger::Logger() : ThreadPool() {
 Logger::~Logger() {
     stopThreadPool();
     // flush remaining logs
-    logQ.emplace("Log", "Ready to close log file...", std::chrono::system_clock::now());
-    while (!logQ.empty()) {
-        Log log = logQ.front();
-        logQ.pop();
-        append(log);
+    while (!logTasks.empty()) {
+        std::function<void()> logTask = logTasks.front();
+        logTasks.pop();
+        logTask();
     }
+    appendLog("Log", std::chrono::system_clock::now(), std::make_tuple("Ready to close log file..."));
     // close file
     f.close();
 }
@@ -38,51 +38,20 @@ void Logger::work() {
         auto now = std::chrono::system_clock::now();
         double dt = static_cast<std::chrono::duration<double>>(now - lastLogTime).count();
         if (dt < 1.0) continue;
-        std::queue<Log> q;
+        std::queue<std::function<void()>> q;
         {
             std::unique_lock<std::mutex> lock(m);
             cv.wait(lock, [this]{
-                return stop || !logQ.empty();
+                return stop || !logTasks.empty();
             });
-            if (stop && logQ.empty()) break;
-            q.swap(logQ);
+            if (stop && logTasks.empty()) break;
+            q.swap(logTasks);
         }
         while (!q.empty()) {
-            Log log = q.front();
+            std::function<void()> logTask = q.front();
             q.pop();
-            append(log);
+            logTask();
         }
         lastLogTime = now;
     }
-}
-
-void Logger::log(const char* txt) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Log", txt, std::chrono::system_clock::now());
-    }
-    cv.notify_one();
-}
-
-void Logger::error(const char* txt) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Error", txt, std::chrono::system_clock::now());
-    }
-    cv.notify_one();
-}
-
-void Logger::debug(const char* txt) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Debug", txt, std::chrono::system_clock::now());
-    }
-    cv.notify_one();
-}
-
-void Logger::append(const Log& log) {
-    f << getTimeStampStr(log.now) << " [" << log.prefix << "] " << log.txt << std::endl;
 }

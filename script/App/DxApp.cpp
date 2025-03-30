@@ -27,7 +27,7 @@ bool DxApp::init() {
 	if (!initWindow()) return false;
 	if (!initDx()) return false;
 	if (!initCase()) return false;
-	Logger::getInstance().log("App is successfully initialized...");
+	Logger::getInstance().info("App is successfully initialized...");
 	return true;
 }
 
@@ -144,7 +144,7 @@ bool DxApp::initDx() {
 int DxApp::run() {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
-	Logger::getInstance().log("App starts...");
+	Logger::getInstance().info("App starts...");
 	while (true) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
@@ -158,7 +158,7 @@ int DxApp::run() {
 		render();
 		postRender();
 	}
-	Logger::getInstance().log("App ends...");
+	Logger::getInstance().info("App ends...");
 	return static_cast<int>(msg.wParam);
 }
 
