@@ -46,11 +46,8 @@ private:
 
 public:
     void log(const char* txt);
-    void log(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now);
     void error(const char* txt);
-    void error(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now);
     void debug(const char* txt);
-    void debug(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now);
 protected:
     /* append log to file */
     void append(const Log& log);

@@ -65,15 +65,6 @@ void Logger::log(const char* txt) {
     cv.notify_one();
 }
 
-void Logger::log(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Log", txt, now);
-    }
-    cv.notify_one();
-}
-
 void Logger::error(const char* txt) {
     if (stop) return;
     {
@@ -83,29 +74,11 @@ void Logger::error(const char* txt) {
     cv.notify_one();
 }
 
-void Logger::error(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Error", txt, now);
-    }
-    cv.notify_one();
-}
-
 void Logger::debug(const char* txt) {
     if (stop) return;
     {
         std::unique_lock<std::mutex> lock(m);
         logQ.emplace("Debug", txt, std::chrono::system_clock::now());
-    }
-    cv.notify_one();
-}
-
-void Logger::debug(const char* txt, const std::chrono::time_point<std::chrono::system_clock> now) {
-    if (stop) return;
-    {
-        std::unique_lock<std::mutex> lock(m);
-        logQ.emplace("Debug", txt, now);
     }
     cv.notify_one();
 }
