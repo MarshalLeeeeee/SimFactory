@@ -32,13 +32,13 @@
     <ClCompile Include="script\Case\FadingTriangleCase.cpp" />
     <ClCompile Include="script\Case\SimCase.cpp" />
     <ClCompile Include="script\Case\SimpleShapeCase.cpp" />
+    <ClCompile Include="script\Entity\Entity.cpp" />
     <ClCompile Include="script\main.cpp" />
     <ClCompile Include="script\Render\IndexBuffer.cpp" />
     <ClCompile Include="script\Render\Material.cpp" />
     <ClCompile Include="script\Render\Mesh.cpp" />
     <ClCompile Include="script\Render\Model.cpp" />
     <ClCompile Include="script\Render\VertexBuffer.cpp" />
-    <ClCompile Include="script\Sim\SimEntity.cpp" />
     <ClCompile Include="script\UI\UI.cpp" />
     <ClCompile Include="script\UI\UIPanel.cpp" />
     <ClCompile Include="script\UI\UIWidget.cpp" />
@@ -66,12 +66,12 @@
     <ClInclude Include="script\Case\FadingTriangleCase.h" />
     <ClInclude Include="script\Case\SimCase.h" />
     <ClInclude Include="script\Case\SimpleShapeCase.h" />
+    <ClInclude Include="script\Entity\Entity.h" />
     <ClInclude Include="script\Render\IndexBuffer.h" />
     <ClInclude Include="script\Render\Material.h" />
     <ClInclude Include="script\Render\Mesh.h" />
     <ClInclude Include="script\Render\Model.h" />
     <ClInclude Include="script\Render\VertexBuffer.h" />
-    <ClInclude Include="script\Sim\SimEntity.h" />
     <ClInclude Include="script\UI\UI.h" />
     <ClInclude Include="script\UI\UIPanel.h" />
     <ClInclude Include="script\UI\UIWidget.h" />
@@ -175,7 +175,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Entity;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -194,7 +194,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Sim;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;$(ProjectDir)script/App;$(ProjectDir)script/Render;$(ProjectDir)script/Util;$(ProjectDir)script/Case;$(ProjectDir)script/Entity;$(ProjectDir)script/UI;$(ProjectDir)external_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

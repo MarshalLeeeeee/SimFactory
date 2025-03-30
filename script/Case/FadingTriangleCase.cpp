@@ -147,10 +147,10 @@ void FadingTriangleCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {
 
 
 FadingTriangle::FadingTriangle(double simTime) :
-	SimEntity(), opacity(1.f), expireTime(simTime+LIFESPAN) {}
+	Entity(), opacity(1.f), expireTime(simTime+LIFESPAN) {}
 
 FadingTriangle::FadingTriangle(float posX, float posY, float angle, float scaleX, float scaleY, double simTime) :
-	SimEntity(posX, posY, angle, scaleX, scaleY), opacity(1.f), expireTime(simTime+LIFESPAN) {}
+	Entity(posX, posY, angle, scaleX, scaleY), opacity(1.f), expireTime(simTime+LIFESPAN) {}
 
 FadingTriangle::~FadingTriangle() {}
 

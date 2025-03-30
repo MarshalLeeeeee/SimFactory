@@ -4,7 +4,7 @@
 #define __FADINGTRIANGLECASE_H__
 
 #include "SimCase.h"
-#include "SimEntity.h"
+#include "Entity.h"
 #include "UIPanel.h"
 #include "UIWidget.h"
 
@@ -87,7 +87,7 @@ private:
 #endif
 };
 
-class FadingTriangle : public SimEntity {
+class FadingTriangle : public Entity {
 public:
     FadingTriangle(double simTime);
     FadingTriangle(float posX, float poxY, float angle, float scaleX, float scaleY, double simTime);

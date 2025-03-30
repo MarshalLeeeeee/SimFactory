@@ -22,7 +22,7 @@
 // Forward declare message handler from imgui_impl_win32.cpp
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-class SimEntity;
+class Entity;
 
 class SimCase {
 public:
@@ -78,20 +78,20 @@ protected:
 
 public:
 	/* add sim entity */
-	bool addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<SimEntity> pSimEntity);
+	bool addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<Entity> pSimEntity);
 	/* remove sim entity */
 	bool removeEntity(std::string uuid);
 	/* if has sim entity */
 	bool hasEntity(std::string uuid) const;
 	/* get sim entity, nullptr if not exist */
-	std::shared_ptr<SimEntity> getEntity(std::string uuid) const;
+	std::shared_ptr<Entity> getEntity(std::string uuid) const;
 protected:
 	/* update logic properties of sim entities */
 	void updateEntities(double simTime, double frameTime);
 	/* uuid -> sim entity */
-	std::unordered_map<std::string, std::shared_ptr<SimEntity>> entities;
+	std::unordered_map<std::string, std::shared_ptr<Entity>> entities;
 };
 
-#include "SimEntity.h"
+#include "Entity.h"
 
 #endif

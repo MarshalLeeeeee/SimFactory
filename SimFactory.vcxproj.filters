@@ -43,12 +43,6 @@
     <Filter Include="Source Files\Render">
       <UniqueIdentifier>{96d350fa-1364-47aa-801e-ba5eeb897e2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Sim">
-      <UniqueIdentifier>{80c81163-c0aa-4fa1-bab0-578a701c87ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Sim">
-      <UniqueIdentifier>{061bfe75-12ff-4b37-9f5e-37ea262b7c03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="External Lib">
       <UniqueIdentifier>{635f1418-5f1b-47ac-8168-30c7ae4578f9}</UniqueIdentifier>
     </Filter>
@@ -60,6 +54,12 @@
     </Filter>
     <Filter Include="External Lib\tinyxml2">
       <UniqueIdentifier>{fffd24b1-c009-4c4e-ad2f-1d6e9057263b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{65da13c6-191c-4878-a5b4-bed6e36147a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{8734ce51-c652-48bf-8922-e4026e6e991c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="script\Util\TypeUtil.cpp">
       <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="script\Sim\SimEntity.cpp">
-      <Filter>Source Files\Sim</Filter>
     </ClCompile>
     <ClCompile Include="script\UI\UIPanel.cpp">
       <Filter>Source Files\UI</Filter>
@@ -153,6 +150,9 @@
     <ClCompile Include="script\Render\VertexBuffer.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="script\Entity\Entity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\App\DxApp.h">
@@ -184,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="script\Util\TypeUtil.h">
       <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="script\Sim\SimEntity.h">
-      <Filter>Header Files\Sim</Filter>
     </ClInclude>
     <ClInclude Include="script\UI\UIPanel.h">
       <Filter>Header Files\UI</Filter>
@@ -247,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="script\Render\VertexBuffer.h">
       <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="script\Entity\Entity.h">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

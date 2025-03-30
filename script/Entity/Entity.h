@@ -12,15 +12,15 @@
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 /*
- * SimEntity
+ * Entity
  * Holding model
  * Holding simulation property
  */
-class SimEntity {
+class Entity {
 public:
-    SimEntity();
-    SimEntity(float posX, float poxY, float angle, float scaleX, float scaleY);
-    virtual ~SimEntity();
+    Entity();
+    Entity(float posX, float poxY, float angle, float scaleX, float scaleY);
+    virtual ~Entity();
 
 public:
     /* initialization of sim entity

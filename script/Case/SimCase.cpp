@@ -70,7 +70,7 @@ void SimCase::render(ComPtr<ID3D11DeviceContext> devCon) const {
 
 void SimCase::postRender(ComPtr<ID3D11Device> dev, HWND hWindow) {}
 
-bool SimCase::addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<SimEntity> pSimEntity) {
+bool SimCase::addEntity(ComPtr<ID3D11Device> dev, std::shared_ptr<Entity> pSimEntity) {
 	std::string uuid = generateUUID();
 	if (hasEntity(uuid)) {
 		Logger::getInstance().error("[SimCase::addEntity] duplicate uuid...");
@@ -98,7 +98,7 @@ bool SimCase::hasEntity(std::string uuid) const {
 	return entities.find(uuid) != entities.end();
 }
 
-std::shared_ptr<SimEntity> SimCase::getEntity(std::string uuid) const {
+std::shared_ptr<Entity> SimCase::getEntity(std::string uuid) const {
 	if (!hasEntity(uuid)) return nullptr;
 	else return entities.at(uuid);
 }
